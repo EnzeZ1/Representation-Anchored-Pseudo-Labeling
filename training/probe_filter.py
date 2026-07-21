@@ -1,6 +1,5 @@
 """
 Feature-Probe Filtered Consistency Training.
-
 A frozen linear probe (trained on labeled data features) provides
 an independent age estimate. When it disagrees with the model's
 pseudo-label, the consistency loss is suppressed.
