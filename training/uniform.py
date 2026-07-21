@@ -1,7 +1,6 @@
 """
 Uniform baseline: consistency training with r=1 (no filtering).
 Isolates backbone contribution from probe filtering contribution.
-
 Usage same as train.py but no probe is trained or used:
     python uniform.py -dataset utkface_official \
         --data_dir Heteroscedastic-Pseudo-Labels-main/utkface/data \
