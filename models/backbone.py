@@ -1,6 +1,5 @@
 """
 Backbones for semi-supervised regression experiments.
-
 - ResNet50Regressor: image regression backbone close to Heteroscedastic Pseudo-Labels.
 - MixtureRegressor: distributional regression provider for the proposed method.
 
