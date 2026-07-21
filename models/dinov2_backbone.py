@@ -1,6 +1,5 @@
 """
 DINOv2 Regressor — drop-in replacement for ResNet50Regressor.
-
 Same interface: backbone, head, drop, encode(), forward().
 Usage: model = DINOv2Regressor(size='small')  # or 'base', 'large'
 """
