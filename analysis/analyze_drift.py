@@ -28,7 +28,7 @@ def main():
     data_dir = sys.argv[3] if len(sys.argv) > 3 else 'data/utkface_all'
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    from backbone import ResNet50Regressor
+    from models.backbone import ResNet50Regressor
     # Load probe checkpoint
     pc = torch.load(probe_path, map_location=device)
     model_p = ResNet50Regressor(pretrained=True).to(device)
@@ -50,7 +50,7 @@ def main():
     # Load val data
     import random; random.seed(0)
     np.random.seed(0); torch.manual_seed(0)
-    from train import make_data_utkface
+    from training.train import make_data_utkface
     import argparse
     args = argparse.Namespace(
         data_dir=data_dir, labeled_ratio=0.05, batch_size=32,

@@ -28,18 +28,18 @@ import matplotlib.pyplot as plt
 
 
 def load_rapl(ckpt_path, device):
-    from backbone import ResNet50Regressor
+    from models.backbone import ResNet50Regressor
 
     pc = torch.load(ckpt_path, map_location=device, weights_only=False)
     probe_dim = pc['probe']['weight'].shape[1]
 
     if probe_dim == 384:
-        from dinov2_backbone import DINOv2Regressor
+        from models.dinov2_backbone import DINOv2Regressor
         model = DINOv2Regressor(size='small').to(device)
         frozen = DINOv2Regressor(size='small').to(device)
         label = 'DINOv2-S'
     elif probe_dim == 768:
-        from dinov2_backbone import DINOv2Regressor
+        from models.dinov2_backbone import DINOv2Regressor
         model = DINOv2Regressor(size='base').to(device)
         frozen = DINOv2Regressor(size='base').to(device)
         label = 'DINOv2-B'
@@ -93,7 +93,7 @@ def main():
 
     # Load data
     random.seed(0); np.random.seed(0); torch.manual_seed(0)
-    from train import make_data
+    from training.train import make_data
     args = argparse.Namespace(
         data_dir=data_dir, labeled_ratio=0.05, batch_size=32,
         img_size=224, workers=4, method='probe', dataset=dataset,

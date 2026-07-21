@@ -9,12 +9,11 @@ from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 
-from backbone import ResNet50Regressor
-from dinov2_backbone import DINOv2Regressor
-from probe_filter import ProbeFilteredTrainer, ProbeConfig, train_probe
-
-from stsb import make_data_stsb, TextRegressor
-from hpl_data import make_data_hpl_official
+from models.backbone import ResNet50Regressor
+from models.dinov2_backbone import DINOv2Regressor
+from training.probe_filter import ProbeFilteredTrainer, ProbeConfig, train_probe
+from data_processing.stsb import make_data_stsb, TextRegressor
+from data_processing.hpl_data import make_data_hpl_official
 
 
 def seed_all(seed):

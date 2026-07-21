@@ -17,9 +17,9 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
-from backbone import ResNet50Regressor
-from dinov2_backbone import DINOv2Regressor
-from train import make_data, cycle, eval_mae, seed_all
+from models.backbone import ResNet50Regressor
+from models.dinov2_backbone import DINOv2Regressor
+from training.train import make_data, cycle, eval_mae, seed_all
 
 
 def main():

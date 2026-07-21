@@ -29,12 +29,12 @@ def main():
     data_dir = a.data_dir
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    from backbone import ResNet50Regressor
+    from models.backbone import ResNet50Regressor
     import random; random.seed(0)
     np.random.seed(0); torch.manual_seed(0)
 
     if a.backbone == 'dinov2':
-        from dinov2_backbone import DINOv2Regressor
+        from models.dinov2_backbone import DINOv2Regressor
         backbone = DINOv2Regressor(size='small').to(device)
     else:
         backbone = ResNet50Regressor(pretrained=True).to(device)

@@ -5,6 +5,7 @@ Reimplements their data loading to avoid import conflicts.
 
 import os
 import random
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import torch
@@ -127,9 +128,9 @@ def get_mean_and_std(dataset, batch_size=8, num_workers=4):
 def make_data_hpl_official(args):
     """Load UTKFace with official HPL splits and processing."""
     # Find the HPL data directory
-    hpl_data_dir = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        'Heteroscedastic-Pseudo-Labels-main', 'utkface', 'data')
+    repo_root = Path(__file__).resolve().parents[1]
+    hpl_data_dir = (repo_root / 'Heteroscedastic-Pseudo-Labels-main'
+                    / 'utkface' / 'data')
 
     csv_path = os.path.join(hpl_data_dir, 'utkface.csv')
     img_dir = hpl_data_dir

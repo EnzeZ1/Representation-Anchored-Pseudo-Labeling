@@ -11,13 +11,11 @@ through the root `train.py` entry point.
 ## Repository structure
 
 ```text
-train.py, uniform.py             Root training entry points
-backbone.py                      ResNet-50 and shared regression models
-dinov2_backbone.py               DINOv2 regression model
-probe_filter.py                  Probe/RAPL method
-stsb.py                          STS-B data and model support
-hpl_data.py                      Shared official-split UTKFace loader
-preprocess_imdb_wiki.py          IMDB-WIKI preprocessing
+train.py, uniform.py              Root CLI wrappers
+preprocess_imdb_wiki.py           Root preprocessing CLI wrapper
+models/                           ResNet-50 and DINOv2 model implementations
+training/                         Training entry points and probe/RAPL method
+data_processing/                  Dataset loaders and IMDB-WIKI preprocessing
 analysis/                        Supported offline analyses
 analysis/legacy_hpl/             Historical, unsupported project-owned HPL analyses
 results/                         Tracked figures, logs, and diagnostics
@@ -27,9 +25,16 @@ Heteroscedastic-Pseudo-Labels-main/
                                  Unmodified official third-party HPL project
 ```
 
-Despite its historical name, `hpl_data.py` is a shared data-loading utility used
-by current probe, supervised, and uniform experiments on the `utkface_official`
-split. It does not provide HPL training.
+The three root CLI scripts are intentionally thin wrappers that preserve existing
+commands. Active code must use package-qualified imports from `models`,
+`training`, and `data_processing`.
+
+The former inactive and nonfunctional `utkface_patched.py` module was removed and
+remains recoverable through Git history.
+
+Despite its historical name, `data_processing/hpl_data.py` is a shared
+data-loading utility used by current probe, supervised, and uniform experiments
+on the `utkface_official` split. It does not provide HPL training.
 
 ## Root-project methods
 
@@ -139,6 +144,10 @@ are retained. Comparison scripts that reconstruct the retired project-owned
 uncertainty network are preserved for provenance under `analysis/legacy_hpl/`,
 but are not part of the supported runnable analysis suite. See that directory's
 README for details.
+
+Those preserved scripts retain historical root-module imports that are no longer
+provided. They are intentionally excluded from the active import and syntax
+verification suite.
 
 They have not been redirected to the official implementation because its model
 and checkpoint formats differ, and doing so would change their scientific logic.
