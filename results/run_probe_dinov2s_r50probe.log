@@ -1,0 +1,43 @@
+nohup: ignoring input
+UTKFace: labeled=948, unlabeled=18021, val=2370, test=2370
+label scaler: mean=33.99, std=19.73
+Using cache found in /home/enzez/.cache/torch/hub/facebookresearch_dinov2_main
+/home/enzez/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+  warnings.warn("xFormers is not available (SwiGLU)")
+/home/enzez/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)
+  warnings.warn("xFormers is not available (Attention)")
+/home/enzez/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)
+  warnings.warn("xFormers is not available (Block)")
+Probe trained: MAE=0.154 (normalized)
+ep 1: val_mae=6.665, r2=0.7843
+ep 2: val_mae=6.151, r2=0.8164
+ep 3: val_mae=5.556, r2=0.8404
+ep 4: val_mae=5.532, r2=0.8400
+ep 5: val_mae=5.574, r2=0.8303
+ep 6: val_mae=5.545, r2=0.8264
+ep 7: val_mae=5.350, r2=0.8437
+ep 8: val_mae=5.310, r2=0.8487
+ep 9: val_mae=5.323, r2=0.8445
+ep 10: val_mae=5.470, r2=0.8456
+ep 11: val_mae=5.201, r2=0.8529
+ep 12: val_mae=5.269, r2=0.8472
+ep 13: val_mae=5.124, r2=0.8575
+ep 14: val_mae=5.213, r2=0.8505
+ep 15: val_mae=5.256, r2=0.8502
+ep 16: val_mae=5.225, r2=0.8524
+ep 17: val_mae=5.186, r2=0.8520
+ep 18: val_mae=5.210, r2=0.8504
+ep 19: val_mae=5.204, r2=0.8531
+ep 20: val_mae=5.258, r2=0.8497
+ep 21: val_mae=5.227, r2=0.8510
+ep 22: val_mae=5.179, r2=0.8554
+ep 23: val_mae=5.223, r2=0.8524
+ep 24: val_mae=5.175, r2=0.8514
+ep 25: val_mae=5.183, r2=0.8542
+ep 26: val_mae=5.117, r2=0.8561
+ep 27: val_mae=5.168, r2=0.8525
+ep 28: val_mae=5.187, r2=0.8515
+ep 29: val_mae=5.149, r2=0.8541
+ep 30: val_mae=5.162, r2=0.8532
+TEST probe: mae=5.357, r2=0.8533 (best val epoch)
+Saved to checkpoints/probe_dinov2s_r50probe_5.pt

@@ -1,0 +1,35 @@
+nohup: ignoring input
+UTKFace: labeled=1896, unlabeled=17073, val=2370, test=2370
+label scaler: mean=33.60, std=19.79
+Probe trained: MAE=0.193 (normalized), 0.2 years on labeled set
+ep 1: val_mae=6.846, r2=0.7691
+ep 2: val_mae=5.681, r2=0.8328
+ep 3: val_mae=5.869, r2=0.8288
+ep 4: val_mae=5.464, r2=0.8396
+ep 5: val_mae=5.404, r2=0.8432
+ep 6: val_mae=5.282, r2=0.8499
+ep 7: val_mae=5.320, r2=0.8507
+ep 8: val_mae=5.537, r2=0.8429
+ep 9: val_mae=5.220, r2=0.8543
+ep 10: val_mae=5.602, r2=0.8420
+ep 11: val_mae=5.541, r2=0.8432
+ep 12: val_mae=5.342, r2=0.8434
+ep 13: val_mae=5.256, r2=0.8516
+ep 14: val_mae=5.492, r2=0.8445
+ep 15: val_mae=5.168, r2=0.8518
+ep 16: val_mae=5.307, r2=0.8529
+ep 17: val_mae=5.268, r2=0.8540
+ep 18: val_mae=5.291, r2=0.8490
+ep 19: val_mae=5.233, r2=0.8526
+ep 20: val_mae=5.303, r2=0.8463
+ep 21: val_mae=5.162, r2=0.8566
+ep 22: val_mae=5.328, r2=0.8483
+ep 23: val_mae=5.371, r2=0.8469
+ep 24: val_mae=5.384, r2=0.8468
+ep 25: val_mae=5.140, r2=0.8528
+ep 26: val_mae=5.148, r2=0.8564
+ep 27: val_mae=5.412, r2=0.8393
+ep 28: val_mae=5.295, r2=0.8520
+ep 29: val_mae=5.407, r2=0.8415
+ep 30: val_mae=5.322, r2=0.8472
+TEST probe: mae=5.576, r2=0.8448

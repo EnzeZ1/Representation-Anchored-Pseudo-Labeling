@@ -1,0 +1,35 @@
+nohup: ignoring input
+IMDB-WIKI: labeled=17080, unlabeled=153729, val=21351, test=21351
+label scaler: mean=37.33, std=13.84
+Probe trained: MAE=0.606 (normalized), 0.6 years on labeled set
+ep 1: val_mae=6.504, r2=0.5749
+ep 2: val_mae=6.391, r2=0.5797
+ep 3: val_mae=6.408, r2=0.5834
+ep 4: val_mae=6.196, r2=0.5989
+ep 5: val_mae=6.231, r2=0.5992
+ep 6: val_mae=6.320, r2=0.5978
+ep 7: val_mae=6.077, r2=0.6151
+ep 8: val_mae=6.087, r2=0.6124
+ep 9: val_mae=6.393, r2=0.5936
+ep 10: val_mae=6.108, r2=0.6042
+ep 11: val_mae=6.118, r2=0.6066
+ep 12: val_mae=6.009, r2=0.6181
+ep 13: val_mae=5.994, r2=0.6136
+ep 14: val_mae=5.960, r2=0.6235
+ep 15: val_mae=5.942, r2=0.6247
+ep 16: val_mae=5.998, r2=0.6143
+ep 17: val_mae=6.019, r2=0.6167
+ep 18: val_mae=6.002, r2=0.6163
+ep 19: val_mae=5.998, r2=0.6177
+ep 20: val_mae=6.022, r2=0.6151
+ep 21: val_mae=5.932, r2=0.6191
+ep 22: val_mae=5.955, r2=0.6183
+ep 23: val_mae=5.989, r2=0.6172
+ep 24: val_mae=5.971, r2=0.6158
+ep 25: val_mae=6.016, r2=0.6131
+ep 26: val_mae=5.964, r2=0.6168
+ep 27: val_mae=5.918, r2=0.6223
+ep 28: val_mae=5.987, r2=0.6107
+ep 29: val_mae=5.947, r2=0.6166
+ep 30: val_mae=5.958, r2=0.6204
+TEST probe: mae=5.967, r2=0.6278

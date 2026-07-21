@@ -1,0 +1,70 @@
+nohup: ignoring input
+Loading STS-B dataset...
+  Train: 5749, Test (from val): 1500
+Encoding with sentence-transformer...
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 3963.42it/s]
+  Encoding 5749 sentence pairs...
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 1937.36it/s]
+/nobackup/enzez/.venv/lib/python3.10/site-packages/torch/utils/data/dataloader.py:752: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+  Encoding 1500 sentence pairs...
+  Feature dim: 1536
+STS-B: labeled=517, unlabeled=4658, val=574, test=1500
+label scaler: mean=2.70, std=1.46
+ep 1: val_mae=1.022, r2=0.3555
+ep 2: val_mae=0.861, r2=0.5267
+ep 3: val_mae=0.797, r2=0.5829
+ep 4: val_mae=0.759, r2=0.6251
+ep 5: val_mae=0.733, r2=0.6455
+ep 6: val_mae=0.700, r2=0.6703
+ep 7: val_mae=0.704, r2=0.6629
+ep 8: val_mae=0.706, r2=0.6679
+ep 9: val_mae=0.703, r2=0.6687
+ep 10: val_mae=0.670, r2=0.6850
+ep 11: val_mae=0.687, r2=0.6759
+ep 12: val_mae=0.707, r2=0.6629
+ep 13: val_mae=0.660, r2=0.6914
+ep 14: val_mae=0.679, r2=0.6819
+ep 15: val_mae=0.664, r2=0.6927
+ep 16: val_mae=0.682, r2=0.6738
+ep 17: val_mae=0.668, r2=0.6885
+ep 18: val_mae=0.663, r2=0.6893
+ep 19: val_mae=0.670, r2=0.6842
+ep 20: val_mae=0.660, r2=0.6889
+ep 21: val_mae=0.668, r2=0.6847
+ep 22: val_mae=0.699, r2=0.6631
+ep 23: val_mae=0.706, r2=0.6620
+ep 24: val_mae=0.683, r2=0.6740
+ep 25: val_mae=0.702, r2=0.6628
+ep 26: val_mae=0.694, r2=0.6691
+ep 27: val_mae=0.703, r2=0.6621
+ep 28: val_mae=0.675, r2=0.6814
+ep 29: val_mae=0.699, r2=0.6637
+ep 30: val_mae=0.720, r2=0.6474
+TEST hpl: mae=0.733, r2=0.6622
+Traceback (most recent call last):
+  File "/nobackup/enzez/LatentMemo/pseudo-labels/train.py", line 524, in <module>
+    main()
+  File "/nobackup/enzez/LatentMemo/pseudo-labels/train.py", line 515, in main
+    if args.dataset == 'stsb': train_hpl_text(args, loaders, scaler, device)
+  File "/nobackup/enzez/LatentMemo/pseudo-labels/train.py", line 375, in train_hpl_text
+    probe, sigma_sq = train_probe(frozen.backbone, lab, device)
+  File "/nobackup/enzez/LatentMemo/pseudo-labels/probe_filter.py", line 36, in train_probe
+    feat = backbone(x.to(device))
+  File "/nobackup/enzez/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nobackup/enzez/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nobackup/enzez/.venv/lib/python3.10/site-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+  File "/nobackup/enzez/.venv/lib/python3.10/site-packages/torchvision/models/resnet.py", line 268, in _forward_impl
+    x = self.conv1(x)
+  File "/nobackup/enzez/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nobackup/enzez/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nobackup/enzez/.venv/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 565, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/nobackup/enzez/.venv/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 560, in _conv_forward
+    return F.conv2d(
+RuntimeError: Expected 3D (unbatched) or 4D (batched) input to conv2d, but got input of size: [32, 1536]

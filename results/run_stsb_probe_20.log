@@ -1,0 +1,43 @@
+nohup: ignoring input
+Loading STS-B dataset...
+  Train: 5749, Test (from val): 1500
+Encoding with sentence-transformer...
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 18415.67it/s]
+  Encoding 5749 sentence pairs...
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 7009.11it/s]
+  Encoding 1500 sentence pairs...
+  Feature dim: 1536
+STS-B: labeled=1035, unlabeled=4140, val=574, test=1500
+label scaler: mean=2.70, std=1.46
+Probe trained: MAE=0.383 (normalized)
+ep 1: val_mae=1.018, r2=0.3609
+ep 2: val_mae=0.780, r2=0.5947
+ep 3: val_mae=0.704, r2=0.6503
+ep 4: val_mae=0.670, r2=0.6740
+ep 5: val_mae=0.645, r2=0.6920
+ep 6: val_mae=0.627, r2=0.7008
+ep 7: val_mae=0.616, r2=0.7077
+ep 8: val_mae=0.611, r2=0.7099
+ep 9: val_mae=0.614, r2=0.7122
+ep 10: val_mae=0.599, r2=0.7184
+ep 11: val_mae=0.598, r2=0.7197
+ep 12: val_mae=0.608, r2=0.7162
+ep 13: val_mae=0.594, r2=0.7237
+ep 14: val_mae=0.599, r2=0.7136
+ep 15: val_mae=0.592, r2=0.7212
+ep 16: val_mae=0.595, r2=0.7136
+ep 17: val_mae=0.594, r2=0.7138
+ep 18: val_mae=0.594, r2=0.7131
+ep 19: val_mae=0.592, r2=0.7194
+ep 20: val_mae=0.589, r2=0.7214
+ep 21: val_mae=0.591, r2=0.7194
+ep 22: val_mae=0.594, r2=0.7144
+ep 23: val_mae=0.596, r2=0.7149
+ep 24: val_mae=0.590, r2=0.7186
+ep 25: val_mae=0.589, r2=0.7209
+ep 26: val_mae=0.592, r2=0.7173
+ep 27: val_mae=0.599, r2=0.7138
+ep 28: val_mae=0.590, r2=0.7184
+ep 29: val_mae=0.607, r2=0.6993
+ep 30: val_mae=0.601, r2=0.7098
+TEST probe: mae=0.592, r2=0.7369
