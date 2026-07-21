@@ -43,7 +43,6 @@ def main():
     p.set_defaults(pretrained=True)
     # dummy args needed by make_data
     p.add_argument('--method', default='probe')
-    p.add_argument('--unc_lr', type=float, default=1e-4)
     args = p.parse_args()
 
     seed_all(args.seed)

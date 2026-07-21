@@ -2,21 +2,27 @@
 Why Probe Outperforms HPL: Comprehensive Analysis
 
 Usage:
-    python analyze_official.py <probe_ckpt> <hpl_ckpt> <data_dir> [dataset]
+    python analysis/legacy_hpl/analyze_official.py <probe_ckpt> <hpl_ckpt> <data_dir> [dataset]
 
 Examples:
     # Official splits
-    python analyze_official.py checkpoints/probe_official_5.pt \
+    python analysis/legacy_hpl/analyze_official.py checkpoints/probe_official_5.pt \
         checkpoints/hpl_official_r50_5.pt \
         Heteroscedastic-Pseudo-Labels-main/utkface/data utkface_official
 
     # Your splits (default)
-    python analyze_official.py checkpoints/utk_probe_5_seed0_b32.pt \
+    python analysis/legacy_hpl/analyze_official.py checkpoints/utk_probe_5_seed0_b32.pt \
         checkpoints/utk_hpl_5_seed0_officialhp.pt \
         data/utkface_all
 """
 
 import sys, argparse, random
+from pathlib import Path
+
+# Keep repository-root imports working when invoked as
+# ``python analysis/legacy_hpl/analyze_official.py``.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

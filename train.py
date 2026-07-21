@@ -11,7 +11,6 @@ from torchvision import transforms
 
 from backbone import ResNet50Regressor
 from dinov2_backbone import DINOv2Regressor
-from hpl import HPLTrainer, HPLConfig, UncertaintyLearner
 from probe_filter import ProbeFilteredTrainer, ProbeConfig, train_probe
 from stsb import make_data_stsb, TextRegressor
 from hpl_data import make_data_hpl_official
@@ -215,53 +214,6 @@ def train_supervised_text(args, loaders, scaler, device):
     print(f'TEST supervised: mae={mae:.3f}, r2={r2:.4f} (best val epoch)')
 
 
-# ── HPL ──
-
-def train_hpl(args, loaders, scaler, device):
-    lab, unlab, val, test = loaders
-    mean, std = scaler
-
-    if args.dataset == 'stsb':
-        feat_dim = next(iter(lab))[0].shape[1]
-        model = TextRegressor(feat_dim).to(device)
-    else:
-        model = ResNet50Regressor(pretrained=args.pretrained).to(device)
-
-    unc = UncertaintyLearner().to(device)
-    opt_feat = torch.optim.Adam(model.backbone.parameters(), lr=args.lr)
-    opt_fc = torch.optim.Adam(model.head.parameters(), lr=args.fc_lr)
-    opt_unc = torch.optim.Adam(unc.parameters(), lr=args.unc_lr)
-    trainer = HPLTrainer(model, unc, opt_feat, opt_fc, opt_unc,
-                         HPLConfig(w_ulb=10.0, lambda2=0.1, update_unc_every=5))
-
-    lit, uit, mit = cycle(lab), cycle(unlab), cycle(lab)
-    best_val, best_state = float('inf'), None
-    for ep in range(args.epochs):
-        model.train()
-        for _ in range(max(len(lab), len(unlab))):
-            x_l, y_l = next(lit); x_m, y_m = next(mit); x_w, x_s = next(uit)
-            trainer.step(x_l.to(device), y_l.to(device), x_w.to(device), x_s.to(device),
-                        x_m.to(device), y_m.to(device))
-        mae, r2 = eval_mae(model, val, mean, std, device)
-        print(f'ep {ep+1}: val_mae={mae:.3f}, r2={r2:.4f}')
-        if mae < best_val:
-            best_val = mae
-            best_state = {k: v.clone() for k, v in model.state_dict().items()}
-    model.load_state_dict(best_state)
-    mae, r2 = eval_mae(model, test, mean, std, device)
-    print(f'TEST hpl: mae={mae:.3f}, r2={r2:.4f} (best val epoch)')
-
-    if args.save:
-        import os; os.makedirs(os.path.dirname(args.save) or '.', exist_ok=True)
-        torch.save({
-            'model': model.state_dict(),
-            'uncertainty': unc.state_dict(),
-            'mean': mean, 'std': std,
-        }, args.save)
-        print(f'Saved to {args.save}')
-
-
-
 # ── Probe (RAPL) ──
 
 def train_probe_method(args, loaders, scaler, device):
@@ -405,7 +357,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('-dataset', default='utkface', choices=['utkface', 'imdb_wiki', 'stsb', 'utkface_official'])
     p.add_argument('--data_dir', required=True)
-    p.add_argument('--method', default='probe', choices=['probe', 'hpl', 'supervised'])
+    p.add_argument('--method', default='probe', choices=['probe', 'supervised'])
     p.add_argument('--labeled_ratio', type=float, default=0.05)
     p.add_argument('--epochs', type=int, default=30)
     p.add_argument('--batch_size', type=int, default=32)
@@ -413,7 +365,6 @@ def main():
     p.add_argument('--img_size', type=int, default=224)
     p.add_argument('--lr', type=float, default=1e-4)
     p.add_argument('--fc_lr', type=float, default=1e-3)
-    p.add_argument('--unc_lr', type=float, default=1e-4)
     p.add_argument('--lambda_u', type=float, default=1.0)
     p.add_argument('--seed', type=int, default=0)
     p.add_argument('--save', type=str, default=None, help='Path to save checkpoint')
@@ -433,8 +384,6 @@ def main():
 
     if args.method == 'probe':
         train_probe_method(args, loaders, scaler, device)
-    elif args.method == 'hpl':
-        train_hpl(args, loaders, scaler, device)
     elif args.method == 'supervised':
         if args.dataset == 'stsb': train_supervised_text(args, loaders, scaler, device)
         else: train_supervised(args, loaders, scaler, device)

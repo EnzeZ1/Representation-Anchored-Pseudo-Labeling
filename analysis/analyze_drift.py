@@ -29,8 +29,6 @@ def main():
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     from backbone import ResNet50Regressor
-    from hpl import UncertaintyLearner
-
     # Load probe checkpoint
     pc = torch.load(probe_path, map_location=device)
     model_p = ResNet50Regressor(pretrained=True).to(device)

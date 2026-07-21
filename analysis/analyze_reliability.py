@@ -2,10 +2,10 @@
 Probe reliability curve comparison: R50/R50 vs DINOv2-S/DINOv2-S
 
 Usage:
-    python analyze_reliability.py <r50_ckpt> <dinov2_ckpt> <data_dir> [dataset]
+    python analysis/analyze_reliability.py <r50_ckpt> <dinov2_ckpt> <data_dir> [dataset]
 
 Example:
-    python analyze_reliability.py \
+    python analysis/analyze_reliability.py \
         checkpoints/probe_official_5.pt \
         checkpoints/probe_official_dinov2_both_5.pt \
         Heteroscedastic-Pseudo-Labels-main/utkface/data \
@@ -13,6 +13,12 @@ Example:
 """
 
 import sys, argparse, random
+from pathlib import Path
+
+# Keep repository-root imports working when invoked as
+# ``python analysis/analyze_reliability.py``.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 import torch
 import torch.nn as nn
 import numpy as np

@@ -6,7 +6,7 @@ same normalization as training. This script never updates either model.
 
 Direct use (run from the repository root)::
 
-    python analyze_rapl_vs_hpl.py --dataset utkface --data_dir DATA \
+    python analysis/legacy_hpl/analyze_rapl_vs_hpl.py --dataset utkface --data_dir DATA \
       --rapl_ckpt checkpoints/rapl.pt --hpl_ckpt checkpoints/hpl.pt
 """
 

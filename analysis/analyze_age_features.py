@@ -6,6 +6,12 @@ analyze directions, distances, and separability.
 """
 
 import sys
+from pathlib import Path
+
+# Keep repository-root imports working when invoked as
+# ``python analysis/analyze_age_features.py``.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 import torch
 import numpy as np
 import matplotlib
@@ -35,7 +41,6 @@ def main():
     backbone.eval()
     print(f'Using backbone: {a.backbone}, feature_dim={backbone.feature_dim}')
 
-    from pathlib import Path
     from PIL import Image
     from torchvision import transforms
     root = Path(data_dir)
