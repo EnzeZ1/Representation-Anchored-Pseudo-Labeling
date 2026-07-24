@@ -1,0 +1,2 @@
+# Patch payloads preserve upstream whitespace so they apply to pinned revisions.
+baselines/patches/*.patch whitespace=-blank-at-eol,-blank-at-eof

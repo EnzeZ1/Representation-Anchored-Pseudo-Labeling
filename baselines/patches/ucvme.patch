@@ -1,0 +1,248 @@
+diff --git a/models/resnet50.py b/models/resnet50.py
+index 4cf875a..19071d6 100644
+--- a/models/resnet50.py
++++ b/models/resnet50.py
+@@ -1,7 +1,7 @@
+ import torch
+ from torch import Tensor
+ import torch.nn as nn
+-from torchvision.models.utils import load_state_dict_from_url
++from torch.hub import load_state_dict_from_url
+ from typing import Type, Any, Callable, Union, List, Optional
+ 
+ 
+@@ -295,4 +295,3 @@ def resnet50_unc(pretrained: bool = False, progress: bool = True, **kwargs: Any)
+                    **kwargs)
+ 
+ 
+-
+diff --git a/ucvme_age.py b/ucvme_age.py
+index 09334bc..f42be9e 100644
+--- a/ucvme_age.py
++++ b/ucvme_age.py
+@@ -22,6 +22,9 @@ import datasets
+ import utils
+ 
+ from torch.distributions.normal import Normal
++from baselines.utkface_data import BenchmarkContext, TupleDataset
++from baselines.benchmark_io import checkpoint_size, write_history, write_json, write_npz
++from data_processing.utkface_protocol import dataloader_generator, seed_dataloader_worker, loader_metadata, runtime_metadata
+ 
+ 
+ @click.command("ucvme")
+@@ -57,6 +60,9 @@ from torch.distributions.normal import Normal
+ @click.option("--samp_ssl", type=int, default=5)
+ 
+ @click.option("--drp_p", type=float, default=0.05)
++@click.option("--benchmark_manifest", type=str, default=None)
++@click.option("--benchmark_output_dir", type=str, default=None)
++@click.option("--benchmark_epochs", type=int, default=None)
+ 
+ 
+ def run(
+@@ -89,17 +95,23 @@ def run(
+     samp_fq = 5,
+     samp_ssl = 5,
+ 
+-    drp_p = 0.05
++    drp_p = 0.05,
++    benchmark_manifest=None,
++    benchmark_output_dir=None,
++    benchmark_epochs=None,
+ ):
+     
+ 
+     command_args = sys.argv[:]
++    benchmark = bool(benchmark_manifest)
++    if benchmark_output_dir is not None: output = benchmark_output_dir
++    if benchmark_epochs is not None: num_epochs = benchmark_epochs
+ 
+     print("Run with options:")
+     for carg_itr in command_args:
+         print(carg_itr)
+ 
+-    if reduced_set:
++    if reduced_set and not benchmark:
+         if not os.path.isfile(os.path.join(data_dir, "FileList_ssl_{}_{}.csv".format(rd_label, rd_unlabel))):
+             print("Generating new file list for ssl dataset")
+             np.random.seed(0)
+@@ -178,8 +190,13 @@ def run(
+         lr_step_period = math.inf
+     scheduler_1 = torch.optim.lr_scheduler.StepLR(optim_1, lr_step_period)
+ 
+-    mean, std = utils.get_mean_and_std(datasets.UTKdta(root=data_dir, split="train"))
+-    print("mean std", mean, std)
++    if benchmark:
++        context = BenchmarkContext(os.environ['UTKFACE_BENCHMARK_ROOT'], data_dir, benchmark_manifest)
++        y_mean, y_std = context.mean, context.std
++        mean, std = None, None
++    else:
++        mean, std = utils.get_mean_and_std(datasets.UTKdta(root=data_dir, split="train"))
++        print("mean std", mean, std)
+ 
+     kwargs = {"target_type": ['age'],
+               "mean": mean,
+@@ -189,14 +206,27 @@ def run(
+     # Set up datasets and dataloaders
+     dataset = {}
+     dataset_trainsub = {}
+-    if reduced_set:
++    if benchmark:
++        dataset_trainsub['lb'] = TupleDataset(context, 'labeled', 'labeled', repeat=2 if ssl_mult < 0 else ssl_mult)
++        dataset_trainsub['unlb_0'] = TupleDataset(context, 'unlabeled', 'weak')
++    elif reduced_set:
+         dataset_trainsub['lb'] = datasets.UTKdta(root=data_dir, split="train", **kwargs, pad=pad_param, ssl_postfix="_ssl_{}_{}".format(rd_label, rd_unlabel), ssl_type = 1, ssl_mult = ssl_mult_choice)
+         dataset_trainsub['unlb_0'] = datasets.UTKdta(root=data_dir, split="train", **kwargs, pad=pad_param, ssl_postfix="_ssl_{}_{}".format(rd_label, rd_unlabel), ssl_type = 2)
+     else:
+         assert 1==2, "not possible"
+ 
+     dataset['train'] = dataset_trainsub
+-    dataset["val"] = datasets.UTKdta(root=data_dir, split="val", **kwargs, ssl_postfix="_ssl_{}_{}".format(rd_label, rd_unlabel))
++    dataset["val"] = (TupleDataset(context, 'validation', 'evaluation') if benchmark else
++                      datasets.UTKdta(root=data_dir, split="val", **kwargs, ssl_postfix="_ssl_{}_{}".format(rd_label, rd_unlabel)))
++    history = []
++    benchmark_loaders = ({
++        'labeled': loader_metadata(seed=seed, role='labeled', num_workers=num_workers, batch_size=batch_size, shuffle=True, drop_last=True, sampler='RandomSampler', pin_memory=device.type == 'cuda'),
++        'unlabeled': loader_metadata(seed=seed, role='unlabeled', num_workers=num_workers, batch_size=batch_size, shuffle=True, drop_last=True, sampler='RandomSampler', pin_memory=device.type == 'cuda'),
++        'validation': loader_metadata(seed=seed, role='validation', num_workers=num_workers, batch_size=batch_size, shuffle=False, drop_last=False, sampler='SequentialSampler', pin_memory=device.type == 'cuda'),
++        'test': loader_metadata(seed=seed, role='test', num_workers=num_workers, batch_size=batch_size, shuffle=False, drop_last=False, sampler='SequentialSampler', pin_memory=device.type == 'cuda'),
++    } if benchmark else None)
++    benchmark_started = time.time()
++    if benchmark and device.type == 'cuda': torch.cuda.reset_peak_memory_stats(device)
+ 
+     with open(os.path.join(output, "log.csv"), "a") as f:
+ 
+@@ -243,9 +273,11 @@ def run(
+                 ds = dataset[phase]
+                 if phase == "train":
+                     dataloader_lb = torch.utils.data.DataLoader(
+-                        ds['lb'], batch_size=batch_size, num_workers=num_workers, shuffle=True, pin_memory=(device.type == "cuda"), drop_last=(phase == "train"), worker_init_fn=worker_init_fn)
++                        ds['lb'], batch_size=batch_size, num_workers=num_workers, shuffle=True, pin_memory=(device.type == "cuda"), drop_last=(phase == "train"), worker_init_fn=seed_dataloader_worker if benchmark else worker_init_fn,
++                        generator=dataloader_generator(seed, 'labeled') if benchmark else None)
+                     dataloader_unlb_0 = torch.utils.data.DataLoader(
+-                        ds['unlb_0'], batch_size=batch_size, num_workers=num_workers, shuffle=True, pin_memory=(device.type == "cuda"), drop_last=(phase == "train"), worker_init_fn=worker_init_fn)
++                        ds['unlb_0'], batch_size=batch_size, num_workers=num_workers, shuffle=True, pin_memory=(device.type == "cuda"), drop_last=(phase == "train"), worker_init_fn=seed_dataloader_worker if benchmark else worker_init_fn,
++                        generator=dataloader_generator(seed, 'unlabeled') if benchmark else None)
+                     
+ 
+ 
+@@ -307,7 +339,9 @@ def run(
+     
+                     ds = dataset[phase]
+                     dataloader = torch.utils.data.DataLoader(
+-                        ds, batch_size=batch_size, num_workers=num_workers, shuffle=False, pin_memory=(device.type == "cuda"), drop_last=(phase == "train"))                        
++                        ds, batch_size=batch_size, num_workers=num_workers, shuffle=False, pin_memory=(device.type == "cuda"), drop_last=(phase == "train"),
++                        worker_init_fn=seed_dataloader_worker if benchmark else None,
++                        generator=dataloader_generator(seed, 'validation') if benchmark else None)
+                     
+                     loss_valit, yhat, y, var_hat, var_e, var_a, mean_0_ls, var_0_ls = run_epoch_val(model = model, model_1 = model_1, dataloader = dataloader, train = False, optim = None, device = device, block_size=None, y_mean = y_mean, y_std = y_std, samp_fq = samp_fq)
+ 
+@@ -361,7 +395,13 @@ def run(
+             scheduler.step()
+             scheduler_1.step()
+ 
+-            best_model_loss = loss_valit
++            val_mae = sklearn.metrics.mean_absolute_error(y, yhat)
++            best_model_loss = val_mae if benchmark else loss_valit
++            history.append({'epoch': epoch + 1, 'training_loss': loss_tr, 'validation_loss': loss_valit,
++                            'validation_mae': val_mae, 'validation_r2': r2_value,
++                            'learning_rate': optim.param_groups[0]['lr'],
++                            'best_so_far': int(best_model_loss < bestLoss),
++                            'elapsed_seconds': time.time() - start_time})
+ 
+             save = {
+                 'epoch': epoch,
+@@ -378,6 +418,9 @@ def run(
+                 'np_rndstate': np.random.get_state(),
+                 'trch_rndstate': torch.get_rng_state()
+             }
++            if benchmark:
++                save.update({'validation_mae_years': val_mae, 'mean': y_mean, 'std': y_std,
++                             'config': command_args, 'loader_metadata': benchmark_loaders})
+             torch.save(save, os.path.join(output, "checkpoint.pt"))
+             
+             if best_model_loss < bestLoss:
+@@ -391,25 +434,55 @@ def run(
+             checkpoint = torch.load(os.path.join(output, "best.pt"))
+             model.load_state_dict(checkpoint['state_dict'], strict = False)
+             model_1.load_state_dict(checkpoint['state_dict_1'], strict = False)
++            if benchmark:
++                assert checkpoint['epoch'] == min(range(len(history)), key=lambda i: history[i]['validation_mae'])
++                assert checkpoint['validation_mae_years'] == bestLoss
+ 
+             f.write("Best validation loss {} from epoch {}, R2 {}\n".format(checkpoint["best_model_loss"], checkpoint["epoch"], checkpoint["r2"]))
+             f.flush()
+ 
+         if run_test:
+ 
+-            split_list = ["test", "val"]
++            split_list = ["test"] if benchmark else ["test", "val"]
+             
+             for split in split_list: 
+ 
+                 dataloader = torch.utils.data.DataLoader(
+-                    datasets.UTKdta(root=data_dir, split=split, **kwargs, ssl_postfix="_ssl_{}_{}".format(rd_label, rd_unlabel)),
+-                    batch_size=batch_size, num_workers=num_workers, shuffle=False, pin_memory=(device.type == "cuda"), worker_init_fn=worker_init_fn)
++                    TupleDataset(context, 'test', 'evaluation') if benchmark else datasets.UTKdta(root=data_dir, split=split, **kwargs, ssl_postfix="_ssl_{}_{}".format(rd_label, rd_unlabel)),
++                    batch_size=batch_size, num_workers=num_workers, shuffle=False, pin_memory=(device.type == "cuda"),
++                    worker_init_fn=seed_dataloader_worker if benchmark else worker_init_fn,
++                    generator=dataloader_generator(seed, 'test') if benchmark else None)
+                 total_loss, yhat, y, _, _, _, _, _ = run_epoch_val(model = model, model_1 = model_1, dataloader = dataloader, train = False, optim = None, device = device, block_size=None, y_mean = y_mean, y_std = y_std, samp_fq = samp_fq)
+ 
+                 f.write("{} - {} (one clip) R2:   {:.3f}\n".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), split, sklearn.metrics.r2_score(y, yhat)))
+                 f.write("{} - {} (one clip) MAE:  {:.2f}\n".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), split, sklearn.metrics.mean_absolute_error(y, yhat)))
+                 f.write("{} - {} (one clip) RMSE: {:.2f}\n".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), split, sklearn.metrics.mean_squared_error(y, yhat)**0.5))
+                 f.flush()
++                if benchmark:
++                    test_mae = sklearn.metrics.mean_absolute_error(y, yhat)
++                    test_r2 = sklearn.metrics.r2_score(y, yhat)
++                    indices = np.asarray(context.indices('test'), dtype=np.int64)
++                    write_npz(os.path.join(output, 'test_predictions.npz'), cohort_indices=indices,
++                              relative_paths=np.asarray([context.record(i)['path'] for i in indices]),
++                              predictions_years=yhat, targets_years=y)
++                    write_npz(os.path.join(output, 'analysis_snapshot.npz'), cohort_indices=np.asarray([], dtype=np.int64),
++                              note=np.asarray(['post-hoc diagnostics deferred']))
++                    write_history(os.path.join(output, 'history.csv'), history)
++                    write_json(os.path.join(output, 'config.json'), {'argv': command_args, 'y_mean': y_mean, 'y_std': y_std})
++                    write_json(os.path.join(output, 'metrics.json'), {'best_epoch': checkpoint['epoch'],
++                               'validation_mae': bestLoss, 'test_mae': test_mae, 'test_r2': test_r2})
++                    write_json(os.path.join(output, 'metadata.json'), {
++                        'method': 'ucvme', 'status': 'complete', 'cohort_sha256': context.cohort['cohort_sha256'],
++                        'manifest_path': str(context.manifest_path), 'checkpoint_reloaded': True,
++                        'test_evaluations': 1, 'test_used_for_selection': False, 'best_epoch': checkpoint['epoch'],
++                        'validation_mae': bestLoss, 'checkpoint_size_bytes': checkpoint_size(os.path.join(output, 'best.pt')),
++                        'runtime': runtime_metadata(), 'wall_clock_seconds': time.time() - benchmark_started,
++                        'peak_allocated_cuda_bytes': torch.cuda.max_memory_allocated(device),
++                        'peak_reserved_cuda_bytes': torch.cuda.max_memory_reserved(device),
++                        'model': 'ImageNet-pretrained ResNet-50',
++                        'native_views': 'weak image with native stochastic dropout passes',
++                        'loaders': benchmark_loaders, **context.protocol_metadata(),
++                    })
+ 
+ 
+ 
+@@ -469,7 +542,7 @@ def run_epoch(model,
+     dataloader_unlb_0_itr = iter(dataloader_unlb_0)
+ 
+     for train_iter in range(total_itr_num):
+-        (X_ulb_0, outcome_ulb) = dataloader_unlb_0_itr.next()
++        (X_ulb_0, outcome_ulb) = next(dataloader_unlb_0_itr)
+ 
+         X_ulb_0 = X_ulb_0.to(device)
+ 
+@@ -546,7 +619,7 @@ def run_epoch(model,
+ 
+         loss_reg_cps = (loss_reg_cps0 + loss_reg_cps1) + (var_loss_ulb_0 + var_loss_ulb_1)
+ 
+-        (X, outcome ) = dataloader_lb_itr.next()
++        (X, outcome ) = next(dataloader_lb_itr)
+ 
+ 
+         y.append(outcome.detach().cpu().numpy())
+@@ -782,4 +855,4 @@ def run_epoch_val(model,
+ 
+ 
+ if __name__ == '__main__':
+-    run()
+\ No newline at end of file
++    run()

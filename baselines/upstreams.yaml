@@ -1,0 +1,20 @@
+schema_version: 1
+benchmark_scope: "Official algorithms under the shared UTKFace protocol; not exact reproductions of published numerical results."
+repositories:
+  hpl:
+    url: https://github.com/sxq11/Heteroscedastic-Pseudo-Labels.git
+    commit: 89f9f8bd467a0d3f81a8ada8708c3fe4fe31ca20
+    patch: baselines/patches/hpl.patch
+  ucvme:
+    url: https://github.com/xmed-lab/UCVME.git
+    commit: 9f27a579cc8cb8806a56b52c3f888b647d22a074
+    patch: baselines/patches/ucvme.patch
+  simregmatch:
+    url: https://github.com/YongwonJo/SimRegMatch.git
+    commit: 0a57b897caeb5e7beebbe8379f999cb2f409bece
+    description: "SimRegMatch official algorithm with entry-point and ImageNet-weight compatibility patch under the shared UTKFace protocol."
+    patch: baselines/patches/simregmatch.patch
+  rankup:
+    url: https://github.com/pm25/Semi-Supervised-Regression.git
+    commit: 7ed6d267783d9dc8f99ae8188b126d125bf3ab79
+    patch: baselines/patches/rankup.patch

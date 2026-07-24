@@ -13,16 +13,18 @@ through the root `train.py` entry point.
 ```text
 train.py, uniform.py              Root CLI wrappers
 preprocess_imdb_wiki.py           Root preprocessing CLI wrapper
-models/                           ResNet-50 and DINOv2 model implementations
+models/                           ResNet-50, DINOv2, and DINOv3 model implementations
 training/                         Training entry points and probe/RAPL method
-data_processing/                  Dataset loaders and IMDB-WIKI preprocessing
-analysis/                        Supported offline analyses
-analysis/legacy_hpl/             Historical, unsupported project-owned HPL analyses
-results/                         Tracked figures, logs, and diagnostics
-data/                            Untracked local datasets
-checkpoints/                     Untracked local model checkpoints
+data_processing/                  Dataset protocols, loaders, and preprocessing
+scripts/                          Reproducible launch, queue, and reporting tools
+baselines/                        Official-baseline adapters, patches, and revisions
+analysis/                         Supported offline analyses
+analysis/legacy_hpl/              Historical, unsupported project-owned HPL analyses
+results/                          Untracked generated figures, logs, and diagnostics
+data/                             Untracked local datasets
+checkpoints/                      Untracked local model checkpoints
 Heteroscedastic-Pseudo-Labels-main/
-                                 Unmodified official third-party HPL project
+                                  Local official HPL checkout; not vendored
 ```
 
 The three root CLI scripts are intentionally thin wrappers that preserve existing
@@ -85,16 +87,36 @@ for all options.
 contain large archives, extracted datasets, and historical checkpoints. Do not
 assume another checkout contains them.
 
-IMDB-WIKI experiments expect `metadata.json` in the supplied data directory.
-Generate it from the repository root with:
+Legacy IMDB-WIKI preprocessing expects `metadata.json` in the supplied data
+directory. Generate it from the repository root with:
 
 ```bash
 python preprocess_imdb_wiki.py
 ```
 
-The `utkface_official` loader currently reads split metadata and images from
-`Heteroscedastic-Pseudo-Labels-main/utkface/data/`. This is a remaining coupling
-between the root project and the local third-party checkout.
+Formal manifests under `data_processing/splits/` are generated local artifacts
+and are not committed. Reproduce them with the protocol functions in
+`data_processing/utkface_protocol.py` and
+`data_processing/imdb_wiki_protocol.py`.
+
+The canonical UTKFace cohort digest is
+`61c397e0b6ac4be78db1b1c1431a65b031e2a2fd5089361e4e784ad21ad8af56`.
+The formal benchmark uses seeds 0 through 5 and nested labeled subsets at
+ratios 0.05, 0.10, and 0.20.
+
+The official curated IMDB-WIKI-DIR metadata is `imdb_wiki.csv` from HPL
+upstream commit `89f9f8bd467a0d3f81a8ada8708c3fe4fe31ca20`. Its expected SHA-256 is
+`a31f1b43de6804ddbaa2316665a7364e74da3c5c497bdeafb40b910036f7f80b`.
+The validated cohort has 191,509 training, 11,022 validation, and 11,022 test
+records, with cohort digest
+`919fe3e1b959e1fe75e08e83310a84c1c3a9d53a16812a1bb5f1e0117ba97f43`.
+Place the images under `data/imdb_wiki/` and the official CSV in the pinned HPL
+checkout; do not substitute a newly generated split.
+
+The `utkface_official` loader currently reads split metadata and images from a
+local official HPL checkout. This is a remaining runtime coupling; upstream
+URLs, exact revisions, and reproducible patches are recorded in
+`baselines/upstreams.yaml`.
 
 ## Official HPL baseline
 
@@ -136,6 +158,9 @@ python main_ours.py --data_dir PATH --output_dir PATH \
 
 The third-party environments are authoritative for official HPL. Their exclusive
 dependencies are deliberately not included in the root `requirements.txt`.
+For a non-vendored checkout under `third_party/`, follow
+`baselines/README.md`, check out the exact HPL revision from
+`baselines/upstreams.yaml`, and apply `baselines/patches/hpl.patch`.
 
 ## Historical HPL analyses
 
