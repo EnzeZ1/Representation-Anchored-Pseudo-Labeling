@@ -2,36 +2,63 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
 
-# Environments
+# Environments and secrets
 .venv/
 venv/
 env/
-
-# Data and checkpoints
-data/
-checkpoints/
-*.pt
-*.pth
-*.ckpt
-*.safetensors
-
-# Experiment tracking
-wandb/
-runs/
-lightning_logs/
-
-# Secrets
 .env
 .env.*
 *.pem
 *.key
 
-# Large generated files
-*.npy
-*.npz
+# Data and pretrained weights
+data/
+datasets/
+checkpoints/
+weights/
+pretrained/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.zip
+*.tar
+*.tar.gz
+*.tgz
 
-# Third-party repository, handle separately
+# Deterministically generated formal manifests
+data_processing/splits/
+
+# Generated experiments
+artifacts/
+results/
+outputs/
+runs/
+logs/
+lightning_logs/
+wandb/
+tensorboard/
+tmp/
+temp/
+
+# Runtime files
+*.pid
+*.log
+nohup.out
+
+# Large generated arrays
+*.npz
+*.npy
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Official third-party HPL checkout; reproduced from baselines/upstreams.yaml
+# and baselines/patches/ rather than vendored into this repository.
 Heteroscedastic-Pseudo-Labels-main/
-AGENTS.md
-AGENTS.md
