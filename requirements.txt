@@ -9,3 +9,5 @@ matplotlib
 scikit-learn
 sentence-transformers
 datasets
+transformers
+nltk
