@@ -156,6 +156,27 @@ python main_ours.py --data_dir PATH --output_dir PATH \
   --num_epochs 200 --batch_size 32
 ```
 
+### Shared STS-B-DIR protocol
+
+The formal shared text benchmark uses the balanced `sts.tsv` distributed by
+the pinned official HPL repository at commit
+`89f9f8bd467a0d3f81a8ada8708c3fe4fe31ca20`. Its immutable split contains
+5,249 training, 1,000 validation, and 1,000 test pairs with scores in `[0, 5]`.
+`scripts/generate_stsb_protocol.py` creates deterministic nested 5%, 10%, 20%,
+and 100% manifests for seeds 0–5 under protocol `stsb-benchmark-v1`.
+
+Shared text augmentation is `rapl-text-augmentation-v1`: weak views are the
+original pair, while strong views independently apply POS-aware WordNet synonym
+replacement and insertion within each sentence. Supervised training uses only
+the original labeled pair. Formal STS-B checkpoints are selected solely by
+validation MSE after inverse target normalization; test is evaluated once after
+restoring that checkpoint.
+
+The reusable text backbones are the official-HPL-compatible two-layer
+BiLSTM with frozen GloVe 840B/300d word vectors and generic
+`FacebookAI/roberta-base`. Both expose `encode`/`forward_features` APIs for
+future shared RAPL and baseline adapters.
+
 The third-party environments are authoritative for official HPL. Their exclusive
 dependencies are deliberately not included in the root `requirements.txt`.
 For a non-vendored checkout under `third_party/`, follow
