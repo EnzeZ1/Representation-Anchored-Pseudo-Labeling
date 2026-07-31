@@ -11,3 +11,4 @@ sentence-transformers
 datasets
 transformers
 nltk
+higher==0.2.1
