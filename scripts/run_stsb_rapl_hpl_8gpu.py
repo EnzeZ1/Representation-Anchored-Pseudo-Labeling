@@ -69,6 +69,16 @@ def promote(source,destination):
  write_json(destination/"successful_attempt.json",{"source_attempt":source.name,"promoted_unix":time.time()})
 
 
+def recover_valid_attempt(job):
+ destination=Path(job["output_dir"])
+ attempts=sorted(destination.glob("attempt_*"),key=lambda path:int(path.name[8:]) if path.name[8:].isdigit() else -1,reverse=True)
+ for attempt in attempts:
+  if valid(attempt):
+   promote(attempt,destination);job["status"]="complete";log(f"Recovered completed {job['id']} from {attempt.name}")
+   return True
+ return False
+
+
 def gpu_free(gpu):
  text=subprocess.check_output(["nvidia-smi",f"--id={gpu}","--query-gpu=memory.free,utilization.gpu","--format=csv,noheader,nounits"],text=True).strip();free,util=[int(x.strip()) for x in text.split(",")]
  p=subprocess.check_output(["nvidia-smi",f"--id={gpu}","--query-compute-apps=pid","--format=csv,noheader,nounits"],text=True).strip()
@@ -103,6 +113,7 @@ def main():
     if gpu in used or not gpu_free(gpu):continue
     job=next((x for x in records if x["gpu_owner"]==gpu and x["status"]=="pending"),None)
     if not job:continue
+    if recover_valid_attempt(job):persist(records,running,stopping);continue
     job["attempts"]+=1;job["status"]="running";cmd,out=command(job,job["attempts"]);out.mkdir(parents=True,exist_ok=False);handle=(out/"run.log").open("a")
     env=os.environ.copy();env.update({"CUDA_VISIBLE_DEVICES":str(gpu),"PYTHONPATH":str(ROOT),"PYTHONUNBUFFERED":"1","TOKENIZERS_PARALLELISM":"false"})
     process=subprocess.Popen(cmd,cwd=ROOT,env=env,stdout=handle,stderr=subprocess.STDOUT,start_new_session=True)
