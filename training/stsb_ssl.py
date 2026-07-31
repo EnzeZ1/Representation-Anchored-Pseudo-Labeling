@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
 import os
@@ -36,6 +37,14 @@ SUPERVISED = ROOT / "artifacts/supervised_baselines/stsb"
 
 def seed_everything(seed):
     random.seed(seed); np.random.seed(seed); torch.manual_seed(seed); torch.cuda.manual_seed_all(seed)
+
+
+def model_state_hash(model):
+    digest=hashlib.sha256()
+    for name,value in sorted(model.state_dict().items()):
+        tensor=value.detach().cpu().contiguous()
+        digest.update(name.encode());digest.update(str(tensor.dtype).encode());digest.update(np.asarray(tensor.shape,dtype=np.int64).tobytes());digest.update(tensor.numpy().tobytes())
+    return digest.hexdigest()
 
 
 def features(model, batch, backbone):
@@ -123,20 +132,23 @@ def supervised_bilstm_checkpoint(args):
 
 def construct_method(args, device):
     model, collator, identity=construct(args.backbone,device)
-    anchor=None; probe=None; provenance=None
+    target_init_hash=model_state_hash(model)
+    anchor=None; probe=None; provenance=None;anchor_hash=None
     if args.method=="rapl":
         anchor, _, anchor_identity=construct(args.backbone,device)
         if args.backbone=="bilstm_glove":
             source=supervised_bilstm_checkpoint(args)
             state=torch.load(source,map_location=device,weights_only=True)["model_state"]
-            model.load_state_dict(state); anchor.load_state_dict(state)
-            provenance={"source":"supervised_best_checkpoint_same_seed_ratio","path":str(source),"manifest_sha256":file_sha256(args.manifest)}
+            anchor.load_state_dict(state)
+            provenance={"anchor_type":"labeled_only_frozen_bilstm","anchor_source":"supervised_same_seed_same_ratio","anchor_checkpoint_path":str(source),"anchor_training_labels":"same labeled subset from stsb-benchmark-v1","anchor_uses_unlabeled_labels":False,"anchor_uses_test_labels":False,"validation_used_for_anchor_checkpoint_selection":True,"target_warm_started_from_anchor":False,"target_warm_started_from_supervised":False,"manifest_sha256":file_sha256(args.manifest)}
         else:
-            provenance={"source":"independent_generic_pretrained_copy","identifier":"FacebookAI/roberta-base"}
+            provenance={"anchor_type":"frozen_generic_pretrained_roberta","anchor_source":"independent_generic_pretrained_copy","identifier":"FacebookAI/roberta-base","anchor_uses_unlabeled_labels":False,"anchor_uses_test_labels":False,"target_warm_started_from_anchor":False,"target_warm_started_from_supervised":False}
         anchor.eval(); anchor.requires_grad_(False)
         if any(p.requires_grad for p in anchor.parameters()): raise RuntimeError("RAPL anchor is not frozen")
+        anchor_hash=model_state_hash(anchor)
+        if args.backbone=="bilstm_glove" and anchor_hash==target_init_hash: raise RuntimeError("Trained BiLSTM anchor unexpectedly equals standard target initialization")
         identity["anchor"]=anchor_identity
-    return model,anchor,collator,identity,provenance
+    return model,anchor,collator,identity,provenance,target_init_hash,anchor_hash
 
 
 def hpl_meta_step(model, uncertainty, opt_head, opt_unc, labeled, weak, strong, meta, backbone, lambda2):
@@ -199,18 +211,18 @@ def main():
     p=argparse.ArgumentParser();p.add_argument("--method",choices=("rapl","hpl"),required=True);p.add_argument("--backbone",choices=("bilstm_glove","roberta_base"),required=True);p.add_argument("--manifest",type=Path,required=True);p.add_argument("--output-dir",type=Path);p.add_argument("--seed",type=int,required=True);p.add_argument("--labeled-ratio",type=float,required=True);p.add_argument("--epochs",type=int);p.add_argument("--batch-size",type=int);p.add_argument("--num-workers",type=int,default=2);p.add_argument("--preflight",action="store_true");args=p.parse_args()
     args.epochs=args.epochs or (200 if args.backbone=="bilstm_glove" else 10);args.batch_size=args.batch_size or (32 if args.backbone=="bilstm_glove" else 16)
     if not torch.cuda.is_available() or torch.cuda.device_count()!=1: raise RuntimeError("Worker must see one local cuda:0")
-    seed_everything(args.seed);device=torch.device("cuda:0");model,anchor,collator,identity,provenance=construct_method(args,device)
+    seed_everything(args.seed);device=torch.device("cuda:0");model,anchor,collator,identity,provenance,target_init_hash,anchor_hash=construct_method(args,device)
     cohort,manifest,datasets,loaders,mean,std,protocol=make_loaders(args,collator)
     if args.method=="rapl": probe=fit_probe(anchor,loaders["labeled"],args.backbone,device);uncertainty=None
     else: probe=None;uncertainty=UncertaintyLearner().to(device)
     feat_opt,head_opt,sf,sh,opt_cfg=target_optimization(model,args.backbone,args.epochs,len(loaders["unlabeled"]));unc_opt=torch.optim.Adam(uncertainty.parameters(),lr=1e-4,weight_decay=1e-5) if uncertainty else None
     meta_head_opt=(head_opt if args.method=="hpl" and args.backbone=="bilstm_glove" else torch.optim.Adam(model.head.parameters(),lr=1e-4,weight_decay=1e-5) if args.method=="hpl" else None)
     method_cfg={"lambda_u":1.0,"tau":1.0,"trust_formula":"1/(1+abs(target_pseudo-frozen_probe))"} if args.method=="rapl" else {"w_ulb":1.0,"lambda2":1.0,"uncertainty_update_frequency":5,"uncertainty_lr":1e-4,"uncertainty_weight_decay":1e-5,"bilevel_head_optimizer":"official HPL Adam","bilevel_head_lr":1e-3 if args.backbone=="bilstm_glove" else 1e-4}
-    config={"dataset":"STS-B-DIR","method":args.method,"backbone":args.backbone,"epochs":args.epochs,"batch_size":args.batch_size,"precision":"float32","selection_metric":"lowest validation MSE in original STS-B score units","protocol":protocol,"model":identity,"optimization":opt_cfg,"method_configuration":method_cfg,"anchor_provenance":provenance,"official_hpl_upstream_commit":"89f9f8bd467a0d3f81a8ada8708c3fe4fe31ca20" if args.method=="hpl" else None}
+    config={"dataset":"STS-B-DIR","method":args.method,"backbone":args.backbone,"epochs":args.epochs,"batch_size":args.batch_size,"precision":"float32","selection_metric":"lowest validation MSE in original STS-B score units","protocol":protocol,"model":identity,"optimization":opt_cfg,"method_configuration":method_cfg,"target_init_hash":target_init_hash,"anchor_init_hash":anchor_hash,"anchor_provenance":provenance,"official_hpl_upstream_commit":"89f9f8bd467a0d3f81a8ada8708c3fe4fe31ca20" if args.method=="hpl" else None}
     if args.preflight:
         labeled=to_device(next(iter(loaders["labeled"])),device);views=next(iter(loaders["unlabeled"]));weak=to_device(views["weak"],device);strong=to_device(views["strong"],device)
         with torch.no_grad(): out=[model_forward(model,x,args.backbone).shape for x in (labeled,weak,strong)]
-        print(json.dumps({"status":"pass","method":args.method,"backbone":args.backbone,"forward_shapes":[list(x) for x in out],"anchor_frozen":None if anchor is None else not any(p.requires_grad for p in anchor.parameters()),"uncertainty_trainable":None if uncertainty is None else any(p.requires_grad for p in uncertainty.parameters()),"probe_labeled_count":manifest["counts"]["labeled"] if probe else None,"test_model_inference_count":0,"config":config},sort_keys=True));return
+        print(json.dumps({"status":"pass","method":args.method,"backbone":args.backbone,"forward_shapes":[list(x) for x in out],"target_trainable":any(p.requires_grad for p in model.parameters()),"target_init_hash":target_init_hash,"anchor_init_hash":anchor_hash,"anchor_frozen":None if anchor is None else not any(p.requires_grad for p in anchor.parameters()),"probe_frozen":None if probe is None else not any(p.requires_grad for p in probe.parameters()),"uncertainty_trainable":None if uncertainty is None else any(p.requires_grad for p in uncertainty.parameters()),"probe_labeled_count":manifest["counts"]["labeled"] if probe else None,"test_model_inference_count":0,"config":config},sort_keys=True));return
     output=args.output_dir.resolve();output.mkdir(parents=True,exist_ok=True)
     if (output/"metrics.json").exists():raise FileExistsError(output)
     write_json(output/"config.json",config);started=time.time();torch.cuda.reset_peak_memory_stats(device);history=[];best=math.inf;best_epoch=None
@@ -229,7 +241,7 @@ def main():
     np.savez_compressed(output/"test_predictions.npz",cohort_indices=indices,stable_identifiers=identifiers,predictions_score_units=pred,targets_score_units=target)
     metrics={"best_epoch":best_epoch,"best_validation_mse_score_units":best,"test_mse_score_units":tmse,"test_mae_score_units":tmae,"test_r2":tr2,"checkpoint_reloaded":True,"test_used_for_selection":False,"test_model_inference_count":1}
     write_json(output/"metrics.json",metrics)
-    write_json(output/"metadata.json",{"status":"complete","method":args.method,"dataset":"STS-B-DIR","backbone":args.backbone,"seed":args.seed,"labeled_ratio":args.labeled_ratio,"checkpoint_path":str(output/"best.pt"),"checkpoint_selection":"lowest validation MSE in original STS-B score units","checkpoint_reloaded":True,"restored_epoch_verified":True,"restored_validation_metric_verified":True,"test_used_for_selection":False,"test_model_inference_count":1,**protocol,"anchor_provenance":provenance,"runtime_seconds":time.time()-started,"peak_cuda_allocated_bytes":torch.cuda.max_memory_allocated(device),"peak_cuda_reserved_bytes":torch.cuda.max_memory_reserved(device),"cuda_visible_devices":os.environ.get("CUDA_VISIBLE_DEVICES"),"process_local_device":"cuda:0","runtime":runtime_metadata()})
+    write_json(output/"metadata.json",{"status":"complete","method":args.method,"dataset":"STS-B-DIR","backbone":args.backbone,"seed":args.seed,"labeled_ratio":args.labeled_ratio,"checkpoint_path":str(output/"best.pt"),"checkpoint_selection":"lowest validation MSE in original STS-B score units","checkpoint_reloaded":True,"restored_epoch_verified":True,"restored_validation_metric_verified":True,"test_used_for_selection":False,"test_model_inference_count":1,**protocol,"target_init_hash":target_init_hash,"anchor_init_hash":anchor_hash,"anchor_provenance":provenance,"runtime_seconds":time.time()-started,"peak_cuda_allocated_bytes":torch.cuda.max_memory_allocated(device),"peak_cuda_reserved_bytes":torch.cuda.max_memory_reserved(device),"cuda_visible_devices":os.environ.get("CUDA_VISIBLE_DEVICES"),"process_local_device":"cuda:0","runtime":runtime_metadata()})
     print(json.dumps(metrics,sort_keys=True),flush=True)
 
 

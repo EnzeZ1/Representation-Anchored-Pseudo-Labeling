@@ -3,7 +3,7 @@ from torch import nn
 
 from data_processing.stsb_ssl import STSBUnlabeledViews
 from models.hpl_uncertainty import UncertaintyLearner
-from training.stsb_ssl import hpl_meta_step
+from training.stsb_ssl import hpl_meta_step, model_state_hash
 
 
 def test_unlabeled_views_do_not_expose_targets():
@@ -47,3 +47,11 @@ def test_hpl_bilevel_step_updates_uncertainty():
     )
     assert torch.isfinite(torch.tensor(value))
     assert any(not torch.equal(old, new) for old, new in zip(before, learner.parameters()))
+
+
+def test_model_state_hash_is_deterministic_and_sensitive():
+    torch.manual_seed(7);first=nn.Linear(3,2)
+    torch.manual_seed(7);second=nn.Linear(3,2)
+    assert model_state_hash(first)==model_state_hash(second)
+    with torch.no_grad():second.bias.add_(1)
+    assert model_state_hash(first)!=model_state_hash(second)
