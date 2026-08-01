@@ -11,10 +11,13 @@ Place the authorized version `1.0.0` release under the user-only directory:
 └── images/        # official image hierarchy referenced relative to metadata.csv
 ```
 
-The metadata filename may retain its official release name, but exactly one top-level CSV
-must identify image paths, patient membership, and LVIDd. IVSd and LVPWd are preregistered
-future targets. Do not rename images, synthesize missing records, or substitute another
-echocardiography dataset.
+The official schema uses `patient_id`, `cxr_filename`, and lower-case target columns.
+LVIDd is measured in centimeters. The formal LVIDd cohort includes finite values greater
+than zero only. IVSd and LVPWd are preregistered future targets. Do not rename images,
+synthesize missing records, or substitute another echocardiography dataset.
+
+The fixed patient split seed is `20260801`, with one 90/5/5 patient partition shared by
+every method and experimental seed. Protected generated manifests remain local and ignored.
 
 After placement, run the aggregate-only audit and full decoder audit. Only a complete,
 authorized release may be used to generate local patient-level manifests. The formal

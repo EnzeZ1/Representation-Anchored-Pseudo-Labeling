@@ -9,7 +9,9 @@ from data_processing.chexchonet_protocol import RATIOS, SEEDS, generate_patient_
 
 def main():
     p=argparse.ArgumentParser(); p.add_argument("--data-root",type=Path,required=True); p.add_argument("--output",type=Path,required=True); a=p.parse_args()
-    if not audit_release(a.data_root, decode=True).ready: raise RuntimeError("Authorized release failed full readiness audit")
+    audit=audit_release(a.data_root, decode=True)
+    if not audit.ready: raise RuntimeError("Authorized release failed full readiness audit")
+    if audit.nonpositive_lvidd / audit.metadata_rows > .01: raise RuntimeError("Nonpositive LVIDd exceeds 1%; protocol generation stopped")
     records=load_records(discover_metadata(a.data_root))
     for seed in SEEDS:
         manifests={ratio:generate_patient_manifest(records,seed=seed,ratio=ratio) for ratio in RATIOS}; validate_nested(manifests)

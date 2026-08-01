@@ -1,34 +1,25 @@
-"""Secure, schema-tolerant access to an authorized CheXchoNet release.
+"""Secure access to the official CheXchoNet 1.0.0 release.
 
-This module deliberately never downloads data and never logs row identifiers.
+Protected identifiers are kept in memory/local ignored artifacts and are never logged.
 """
-
 from __future__ import annotations
 
 import csv
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from typing import Iterable, Mapping
+from typing import Mapping
 
 import numpy as np
+import torch
 from PIL import Image
 from torch.utils.data import Dataset
 
 TARGETS = ("lvidd", "ivsd", "lvpwd")
-IMAGE_COLUMNS = ("image_path", "image", "path", "filename", "file")
-PATIENT_COLUMNS = ("patient_id", "patient", "subject_id", "subject")
-
-
-def _column(fieldnames: Iterable[str], candidates: Iterable[str]) -> str:
-    lookup = {name.casefold(): name for name in fieldnames}
-    for candidate in candidates:
-        if candidate.casefold() in lookup:
-            return lookup[candidate.casefold()]
-    raise ValueError(f"Required metadata role absent; accepted columns: {tuple(candidates)}")
+OFFICIAL_IMAGE_COLUMN = "cxr_filename"
+OFFICIAL_PATIENT_COLUMN = "patient_id"
 
 
 def discover_metadata(root: str | Path) -> Path | None:
-    """Return the sole top-level CSV metadata file, or fail on ambiguity."""
     candidates = sorted(Path(root).glob("*.csv"))
     if not candidates:
         return None
@@ -38,95 +29,100 @@ def discover_metadata(root: str | Path) -> Path | None:
 
 
 def load_records(metadata_path: str | Path) -> list[dict]:
-    """Load protected metadata in memory without emitting identifiers."""
+    """Parse the official schema without exposing protected identifiers."""
     with Path(metadata_path).open(newline="", encoding="utf-8-sig") as handle:
         reader = csv.DictReader(handle)
-        if not reader.fieldnames:
-            raise ValueError("Metadata has no header")
-        image_col = _column(reader.fieldnames, IMAGE_COLUMNS)
-        patient_col = _column(reader.fieldnames, PATIENT_COLUMNS)
-        target_columns = {
-            target: _column(reader.fieldnames, (target, target.upper()))
-            for target in TARGETS
-            if any(name.casefold() == target for name in reader.fieldnames)
-        }
-        if "lvidd" not in target_columns:
-            raise ValueError("Primary target LVIDd is absent")
+        required = {OFFICIAL_IMAGE_COLUMN, OFFICIAL_PATIENT_COLUMN, *TARGETS}
+        if not reader.fieldnames or not required.issubset(reader.fieldnames):
+            raise ValueError("Official CheXchoNet metadata schema mismatch")
         records = []
         for row_number, row in enumerate(reader, start=2):
-            relative = str(row[image_col]).strip()
-            patient = str(row[patient_col]).strip()
-            parts = PurePosixPath(relative).parts
-            if not relative or PurePosixPath(relative).is_absolute() or ".." in parts:
-                raise ValueError(f"Unsafe image path at metadata row {row_number}")
+            relative = str(row[OFFICIAL_IMAGE_COLUMN]).strip()
+            patient = str(row[OFFICIAL_PATIENT_COLUMN]).strip()
+            path = PurePosixPath(relative)
+            if not relative or path.is_absolute() or ".." in path.parts or len(path.parts) != 1:
+                raise ValueError(f"Unsafe official image mapping at metadata row {row_number}")
             if not patient:
                 raise ValueError(f"Missing patient identifier at metadata row {row_number}")
             values = {}
-            for target, column in target_columns.items():
-                raw = str(row[column]).strip()
-                values[target] = float(raw) if raw else None
-                if values[target] is not None and not np.isfinite(values[target]):
-                    raise ValueError(f"Non-finite {target} at metadata row {row_number}")
+            for target in TARGETS:
+                raw = str(row[target]).strip()
+                try:
+                    values[target] = float(raw) if raw else None
+                except ValueError:
+                    values[target] = None
             records.append({"image_path": relative, "patient_id": patient, "targets": values})
     return records
 
 
+def lvidd_cohort_indices(records) -> list[int]:
+    return [i for i, row in enumerate(records)
+            if row["targets"].get("lvidd") is not None
+            and np.isfinite(row["targets"]["lvidd"])
+            and row["targets"]["lvidd"] > 0]
+
+
+def resolve_image(image_root: str | Path, record: Mapping) -> Path:
+    """Resolve the single official JPEG mapping; no fallback heuristics."""
+    return Path(image_root) / record["image_path"]
+
+
 @dataclass(frozen=True)
 class ReleaseAudit:
-    metadata_present: bool
-    image_root_present: bool
     metadata_rows: int
     image_files: int
     unique_patients: int
-    target_counts: Mapping[str, int]
+    finite_lvidd: int
+    nonfinite_lvidd: int
+    nonpositive_lvidd: int
+    eligible_lvidd: int
+    eligible_patients: int
     missing_images: int
     corrupt_images: int
 
     @property
-    def ready(self) -> bool:
-        return bool(self.metadata_present and self.image_root_present and self.metadata_rows
-                    and self.missing_images == 0 and self.corrupt_images == 0)
+    def ready(self):
+        return self.metadata_rows > 0 and self.metadata_rows == self.image_files and not self.missing_images and not self.corrupt_images
 
 
 def audit_release(root: str | Path, *, decode: bool = False) -> ReleaseAudit:
-    root = Path(root)
-    metadata = discover_metadata(root) if root.is_dir() else None
-    image_root = root / "images"
+    root = Path(root); metadata = discover_metadata(root)
     if metadata is None:
-        return ReleaseAudit(False, image_root.is_dir(), 0, 0, 0,
-                            {target: 0 for target in TARGETS}, 0, 0)
-    records = load_records(metadata)
+        return ReleaseAudit(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    records = load_records(metadata); image_root = root / "images"
     missing = corrupt = 0
     for record in records:
-        path = image_root / record["image_path"]
-        if not path.is_file():
-            missing += 1
+        path = resolve_image(image_root, record)
+        if not path.is_file(): missing += 1
         elif decode:
             try:
-                with Image.open(path) as image:
-                    image.verify()
-            except (OSError, ValueError):
-                corrupt += 1
-    image_files = sum(1 for path in image_root.rglob("*") if path.is_file()) if image_root.is_dir() else 0
-    return ReleaseAudit(True, image_root.is_dir(), len(records), image_files,
-                        len({record["patient_id"] for record in records}),
-                        {target: sum(record["targets"].get(target) is not None for record in records)
-                         for target in TARGETS}, missing, corrupt)
+                with Image.open(path) as image: image.load()
+            except (OSError, ValueError): corrupt += 1
+    values = np.asarray([r["targets"]["lvidd"] if r["targets"]["lvidd"] is not None else np.nan for r in records])
+    finite = np.isfinite(values); eligible = finite & (values > 0)
+    return ReleaseAudit(
+        len(records), sum(1 for p in image_root.iterdir() if p.is_file()),
+        len({r["patient_id"] for r in records}), int(finite.sum()), int((~finite).sum()),
+        int((finite & (values <= 0)).sum()), int(eligible.sum()),
+        len({records[i]["patient_id"] for i in np.flatnonzero(eligible)}), missing, corrupt,
+    )
 
 
 class CheXchoNetDataset(Dataset):
-    def __init__(self, records, image_root, indices, target="lvidd", transform=None):
-        self.records, self.image_root = records, Path(image_root)
-        self.indices, self.target, self.transform = list(indices), target.casefold(), transform
+    def __init__(self, records, image_root, indices, mean, std, transform=None, strong_transform=None):
+        self.records, self.image_root, self.indices = records, Path(image_root), list(indices)
+        self.mean, self.std = float(mean), float(std)
+        self.transform, self.strong_transform = transform, strong_transform
 
     def __len__(self): return len(self.indices)
 
+    def _decode(self, index):
+        with Image.open(resolve_image(self.image_root, self.records[index])) as source:
+            return source.convert("L").convert("RGB")
+
     def __getitem__(self, position):
-        index = self.indices[position]
-        record = self.records[index]
-        value = record["targets"].get(self.target)
-        if value is None:
-            raise ValueError("Selected record lacks requested target")
-        with Image.open(self.image_root / record["image_path"]) as source:
-            image = source.convert("RGB")
-        return (self.transform(image) if self.transform else image), float(value), index
+        index = self.indices[position]; image = self._decode(index)
+        if self.strong_transform is not None:
+            return self.transform(image.copy()), self.strong_transform(image.copy()), index
+        value = float(self.records[index]["targets"]["lvidd"])
+        return self.transform(image) if self.transform else image, torch.tensor((value-self.mean)/self.std,dtype=torch.float32), index

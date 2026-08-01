@@ -17,12 +17,12 @@ class FormalConfig:
     def metadata(self): return asdict(self)
 
 def require_validated_manifest(manifest):
-    if manifest.get("protocol_version") != "chexchonet-regression-v1":
-        raise RuntimeError("Validated chexchonet-regression-v1 manifest required")
+    if manifest.get("protocol_version") != "chexchonet-lvidd-benchmark-v1":
+        raise RuntimeError("Validated chexchonet-lvidd-benchmark-v1 manifest required")
     if not manifest.get("manifest_sha256"):
         raise RuntimeError("Manifest checksum required")
 
-def supervised_config(backbone): return FormalConfig("supervised_step_matched", backbone)
+def supervised_config(backbone): return FormalConfig("supervised_standard", backbone)
 def rapl_config(backbone): return FormalConfig("rapl", backbone)
 def hpl_config(backbone):
     value = FormalConfig("hpl", backbone).metadata(); value["official_hpl_upstream_commit"] = HPL_UPSTREAM_COMMIT
