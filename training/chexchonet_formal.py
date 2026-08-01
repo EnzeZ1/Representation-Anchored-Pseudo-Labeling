@@ -41,7 +41,9 @@ def load_data(args):
  mean,std=manifest['label_scaler']['mean'],manifest['label_scaler']['std'];root=args.data_root/'images'
  weak,strong,evaluation=build_weak_transform(),build_strong_transform(),build_evaluation_transform()
  datasets={'labeled':CheXchoNetDataset(records,root,manifest['indices']['labeled'],mean,std,weak),'unlabeled':CheXchoNetDataset(records,root,manifest['indices']['unlabeled'],mean,std,weak,strong),'validation':CheXchoNetDataset(records,root,manifest['indices']['validation'],mean,std,evaluation),'test':CheXchoNetDataset(records,root,manifest['indices']['test'],mean,std,evaluation)}
- loaders={k:loader(v,args.batch_size,args.seed,k,args.num_workers,k in ('labeled','unlabeled')) for k,v in datasets.items()}
+ # The 100%-supervised protocol intentionally has an empty unlabeled set.
+ # Sequential sampling is valid for that empty, unused dataset; RandomSampler is not.
+ loaders={k:loader(v,args.batch_size,args.seed,k,args.num_workers,k in ('labeled','unlabeled') and len(v)>0) for k,v in datasets.items()}
  return records,manifest,datasets,loaders,float(mean),float(std)
 def optimize(model,backbone,method,epochs):
  if backbone=='dinov2_vits14':
