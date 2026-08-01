@@ -18,6 +18,9 @@ env/
 # Data and pretrained weights
 data/
 datasets/
+**/chexchonet/**
+*chexchonet*manifest*.json
+*chexchonet*predictions*
 checkpoints/
 weights/
 pretrained/
