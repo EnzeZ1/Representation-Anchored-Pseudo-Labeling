@@ -1,0 +1,310 @@
+diff --git a/main.py b/main.py
+index 77a07f1..c130823 100644
+--- a/main.py
++++ b/main.py
+@@ -1,15 +1,17 @@
+ import torch
+ from itertools import product
+ 
+-from utils.args import proposed_parser
+-from tasks.ProposedTrainer import ProposedTrainer
++from utils.args import SimRegMatch_parser
++from tasks.SimRegMatchTrainer import SimRegMatchTrainer
+ 
+ def main():        
+-    parser = proposed_parser()
++    parser = SimRegMatch_parser()
+     args = parser.parse_args()
+     args.cuda = torch.device("cuda:0")
+     
+-    trainer = ProposedTrainer(args)
++    if args.benchmark_epochs is not None:
++        args.epochs = args.benchmark_epochs
++    trainer = SimRegMatchTrainer(args)
+     for epoch in range(1, args.epochs+1, 1):
+         trainer.train(epoch)
+         trainer.validation(epoch)
+diff --git a/models/resnet_proposed.py b/models/resnet_proposed.py
+index 10d78da..9342ed8 100644
+--- a/models/resnet_proposed.py
++++ b/models/resnet_proposed.py
+@@ -1,5 +1,7 @@
+ import math
+ import torch.nn as nn
++from torchvision.models import ResNet50_Weights
++from torch.hub import load_state_dict_from_url
+ 
+ 
+ def conv3x3(in_planes, out_planes, stride=1):
+@@ -128,5 +130,12 @@ class ResNet(nn.Module):
+         return x, encoding
+ 
+ 
+-def resnet50(dropout):
+-    return ResNet(Bottleneck, [3, 4, 6, 3], dropout)
++def resnet50(dropout, pretrained=False):
++    model = ResNet(Bottleneck, [3, 4, 6, 3], dropout)
++    if pretrained:
++        state = load_state_dict_from_url(ResNet50_Weights.IMAGENET1K_V1.url, progress=True)
++        state = {key: value for key, value in state.items() if not key.startswith('fc.')}
++        incompatible = model.load_state_dict(state, strict=False)
++        assert set(incompatible.missing_keys) == {'linear.weight', 'linear.bias'}
++        assert not incompatible.unexpected_keys
++    return model
+diff --git a/tasks/SimRegMatchTrainer.py b/tasks/SimRegMatchTrainer.py
+index b0fe727..4dde1e8 100644
+--- a/tasks/SimRegMatchTrainer.py
++++ b/tasks/SimRegMatchTrainer.py
+@@ -1,4 +1,4 @@
+-import os, warnings, random, gc
++import os, warnings, random, gc, time
+ warnings.filterwarnings('ignore')
+ import numpy as np
+ import pandas as pd
+@@ -18,25 +18,54 @@ from models.resnet_proposed import resnet50
+ 
+ from utils.saver import Saver
+ from utils.tqdm_config import get_tqdm_config
++from torch.utils.data import DataLoader
++from baselines.utkface_data import BenchmarkContext, DictDataset
++from baselines.benchmark_io import checkpoint_size, write_history, write_json, write_npz
++from data_processing.utkface_protocol import dataloader_generator, seed_dataloader_worker, loader_metadata, runtime_metadata
+ 
+ 
+ class SimRegMatchTrainer(object):
+     def __init__(self, args):
+         self.args = args
+         
+-        self.saver = Saver(self.args)
+-        self.saver.save_experiment_config(self.args)
+-        self.experiment_dir = self.saver.experiment_dir
++        self.benchmark = bool(self.args.benchmark_manifest)
++        if self.benchmark:
++            self.experiment_dir = self.args.benchmark_output_dir
++            os.makedirs(self.experiment_dir, exist_ok=True)
++            self.context = BenchmarkContext(os.environ['UTKFACE_BENCHMARK_ROOT'], self.args.data_dir, self.args.benchmark_manifest)
++            self.y_mean, self.y_std = self.context.mean, self.context.std
++        else:
++            self.saver = Saver(self.args)
++            self.saver.save_experiment_config(self.args)
++            self.experiment_dir = self.saver.experiment_dir
+         print(self.experiment_dir)
+         
+         self.result_dir = os.path.join(self.experiment_dir, 'csv')
+         os.makedirs(self.result_dir, exist_ok=True)
+         
+         self.writer = SummaryWriter(self.experiment_dir)
+-        self.labeled_loader, self.unlabeled_loader, self.valid_loader, self.test_loader = \
+-            make_semi_loader(self.args, num_workers=0)
++        if self.benchmark:
++            def loader(dataset, role, shuffle, drop_last):
++                return DataLoader(dataset, batch_size=self.args.batch_size, shuffle=shuffle,
++                                  num_workers=self.args.num_workers, drop_last=drop_last,
++                                  worker_init_fn=seed_dataloader_worker,
++                                  generator=dataloader_generator(self.args.seed, role), pin_memory=True)
++            self.labeled_loader = loader(DictDataset(self.context, 'labeled'), 'labeled', True, True)
++            self.unlabeled_loader = loader(DictDataset(self.context, 'unlabeled', 'weak_strong'), 'unlabeled', True, True)
++            self.valid_loader = loader(DictDataset(self.context, 'validation', 'evaluation'), 'validation', False, False)
++            self.test_loader = loader(DictDataset(self.context, 'test', 'evaluation'), 'test', False, False)
++            self.benchmark_loaders = {
++                role: loader_metadata(seed=self.args.seed, role=role, num_workers=self.args.num_workers,
++                                      batch_size=self.args.batch_size, shuffle=shuffle, drop_last=drop_last,
++                                      sampler='RandomSampler' if shuffle else 'SequentialSampler', pin_memory=True)
++                for role, shuffle, drop_last in (
++                    ('labeled', True, True), ('unlabeled', True, True),
++                    ('validation', False, False), ('test', False, False))
++            }
++        else:
++            self.labeled_loader, self.unlabeled_loader, self.valid_loader, self.test_loader = make_semi_loader(self.args, num_workers=0)
+         
+-        self.model = resnet50(dropout=self.args.dropout).to(self.args.cuda)
++        self.model = resnet50(dropout=self.args.dropout, pretrained=self.benchmark).to(self.args.cuda)
+         
+         if self.args.optimizer.lower() == 'adam':
+             self.optimizer = torch.optim.Adam(self.model.parameters(),
+@@ -57,6 +86,9 @@ class SimRegMatchTrainer(object):
+         self.args.best_valid_loss = np.inf
+         self.args.best_valid_epoch = 0
+         self.cnt_train, self.cnt_valid = 0, 0
++        self.history = []
++        self.started = time.time()
++        if self.args.cuda.type == 'cuda': torch.cuda.reset_peak_memory_stats(self.args.cuda)
+ 
+     def train(self, epoch):
+         self.model.train()
+@@ -70,6 +102,7 @@ class SimRegMatchTrainer(object):
+                 # Load data
+                 inputs_l = samples_labeled['input'].to(self.args.cuda)
+                 labels_l = samples_labeled['label'].to(self.args.cuda)
++                if self.benchmark: labels_l = (labels_l - self.y_mean) / self.y_std
+ 
+                 try:
+                     samples_unlabeled = next(iter_unlabeled)
+@@ -168,9 +201,11 @@ class SimRegMatchTrainer(object):
+         total_steps = len(self.valid_loader.dataset) // self.args.batch_size + 1
+         with tqdm(**get_tqdm_config(total=total_steps,
+                                     leave=True, color='blue')) as pbar:
+-            for idx, samples in enumerate(self.valid_loader):
++            with torch.no_grad():
++              for idx, samples in enumerate(self.valid_loader):
+                 inputs_l = samples['input'].to(self.args.cuda)
+-                labels_l = samples['label'].to(self.args.cuda)
++                labels_raw = samples['label'].to(self.args.cuda)
++                labels_l = (labels_raw - self.y_mean) / self.y_std if self.benchmark else labels_raw
+                 
+                 preds, _ = self.model(inputs_l)
+                 loss = self.criterion(preds, labels_l)
+@@ -178,12 +213,12 @@ class SimRegMatchTrainer(object):
+                 losses_t += loss.item()
+                 
+                 if idx == 0:
+-                    labels_total = labels_l.detach().cpu()
+-                    preds_total = preds.detach().cpu()
++                    labels_total = labels_raw.detach().cpu()
++                    preds_total = (preds.detach().cpu() * self.y_std + self.y_mean) if self.benchmark else preds.detach().cpu()
+                 else:
+-                    labels_total = torch.cat((labels_total, labels_l.detach().cpu()), dim=0)
++                    labels_total = torch.cat((labels_total, labels_raw.detach().cpu()), dim=0)
+                     preds_total = torch.cat((preds_total,
+-                                             preds.detach().cpu()), dim=0)
++                                             (preds.detach().cpu() * self.y_std + self.y_mean) if self.benchmark else preds.detach().cpu()), dim=0)
+ 
+                 r2, mae, rmse = self.regression_metrics(labels_total, preds_total)
+                 self.writer.add_scalars(
+@@ -204,8 +239,13 @@ class SimRegMatchTrainer(object):
+             pbar.set_description(desc)
+ 
+             losses_t /= (idx+1)
+-            if self.args.best_valid_loss > losses_t:
+-                self.args.best_valid_loss = losses_t
++            self.history.append({'epoch': epoch, 'training_loss': '', 'validation_loss': losses_t,
++                                 'validation_mae': mae, 'validation_r2': r2,
++                                 'learning_rate': self.optimizer.param_groups[0]['lr'],
++                                 'best_so_far': int(mae < self.args.best_valid_loss),
++                                 'elapsed_seconds': time.time() - self.started})
++            if self.args.best_valid_loss > mae:
++                self.args.best_valid_loss = mae
+                 self.args.best_valid_epoch = epoch
+                 
+                 self.args.valid_r2 = str(r2)
+@@ -219,14 +259,24 @@ class SimRegMatchTrainer(object):
+                 df.columns = ['Real', 'Pred']
+                 
+                 df.to_csv(os.path.join(self.result_dir, f'valid_{str(epoch)}.csv'), index=False)
+-                torch.save(self.model.state_dict(),
+-                    os.path.join(self.experiment_dir, 'best_model.pth'))
++                if self.benchmark:
++                    torch.save({'model': self.model.state_dict(), 'epoch': epoch,
++                                'validation_mae_years': mae, 'mean': self.y_mean, 'std': self.y_std,
++                                'optimizer': self.optimizer.state_dict(), 'config': vars(self.args),
++                                'loader_metadata': self.benchmark_loaders},
++                               os.path.join(self.experiment_dir, 'best.pt'))
++                else:
++                    torch.save(self.model.state_dict(), os.path.join(self.experiment_dir, 'best_model.pth'))
+                 
+-                self.saver.save_experiment_config(self.args)
++                if not self.benchmark: self.saver.save_experiment_config(self.args)
+ 
+     def inference(self, epoch):
+-        weight = torch.load(os.path.join(os.path.join(self.experiment_dir, 'best_model.pth')), map_location=self.args.cuda)
+-        self.model.load_state_dict(weight)
++        checkpoint_path = os.path.join(self.experiment_dir, 'best.pt' if self.benchmark else 'best_model.pth')
++        weight = torch.load(checkpoint_path, map_location=self.args.cuda, weights_only=False)
++        self.model.load_state_dict(weight['model'] if self.benchmark else weight)
++        if self.benchmark:
++            assert weight['epoch'] == self.args.best_valid_epoch
++            assert weight['validation_mae_years'] == self.args.best_valid_loss
+         
+         self.model.eval()
+         losses_t = 0.0
+@@ -234,9 +284,11 @@ class SimRegMatchTrainer(object):
+         total_steps = len(self.test_loader.dataset) // self.args.batch_size +1
+         with tqdm(**get_tqdm_config(total=total_steps,
+                                     leave=True, color='red')) as pbar:
+-            for idx, samples in enumerate(self.test_loader):
++            with torch.no_grad():
++              for idx, samples in enumerate(self.test_loader):
+                 inputs_l = samples['input'].to(self.args.cuda)
+-                labels_l = samples['label'].to(self.args.cuda)
++                labels_raw = samples['label'].to(self.args.cuda)
++                labels_l = (labels_raw - self.y_mean) / self.y_std if self.benchmark else labels_raw
+                 
+                 preds, _ = self.model(inputs_l)
+                 loss = self.criterion(preds, labels_l)
+@@ -244,12 +296,12 @@ class SimRegMatchTrainer(object):
+                 losses_t += loss.item()
+                 
+                 if idx == 0:
+-                    labels_total = labels_l.detach().cpu()
+-                    preds_total = preds.detach().cpu()
++                    labels_total = labels_raw.detach().cpu()
++                    preds_total = (preds.detach().cpu() * self.y_std + self.y_mean) if self.benchmark else preds.detach().cpu()
+                 else:
+-                    labels_total = torch.cat((labels_total, labels_l.detach().cpu()), dim=0)
++                    labels_total = torch.cat((labels_total, labels_raw.detach().cpu()), dim=0)
+                     preds_total = torch.cat((preds_total,
+-                                             preds.detach().cpu()), dim=0)
++                                             (preds.detach().cpu() * self.y_std + self.y_mean) if self.benchmark else preds.detach().cpu()), dim=0)
+ 
+                 r2, mae, rmse = self.regression_metrics(labels_total, preds_total)
+                 desc = "%-7s(%5d/%5d) Loss: %.4f| R^2: %.4f| MAE: %.4f| RMSE: %.4f "%("Test", idx, total_steps, losses_t/(idx+1), r2, mae, rmse)
+@@ -276,7 +328,33 @@ class SimRegMatchTrainer(object):
+             
+             df.to_csv(os.path.join(self.result_dir, f'test_{str(epoch)}.csv'), index=False)
+             
+-            self.saver.save_experiment_config(self.args)
++            if self.benchmark:
++                indices = np.asarray(self.context.indices('test'), dtype=np.int64)
++                write_npz(os.path.join(self.experiment_dir, 'test_predictions.npz'), cohort_indices=indices,
++                          relative_paths=np.asarray([self.context.record(i)['path'] for i in indices]),
++                          predictions_years=preds_total[:, 0], targets_years=labels_total[:, 0])
++                write_npz(os.path.join(self.experiment_dir, 'analysis_snapshot.npz'),
++                          cohort_indices=np.asarray([], dtype=np.int64), note=np.asarray(['post-hoc diagnostics deferred']))
++                write_history(os.path.join(self.experiment_dir, 'history.csv'), self.history)
++                write_json(os.path.join(self.experiment_dir, 'config.json'), vars(self.args))
++                write_json(os.path.join(self.experiment_dir, 'metrics.json'), {'best_epoch': self.args.best_valid_epoch,
++                           'validation_mae': self.args.best_valid_loss, 'test_mae': mae, 'test_r2': r2})
++                write_json(os.path.join(self.experiment_dir, 'metadata.json'), {
++                    'method': 'SimRegMatch official algorithm with entry-point and ImageNet-weight compatibility patch under the shared UTKFace protocol.',
++                    'status': 'complete', 'cohort_sha256': self.context.cohort['cohort_sha256'],
++                    'manifest_path': str(self.context.manifest_path), 'checkpoint_reloaded': True,
++                    'test_evaluations': 1, 'test_used_for_selection': False,
++                    'best_epoch': self.args.best_valid_epoch, 'validation_mae': self.args.best_valid_loss,
++                    'checkpoint_size_bytes': checkpoint_size(checkpoint_path), 'runtime': runtime_metadata(),
++                    'wall_clock_seconds': time.time() - self.started,
++                    'peak_allocated_cuda_bytes': torch.cuda.max_memory_allocated(self.args.cuda),
++                    'peak_reserved_cuda_bytes': torch.cuda.max_memory_reserved(self.args.cuda),
++                    'model': 'ImageNet-pretrained official ResNet-50 with compatible torchvision backbone weights',
++                    'native_views': 'weak+strong', 'loaders': self.benchmark_loaders,
++                    **self.context.protocol_metadata(),
++                })
++            else:
++                self.saver.save_experiment_config(self.args)
+ 
+     @staticmethod
+     def regression_metrics(reals, preds):
+diff --git a/utils/args.py b/utils/args.py
+index 4e9662d..e4f0323 100644
+--- a/utils/args.py
++++ b/utils/args.py
+@@ -35,8 +35,12 @@ def SimRegMatch_parser():
+     parser.add_argument('--weight-decay', type=float, default=1e-4, help='optimizer weight decay')
+     parser.add_argument('--epochs', type=int, default=100, help='number of epochs to train')
+     parser.add_argument('--batch_size', type=int, default=16, help='batch size')
++    parser.add_argument('--num_workers', type=int, default=4)
+     
+     # seed
+-    parser.add_argument('--seed', default=0)
++    parser.add_argument('--seed', type=int, default=0)
++    parser.add_argument('--benchmark_manifest', type=str, default=None)
++    parser.add_argument('--benchmark_output_dir', type=str, default=None)
++    parser.add_argument('--benchmark_epochs', type=int, default=None)
+     
+     return parser
+diff --git a/models/__init__.py b/models/__init__.py
+new file mode 100644
+index 0000000..e0b0757
+--- /dev/null
++++ b/models/__init__.py
+@@ -0,0 +1 @@
++"""Official SimRegMatch model package."""

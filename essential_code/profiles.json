@@ -1,0 +1,2994 @@
+{
+  "gpu04_core": {
+    "host": "gpu04",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "",
+    "notes": "Current shared training/model/data utilities. Formal historical variants are retained separately; this tree is not asserted to reproduce all campaigns.",
+    "files": {
+      "LICENSE": {
+        "stored_path": "shared/LICENSE",
+        "sha256": "43d9ff6c4f2769cec90cada2cf8ca8a27ec20408bbc9b2949a12a6ddd12784ce",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/LICENSE"
+      },
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "shared/baselines/utkface_data.py",
+        "sha256": "7ec76277c14fdcbd7598c01d0c2b1385645361f9451eca838885f7f88276b948",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "shared/data_processing/imdb_wiki_protocol.py",
+        "sha256": "6095a7f0b232096e664ded30ad9201213a3a35573974b38c7e8498e8460f093b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/koniq10k.py": {
+        "stored_path": "shared/data_processing/koniq10k.py",
+        "sha256": "37c8aa04c79f7bceb9a7bdd5ac940ff7e84152de8c1225ec74bec5c431015e1d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/koniq10k.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "shared/data_processing/stsb.py",
+        "sha256": "5e2369ab65f2a41d1e867a0039f2a4127071c6b69cbab5fddc10b4e8966665c5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/stsb.py"
+      },
+      "data_processing/stsb_ssl.py": {
+        "stored_path": "shared/data_processing/stsb_ssl.py",
+        "sha256": "083e80bb0c12ac7a9ecd862d0da55ec42dac3c1c5951b0264e73b2f8c475809b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/stsb_ssl.py"
+      },
+      "data_processing/text_augmentation.py": {
+        "stored_path": "shared/data_processing/text_augmentation.py",
+        "sha256": "df1709b54f63566a52252d6a25412a5c394cce1ce357c38a94885f01d4bf5ae1",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/text_augmentation.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "shared/data_processing/utkface_protocol.py",
+        "sha256": "4d63010d86352262f7e5a86091de9a7f874ca73e7144c6179a833c634b95ea90",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "shared/models/dinov2_backbone.py",
+        "sha256": "40d416364665fb898fbeea62d5d111fc67d867345f24a8401af8f278cb8cc557",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/dinov3_convnext_backbone.py"
+      },
+      "models/hpl_uncertainty.py": {
+        "stored_path": "shared/models/hpl_uncertainty.py",
+        "sha256": "c8fe33bd83f271ea46e62d831df506a2db010e3da95ef8e533a0324ffe6c48b0",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/hpl_uncertainty.py"
+      },
+      "models/roberta_backbone.py": {
+        "stored_path": "shared/models/roberta_backbone.py",
+        "sha256": "1997b58e1d14887e8f91a5fbfb0616452dd3e33028f3a7aabcc14d1c8a1947d5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/roberta_backbone.py"
+      },
+      "models/rsna_dinov2_backbone.py": {
+        "stored_path": "shared/models/rsna_dinov2_backbone.py",
+        "sha256": "d8eb0019b47dabb71095443d36a6c0550d9cef7770562a2f6219b0e3f6633dc1",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/rsna_dinov2_backbone.py"
+      },
+      "models/stsb_bilstm.py": {
+        "stored_path": "shared/models/stsb_bilstm.py",
+        "sha256": "f18fe6825a088ccadeb3c8f04ac40ba61447fd6123ba50a658a990d0fcc2da4a",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/stsb_bilstm.py"
+      },
+      "preprocess_imdb_wiki.py": {
+        "stored_path": "shared/preprocess_imdb_wiki.py",
+        "sha256": "9b33848a52723c2b236e6acc938a91cb8a38b7525067f568fe9a72330416b900",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/preprocess_imdb_wiki.py"
+      },
+      "requirements.txt": {
+        "stored_path": "shared/requirements.txt",
+        "sha256": "8c143a79fa8dc3d7a8e78c723e98873fd5e13a67e10ffda6388ba5c13aff336a",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/requirements.txt"
+      },
+      "scripts/run_canonical_uniform_frequency.py": {
+        "stored_path": "shared/scripts/run_canonical_uniform_frequency.py",
+        "sha256": "ca2e7f4251df79f430faa2aca6a5dcf14fd8cd4b0fab753fa992ffe45c45105d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/scripts/run_canonical_uniform_frequency.py"
+      },
+      "scripts/run_chexchonet_lvidd_temporal_ensembling_8gpu.py": {
+        "stored_path": "shared/scripts/run_chexchonet_lvidd_temporal_ensembling_8gpu.py",
+        "sha256": "9a8b13cea5cb53818ef4f82f660d4d85afa85756bb482f2db6caa71cc40cfbea",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/scripts/run_chexchonet_lvidd_temporal_ensembling_8gpu.py"
+      },
+      "scripts/run_imdb_wiki_temporal_ensembling_8gpu.py": {
+        "stored_path": "shared/scripts/run_imdb_wiki_temporal_ensembling_8gpu.py",
+        "sha256": "7ec03865b6a29de0d88ae5b402f29242102524b359ff5e414ba853d527f98aa0",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/scripts/run_imdb_wiki_temporal_ensembling_8gpu.py"
+      },
+      "scripts/run_rsna_bone_age_temporal_ensembling_8gpu.py": {
+        "stored_path": "shared/scripts/run_rsna_bone_age_temporal_ensembling_8gpu.py",
+        "sha256": "f388b3efada7d8f0f270934c1c9414c1a6ca8b8a3e49c97c0f4ed2b5dd428ab5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/scripts/run_rsna_bone_age_temporal_ensembling_8gpu.py"
+      },
+      "scripts/run_supervised_mass_matched.py": {
+        "stored_path": "shared/scripts/run_supervised_mass_matched.py",
+        "sha256": "0b8ee38eb48af87c4e90754e27fca8ae502465a04807ed33057094b7858e8416",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/scripts/run_supervised_mass_matched.py"
+      },
+      "scripts/run_supervised_spacing_decoupling.py": {
+        "stored_path": "shared/scripts/run_supervised_spacing_decoupling.py",
+        "sha256": "3b06282a918fa3445fd48590fcc2d58a39817dc557a12903d9ecb9661e1eb39f",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/scripts/run_supervised_spacing_decoupling.py"
+      },
+      "scripts/run_supervised_spacing_front_even_back.py": {
+        "stored_path": "shared/scripts/run_supervised_spacing_front_even_back.py",
+        "sha256": "f1bb596e1c97bb2990ec434b2ddeb11de1a8756366ef7b7ee4d63e6eeed726d2",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/scripts/run_supervised_spacing_front_even_back.py"
+      },
+      "scripts/run_utkface_temporal_ensembling_8gpu.py": {
+        "stored_path": "shared/scripts/run_utkface_temporal_ensembling_8gpu.py",
+        "sha256": "fe0a1d79f96427c0234204812fe4f9efa5f9d795be8aadc79e1a69c691293464",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/scripts/run_utkface_temporal_ensembling_8gpu.py"
+      },
+      "train.py": {
+        "stored_path": "shared/train.py",
+        "sha256": "5fdca72d3daad32c9ee4a3b9d261358073509c8fc90b36b6bc4811dd07f3e4fd",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/train.py"
+      },
+      "training/__init__.py": {
+        "stored_path": "shared/training/__init__.py",
+        "sha256": "7dd798807ab00349f9e5d27d9f11f0336afcc2d2ad95993b73aac5b3edc9a983",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/__init__.py"
+      },
+      "training/canonical_uniform_frequency.py": {
+        "stored_path": "shared/training/canonical_uniform_frequency.py",
+        "sha256": "8f92fa3be63c4de27b8b50fdf7112f228273f0c23ab178a7d031e167d1d31be7",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/canonical_uniform_frequency.py"
+      },
+      "training/chexchonet_common.py": {
+        "stored_path": "shared/training/chexchonet_common.py",
+        "sha256": "d5c5e9ff96dee2a7370315d14393679a7b44f5283f1e05379c45018d1de9dd00",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/chexchonet_common.py"
+      },
+      "training/chexchonet_formal.py": {
+        "stored_path": "shared/training/chexchonet_formal.py",
+        "sha256": "e1d11eeee1babadfbc9a403ce56f45f4e57289e39b3f11dd306ad20bc3cf43e5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/chexchonet_formal.py"
+      },
+      "training/chexchonet_hpl_corrected.py": {
+        "stored_path": "shared/training/chexchonet_hpl_corrected.py",
+        "sha256": "6ce273151e059aa872940e574b5c0a34774c869522a76e4b8d5827298396d6d3",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/chexchonet_hpl_corrected.py"
+      },
+      "training/koniq10k_benchmark.py": {
+        "stored_path": "shared/training/koniq10k_benchmark.py",
+        "sha256": "e52c514e65408271067e44a8d9e61b6609a073992e4aa66fb434d8165291ff7d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/koniq10k_benchmark.py"
+      },
+      "training/mean_teacher_regression.py": {
+        "stored_path": "shared/training/mean_teacher_regression.py",
+        "sha256": "a074d0fded06dd2739f6c8d2400c578edd1166e65a3adcfc809e4e116f52943a",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/mean_teacher_regression.py"
+      },
+      "training/mean_teacher_utkface.py": {
+        "stored_path": "shared/training/mean_teacher_utkface.py",
+        "sha256": "53c54c0f1cd335c957b5e512d485f47e8744b72d2b7e910f34fde803c5b41d7d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/mean_teacher_utkface.py"
+      },
+      "training/probe_filter.py": {
+        "stored_path": "shared/training/probe_filter.py",
+        "sha256": "655e58364798df2855fa57f664e237aadcae8b7d9d531355d0c01bc3a9a529f4",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/probe_filter.py"
+      },
+      "training/rsna_bone_age_benchmark.py": {
+        "stored_path": "shared/training/rsna_bone_age_benchmark.py",
+        "sha256": "e87b79b3c8fc8a78f2b2ef0109940a287b6754594fc346fd5a5c364d7d39efdc",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/rsna_bone_age_benchmark.py"
+      },
+      "training/rsna_bone_age_hpl_corrected.py": {
+        "stored_path": "shared/training/rsna_bone_age_hpl_corrected.py",
+        "sha256": "e61407ed2f9deb12a64870d98982a9c795b6b9c442d48db7cf4f70da467a26e4",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/rsna_bone_age_hpl_corrected.py"
+      },
+      "training/rsna_bone_age_uniform_formal.py": {
+        "stored_path": "shared/training/rsna_bone_age_uniform_formal.py",
+        "sha256": "651ae0e66d8a5f9b8bfbd46afc0994f229b21b490cb0ea0512907a4125a6d404",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/rsna_bone_age_uniform_formal.py"
+      },
+      "training/stsb_ssl.py": {
+        "stored_path": "shared/training/stsb_ssl.py",
+        "sha256": "9c96ae9535caef4363ce5df7fad61f8b6d870ed9c01d2c8b8a871dbf176f1f86",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/stsb_ssl.py"
+      },
+      "training/supervised_benchmark.py": {
+        "stored_path": "shared/training/supervised_benchmark.py",
+        "sha256": "e0fd1878b8f3b6d6728d3604c5a49d0d6568e89289d7c0a7c44645b52bd2ccbf",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/supervised_benchmark.py"
+      },
+      "training/supervised_mass_matched.py": {
+        "stored_path": "shared/training/supervised_mass_matched.py",
+        "sha256": "e2eeaac14b46ae2b78d0881b751a7198b01988300644a839845c5245f03e253b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/supervised_mass_matched.py"
+      },
+      "training/supervised_spacing_decoupling.py": {
+        "stored_path": "shared/training/supervised_spacing_decoupling.py",
+        "sha256": "f310f14b6223ac1ef3d53a5b51eb8001f38d4a9322be80bead077cbfc0ac5595",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/supervised_spacing_decoupling.py"
+      },
+      "training/supervised_stsb.py": {
+        "stored_path": "shared/training/supervised_stsb.py",
+        "sha256": "97a5a1cae3950c88c10bf38ad9cc4f851ed82665129650748fe7fa333ae0bfe7",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/supervised_stsb.py"
+      },
+      "training/temporal_ensembling_benchmark.py": {
+        "stored_path": "shared/training/temporal_ensembling_benchmark.py",
+        "sha256": "357ef3537c869b3ef91579cde84d616606ef5b45e7d8bf362c3486160c5d3b22",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/temporal_ensembling_benchmark.py"
+      },
+      "training/train.py": {
+        "stored_path": "shared/training/train.py",
+        "sha256": "8602d5fa355cf8c14155f9b5072f5c2a18c3c54f42c43a2f8f4814f931c1ece1",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/train.py"
+      },
+      "training/uniform.py": {
+        "stored_path": "shared/training/uniform.py",
+        "sha256": "9daeabade9debb9f6a5545474d7173f10597afe05ac625335db26e77a0fd6529",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/uniform.py"
+      },
+      "uniform.py": {
+        "stored_path": "shared/uniform.py",
+        "sha256": "8e98c800bcc6ea8629329f1da4d17254dfe5640c8f4ee24a34b09ad866b75163",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/uniform.py"
+      }
+    }
+  },
+  "plain_original_formal": {
+    "host": "gpu04",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "artifacts/plain_original_5pct_formal_20260920/source/",
+    "notes": "",
+    "files": {
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "variants/plain_original_formal/baselines/utkface_data.py",
+        "sha256": "a2fe81612932517c8be29cc23755735b09b2de65707e43f445e531a90cc3943e",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/imdb_wiki_protocol.py",
+        "sha256": "2e801ec08a24ac082dfdbf879ee1035ca7d9b7b83733f3db8a4b71b0cab799fd",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/stsb.py",
+        "sha256": "aa5d8ee4a8ba90cedeeebf85dde57229565506bef62f52d8fc3f086eeca0c2a8",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/data_processing/stsb.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/utkface_protocol.py",
+        "sha256": "7aaffabb7faaebc9065378ec8a99be16fd4a4f4b5d704dc904b9ed98ef364d3a",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/dinov2_backbone.py",
+        "sha256": "eabab62e2e1c33b40bf93433de247dfe48141a25688ec901cca264c6d0a445df",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/models/dinov3_convnext_backbone.py"
+      },
+      "models/hpl_uncertainty.py": {
+        "stored_path": "variants/plain_original_formal/models/hpl_uncertainty.py",
+        "sha256": "6f460d40cfcbf217cdd2f24037bcbe98be81457ec1cd2f0bf87a918cc4fb5bee",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/models/hpl_uncertainty.py"
+      },
+      "models/rsna_dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/rsna_dinov2_backbone.py",
+        "sha256": "40d416364665fb898fbeea62d5d111fc67d867345f24a8401af8f278cb8cc557",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/models/rsna_dinov2_backbone.py"
+      },
+      "train.py": {
+        "stored_path": "shared/train.py",
+        "sha256": "5fdca72d3daad32c9ee4a3b9d261358073509c8fc90b36b6bc4811dd07f3e4fd",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/train.py"
+      },
+      "training/__init__.py": {
+        "stored_path": "shared/training/__init__.py",
+        "sha256": "7dd798807ab00349f9e5d27d9f11f0336afcc2d2ad95993b73aac5b3edc9a983",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/training/__init__.py"
+      },
+      "training/chexchonet_formal.py": {
+        "stored_path": "variants/plain_original_formal/training/chexchonet_formal.py",
+        "sha256": "0ffaf786e066efc79bf8752a0b038610c651f5cfff61149dd41aea5004897197",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/training/chexchonet_formal.py"
+      },
+      "training/chexchonet_plain_original.py": {
+        "stored_path": "shared/training/chexchonet_plain_original.py",
+        "sha256": "2a2afc7b57e2d33bfad2a48dcaece1781af4b674e1ced151f62e6064f58f86d2",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/training/chexchonet_plain_original.py"
+      },
+      "training/chexchonet_uniform_formal.py": {
+        "stored_path": "shared/training/chexchonet_uniform_formal.py",
+        "sha256": "98f1702785e81acb5b86e8ea4f6046ca97ce7d1d4e229ffaaa722c2ccbe0cc78",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/training/chexchonet_uniform_formal.py"
+      },
+      "training/probe_filter.py": {
+        "stored_path": "variants/plain_original_formal/training/probe_filter.py",
+        "sha256": "323f49fda5d0bfb3809f69b352696d8d7ebc246a2fec68d6a47bf500a7c8ac4f",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/training/probe_filter.py"
+      },
+      "training/rsna_bone_age_plain_original.py": {
+        "stored_path": "shared/training/rsna_bone_age_plain_original.py",
+        "sha256": "bdb1e619a5417c2393cffdfb60cf7f68d14b1197903ed62872effc02f4802e69",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/training/rsna_bone_age_plain_original.py"
+      },
+      "training/rsna_bone_age_uniform_formal.py": {
+        "stored_path": "variants/plain_original_formal/training/rsna_bone_age_uniform_formal.py",
+        "sha256": "3f4945064167396d5a1e7f274c1ddc1eaf09a637fb202df9a3df4949caf8a18b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/training/rsna_bone_age_uniform_formal.py"
+      },
+      "training/train.py": {
+        "stored_path": "variants/plain_original_formal/training/train.py",
+        "sha256": "15d08e954574a7e015084d94cca20e2cfe68bb60a8d73c4248e20eeb45eaed97",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/training/train.py"
+      },
+      "training/uniform.py": {
+        "stored_path": "shared/training/uniform.py",
+        "sha256": "9daeabade9debb9f6a5545474d7173f10597afe05ac625335db26e77a0fd6529",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source/training/uniform.py"
+      }
+    }
+  },
+  "plain_reorient_reference": {
+    "host": "gpu04",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "artifacts/plain_original_5pct_formal_20260920/source_reference/",
+    "notes": "",
+    "files": {
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "variants/plain_original_formal/baselines/utkface_data.py",
+        "sha256": "a2fe81612932517c8be29cc23755735b09b2de65707e43f445e531a90cc3943e",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/imdb_wiki_protocol.py",
+        "sha256": "2e801ec08a24ac082dfdbf879ee1035ca7d9b7b83733f3db8a4b71b0cab799fd",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/stsb.py",
+        "sha256": "aa5d8ee4a8ba90cedeeebf85dde57229565506bef62f52d8fc3f086eeca0c2a8",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/data_processing/stsb.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/utkface_protocol.py",
+        "sha256": "7aaffabb7faaebc9065378ec8a99be16fd4a4f4b5d704dc904b9ed98ef364d3a",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/dinov2_backbone.py",
+        "sha256": "eabab62e2e1c33b40bf93433de247dfe48141a25688ec901cca264c6d0a445df",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/models/dinov3_convnext_backbone.py"
+      },
+      "models/hpl_uncertainty.py": {
+        "stored_path": "variants/plain_original_formal/models/hpl_uncertainty.py",
+        "sha256": "6f460d40cfcbf217cdd2f24037bcbe98be81457ec1cd2f0bf87a918cc4fb5bee",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/models/hpl_uncertainty.py"
+      },
+      "models/rsna_dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/rsna_dinov2_backbone.py",
+        "sha256": "40d416364665fb898fbeea62d5d111fc67d867345f24a8401af8f278cb8cc557",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/models/rsna_dinov2_backbone.py"
+      },
+      "train.py": {
+        "stored_path": "shared/train.py",
+        "sha256": "5fdca72d3daad32c9ee4a3b9d261358073509c8fc90b36b6bc4811dd07f3e4fd",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/train.py"
+      },
+      "training/__init__.py": {
+        "stored_path": "shared/training/__init__.py",
+        "sha256": "7dd798807ab00349f9e5d27d9f11f0336afcc2d2ad95993b73aac5b3edc9a983",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/training/__init__.py"
+      },
+      "training/chexchonet_formal.py": {
+        "stored_path": "variants/plain_original_formal/training/chexchonet_formal.py",
+        "sha256": "0ffaf786e066efc79bf8752a0b038610c651f5cfff61149dd41aea5004897197",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/training/chexchonet_formal.py"
+      },
+      "training/chexchonet_uniform_formal.py": {
+        "stored_path": "shared/training/chexchonet_uniform_formal.py",
+        "sha256": "98f1702785e81acb5b86e8ea4f6046ca97ce7d1d4e229ffaaa722c2ccbe0cc78",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/training/chexchonet_uniform_formal.py"
+      },
+      "training/probe_filter.py": {
+        "stored_path": "variants/plain_reorient_reference/training/probe_filter.py",
+        "sha256": "0193b88f777d1d371f75b5a847e1892ca8a05f311afc2659ad6bdcc495844519",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/training/probe_filter.py"
+      },
+      "training/rsna_bone_age_uniform_formal.py": {
+        "stored_path": "variants/plain_original_formal/training/rsna_bone_age_uniform_formal.py",
+        "sha256": "3f4945064167396d5a1e7f274c1ddc1eaf09a637fb202df9a3df4949caf8a18b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/training/rsna_bone_age_uniform_formal.py"
+      },
+      "training/train.py": {
+        "stored_path": "variants/plain_reorient_reference/training/train.py",
+        "sha256": "70a2359e728286f9600eeee7af258c0879ad0d2cb32af3d61cba54ed4dbe6db5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/training/train.py"
+      },
+      "training/uniform.py": {
+        "stored_path": "shared/training/uniform.py",
+        "sha256": "9daeabade9debb9f6a5545474d7173f10597afe05ac625335db26e77a0fd6529",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_original_5pct_formal_20260920/source_reference/training/uniform.py"
+      }
+    }
+  },
+  "supervision_quantity_control": {
+    "host": "gpu04",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "artifacts/plain_supervision_quantity_control_utk5_20260921/source/",
+    "notes": "",
+    "files": {
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "variants/plain_original_formal/baselines/utkface_data.py",
+        "sha256": "a2fe81612932517c8be29cc23755735b09b2de65707e43f445e531a90cc3943e",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/data_processing/__init__.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/data_processing/hpl_data.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/stsb.py",
+        "sha256": "aa5d8ee4a8ba90cedeeebf85dde57229565506bef62f52d8fc3f086eeca0c2a8",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/data_processing/stsb.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/utkface_protocol.py",
+        "sha256": "7aaffabb7faaebc9065378ec8a99be16fd4a4f4b5d704dc904b9ed98ef364d3a",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/dinov2_backbone.py",
+        "sha256": "eabab62e2e1c33b40bf93433de247dfe48141a25688ec901cca264c6d0a445df",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/models/dinov3_convnext_backbone.py"
+      },
+      "supervision_quantity_control.py": {
+        "stored_path": "shared/supervision_quantity_control.py",
+        "sha256": "ae93de75d2bf6ed3f8c39b2d5d86a7959d1a389b60654de4f796527d967bec12",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/supervision_quantity_control.py"
+      },
+      "training/__init__.py": {
+        "stored_path": "shared/training/__init__.py",
+        "sha256": "7dd798807ab00349f9e5d27d9f11f0336afcc2d2ad95993b73aac5b3edc9a983",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/training/__init__.py"
+      },
+      "training/probe_filter.py": {
+        "stored_path": "variants/plain_reorient_reference/training/probe_filter.py",
+        "sha256": "0193b88f777d1d371f75b5a847e1892ca8a05f311afc2659ad6bdcc495844519",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/training/probe_filter.py"
+      },
+      "training/train.py": {
+        "stored_path": "variants/plain_reorient_reference/training/train.py",
+        "sha256": "70a2359e728286f9600eeee7af258c0879ad0d2cb32af3d61cba54ed4dbe6db5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/plain_supervision_quantity_control_utk5_20260921/source/training/train.py"
+      }
+    }
+  },
+  "mt_reorient_formal": {
+    "host": "gpu01",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/",
+    "notes": "",
+    "files": {
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "shared/baselines/utkface_data.py",
+        "sha256": "7ec76277c14fdcbd7598c01d0c2b1385645361f9451eca838885f7f88276b948",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "shared/data_processing/imdb_wiki_protocol.py",
+        "sha256": "6095a7f0b232096e664ded30ad9201213a3a35573974b38c7e8498e8460f093b",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/koniq10k.py": {
+        "stored_path": "shared/data_processing/koniq10k.py",
+        "sha256": "37c8aa04c79f7bceb9a7bdd5ac940ff7e84152de8c1225ec74bec5c431015e1d",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/koniq10k.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "shared/data_processing/stsb.py",
+        "sha256": "5e2369ab65f2a41d1e867a0039f2a4127071c6b69cbab5fddc10b4e8966665c5",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/stsb.py"
+      },
+      "data_processing/stsb_ssl.py": {
+        "stored_path": "shared/data_processing/stsb_ssl.py",
+        "sha256": "083e80bb0c12ac7a9ecd862d0da55ec42dac3c1c5951b0264e73b2f8c475809b",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/stsb_ssl.py"
+      },
+      "data_processing/text_augmentation.py": {
+        "stored_path": "shared/data_processing/text_augmentation.py",
+        "sha256": "df1709b54f63566a52252d6a25412a5c394cce1ce357c38a94885f01d4bf5ae1",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/text_augmentation.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "shared/data_processing/utkface_protocol.py",
+        "sha256": "4d63010d86352262f7e5a86091de9a7f874ca73e7144c6179a833c634b95ea90",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "shared/models/dinov2_backbone.py",
+        "sha256": "40d416364665fb898fbeea62d5d111fc67d867345f24a8401af8f278cb8cc557",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/models/dinov3_convnext_backbone.py"
+      },
+      "models/hpl_uncertainty.py": {
+        "stored_path": "shared/models/hpl_uncertainty.py",
+        "sha256": "c8fe33bd83f271ea46e62d831df506a2db010e3da95ef8e533a0324ffe6c48b0",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/models/hpl_uncertainty.py"
+      },
+      "models/roberta_backbone.py": {
+        "stored_path": "shared/models/roberta_backbone.py",
+        "sha256": "1997b58e1d14887e8f91a5fbfb0616452dd3e33028f3a7aabcc14d1c8a1947d5",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/models/roberta_backbone.py"
+      },
+      "models/rsna_dinov2_backbone.py": {
+        "stored_path": "shared/models/rsna_dinov2_backbone.py",
+        "sha256": "d8eb0019b47dabb71095443d36a6c0550d9cef7770562a2f6219b0e3f6633dc1",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/models/rsna_dinov2_backbone.py"
+      },
+      "models/stsb_bilstm.py": {
+        "stored_path": "shared/models/stsb_bilstm.py",
+        "sha256": "f18fe6825a088ccadeb3c8f04ac40ba61447fd6123ba50a658a990d0fcc2da4a",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/models/stsb_bilstm.py"
+      },
+      "third_party/mean-teacher/LICENSE.md": {
+        "stored_path": "shared/third_party/mean-teacher/LICENSE.md",
+        "sha256": "b1d636fddd729d8185d89af1e41e21a311866fcf3d4040cc4906a64837d0f218",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/third_party/mean-teacher/LICENSE.md"
+      },
+      "third_party/mean-teacher/pytorch/mean_teacher/__init__.py": {
+        "stored_path": "shared/third_party/mean-teacher/pytorch/mean_teacher/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/third_party/mean-teacher/pytorch/mean_teacher/__init__.py"
+      },
+      "third_party/mean-teacher/pytorch/mean_teacher/architectures.py": {
+        "stored_path": "shared/third_party/mean-teacher/pytorch/mean_teacher/architectures.py",
+        "sha256": "514133b5524637d3927074a373b8c7b777d234525a8c0bb57460d6ea2262cbbd",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/third_party/mean-teacher/pytorch/mean_teacher/architectures.py"
+      },
+      "third_party/mean-teacher/pytorch/mean_teacher/cli.py": {
+        "stored_path": "shared/third_party/mean-teacher/pytorch/mean_teacher/cli.py",
+        "sha256": "c8f630e35230dded9900181b1be2379e7a1dcaff35c010576f5dc79ea89ab292",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/third_party/mean-teacher/pytorch/mean_teacher/cli.py"
+      },
+      "third_party/mean-teacher/pytorch/mean_teacher/data.py": {
+        "stored_path": "shared/third_party/mean-teacher/pytorch/mean_teacher/data.py",
+        "sha256": "d8e3245f164f7ad6f2b4f40504854d2d2b0bdb6e2aa34ed1ba2980ac5263b1ea",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/third_party/mean-teacher/pytorch/mean_teacher/data.py"
+      },
+      "third_party/mean-teacher/pytorch/mean_teacher/datasets.py": {
+        "stored_path": "shared/third_party/mean-teacher/pytorch/mean_teacher/datasets.py",
+        "sha256": "4aa2903b688c78830235f0dd02710a78533069991a1a44788c0dc7a90533e69a",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/third_party/mean-teacher/pytorch/mean_teacher/datasets.py"
+      },
+      "third_party/mean-teacher/pytorch/mean_teacher/losses.py": {
+        "stored_path": "shared/third_party/mean-teacher/pytorch/mean_teacher/losses.py",
+        "sha256": "2afdfd3cf82f6d76e7b35ceb7ec4c3314e07fc729b41e3de8f118ec44fbe5178",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/third_party/mean-teacher/pytorch/mean_teacher/losses.py"
+      },
+      "third_party/mean-teacher/pytorch/mean_teacher/ramps.py": {
+        "stored_path": "shared/third_party/mean-teacher/pytorch/mean_teacher/ramps.py",
+        "sha256": "272621382935891d236b5d951e3a3a7e6fe3f4d7913fd9eed4b7d47194322862",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/third_party/mean-teacher/pytorch/mean_teacher/ramps.py"
+      },
+      "third_party/mean-teacher/pytorch/mean_teacher/run_context.py": {
+        "stored_path": "shared/third_party/mean-teacher/pytorch/mean_teacher/run_context.py",
+        "sha256": "fdd866a090ebaa5aa599348cdcb0fd210b0bff2f72d2a6da620b13bc87268057",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/third_party/mean-teacher/pytorch/mean_teacher/run_context.py"
+      },
+      "third_party/mean-teacher/pytorch/mean_teacher/utils.py": {
+        "stored_path": "shared/third_party/mean-teacher/pytorch/mean_teacher/utils.py",
+        "sha256": "b6a88834b83befbef77bb5827f9325a904f0fb205824e0fada662dfa26893f63",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/third_party/mean-teacher/pytorch/mean_teacher/utils.py"
+      },
+      "training/mean_teacher_plus_reorient_regression.py": {
+        "stored_path": "shared/training/mean_teacher_plus_reorient_regression.py",
+        "sha256": "b3044cb5a57d3efffcf4ad2e3c49eeb69a3e4dc194ab3706152680ac4952642b",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/training/mean_teacher_plus_reorient_regression.py"
+      },
+      "training/mean_teacher_plus_reorient_utkface.py": {
+        "stored_path": "shared/training/mean_teacher_plus_reorient_utkface.py",
+        "sha256": "3afdd0eb547e233e15ea077ac4cbd8c12edd180d2befead87fb19296af6f1c5b",
+        "host": "gpu01",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_plus_reorient_20260909/source_snapshot/repo/training/mean_teacher_plus_reorient_utkface.py"
+      }
+    }
+  },
+  "mt_original_regression": {
+    "host": "gpu04",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "artifacts/formal_mt_adam_20260909/source_snapshot/",
+    "notes": "Frozen baseline regression trainer; corrected 30-epoch UTK trainer is a separate profile.",
+    "files": {
+      "mean_teacher_regression.py": {
+        "stored_path": "shared/mean_teacher_regression.py",
+        "sha256": "4a909171d9ce2dc0865ff46bfd94a80530a31b94f6fcd7c3db64e7dd797d7f52",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_adam_20260909/source_snapshot/mean_teacher_regression.py"
+      }
+    }
+  },
+  "mt_original_utk30": {
+    "host": "gpu04",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "artifacts/formal_mt_adam_20260909_utk30_rerun_20260910/source_snapshot/",
+    "notes": "",
+    "files": {
+      "mean_teacher_utkface.py": {
+        "stored_path": "shared/mean_teacher_utkface.py",
+        "sha256": "c89a8d9fa00d81f2c685250b7fa467d935ca4c6fce658f5f878701eaf986c1e2",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/formal_mt_adam_20260909_utk30_rerun_20260910/source_snapshot/mean_teacher_utkface.py"
+      }
+    }
+  },
+  "hpl_original_utk": {
+    "host": "gpu04",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "artifacts/utkface_hpl_corrected_labeled_loop_20260907/source_snapshot/",
+    "notes": "",
+    "files": {
+      "scripts/run_utkface_hpl_corrected_labeled_loop.py": {
+        "stored_path": "shared/scripts/run_utkface_hpl_corrected_labeled_loop.py",
+        "sha256": "d6b03c5564fba5bd4a51362c1631d4e7f25e4385a70086e764b2941ca17db348",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/utkface_hpl_corrected_labeled_loop_20260907/source_snapshot/scripts/run_utkface_hpl_corrected_labeled_loop.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py",
+        "sha256": "965b66763132aba75f72d34feea7d4dd85c125cfc77c0e40abee06b6e24be35c",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/utkface_hpl_corrected_labeled_loop_20260907/source_snapshot/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py"
+      }
+    }
+  },
+  "hpl_original_imdb": {
+    "host": "gpu04",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/",
+    "notes": "",
+    "files": {
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "variants/hpl_original_imdb/baselines/utkface_data.py",
+        "sha256": "b823afae1da4d84a452cf28a236b41762b39f3a8073119251934a8e2896d89ea",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/imdb_wiki_protocol.py",
+        "sha256": "2e801ec08a24ac082dfdbf879ee1035ca7d9b7b83733f3db8a4b71b0cab799fd",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "shared/data_processing/stsb.py",
+        "sha256": "5e2369ab65f2a41d1e867a0039f2a4127071c6b69cbab5fddc10b4e8966665c5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/stsb.py"
+      },
+      "data_processing/stsb_ssl.py": {
+        "stored_path": "shared/data_processing/stsb_ssl.py",
+        "sha256": "083e80bb0c12ac7a9ecd862d0da55ec42dac3c1c5951b0264e73b2f8c475809b",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/stsb_ssl.py"
+      },
+      "data_processing/text_augmentation.py": {
+        "stored_path": "shared/data_processing/text_augmentation.py",
+        "sha256": "df1709b54f63566a52252d6a25412a5c394cce1ce357c38a94885f01d4bf5ae1",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/text_augmentation.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/utkface_protocol.py",
+        "sha256": "7aaffabb7faaebc9065378ec8a99be16fd4a4f4b5d704dc904b9ed98ef364d3a",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/dinov2_backbone.py",
+        "sha256": "eabab62e2e1c33b40bf93433de247dfe48141a25688ec901cca264c6d0a445df",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/models/dinov3_convnext_backbone.py"
+      },
+      "models/hpl_uncertainty.py": {
+        "stored_path": "shared/models/hpl_uncertainty.py",
+        "sha256": "c8fe33bd83f271ea46e62d831df506a2db010e3da95ef8e533a0324ffe6c48b0",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/models/hpl_uncertainty.py"
+      },
+      "models/roberta_backbone.py": {
+        "stored_path": "shared/models/roberta_backbone.py",
+        "sha256": "1997b58e1d14887e8f91a5fbfb0616452dd3e33028f3a7aabcc14d1c8a1947d5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/models/roberta_backbone.py"
+      },
+      "models/stsb_bilstm.py": {
+        "stored_path": "shared/models/stsb_bilstm.py",
+        "sha256": "f18fe6825a088ccadeb3c8f04ac40ba61447fd6123ba50a658a990d0fcc2da4a",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/models/stsb_bilstm.py"
+      },
+      "scripts/hpl_gpu02_entry.py": {
+        "stored_path": "shared/scripts/hpl_gpu02_entry.py",
+        "sha256": "1c3c96ba2a03df022663387dd66d3bbc65fda59ff56e9f500e629b3a694d4aef",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/scripts/hpl_gpu02_entry.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py",
+        "sha256": "58c57956005e838a54bf769212afe71b30ede9cb0724e17c7b67a1f76fbf6230",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py",
+        "sha256": "de18a2e5cbd65fc5d00609d4b1471822c60c8ffb9da05753181b6bdcb1d14bc3",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py",
+        "sha256": "fc4cebfe49eadb5b858ee24b70af5f289f423baeb21f9711d0460f9080111648",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py": {
+        "stored_path": "variants/hpl_original_imdb/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py",
+        "sha256": "23f7881cfd75939a5fc3022c40b543383e786b3e3fa0baea00a83188f3adc87a",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py",
+        "sha256": "fb89156c5314839b25f3f89a7a6a71851ab3ecf1c2bb76b6edccb9da91f1c8c1",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py",
+        "sha256": "9bb5ddc1d0fd7313386032066d80bd2ee81504e3d3d387160c2a7d36ac2819cb",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py",
+        "sha256": "9b8cb5f126387eb5b16bd20bcca8b5a68b6a75424f7cdf58dd13d08891ffbc81",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py",
+        "sha256": "0013bd1c2e6b76a4ea844b35968643048cce117cffe63d2de011a2b1431d47ad",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py"
+      },
+      "training/hpl_gpu02.py": {
+        "stored_path": "shared/training/hpl_gpu02.py",
+        "sha256": "32473a3c5a279d4101e1760f83230c27b23a747ae8842ce7d51c76623f38e6b9",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_original_imdb_5pct_corrected_20260916/source_snapshot/imdb_repo/training/hpl_gpu02.py"
+      }
+    }
+  },
+  "hpl_original_medical": {
+    "host": "gpu04",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/",
+    "notes": "",
+    "files": {
+      "chexchonet_formal.py": {
+        "stored_path": "shared/chexchonet_formal.py",
+        "sha256": "e1d11eeee1babadfbc9a403ce56f45f4e57289e39b3f11dd306ad20bc3cf43e5",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/chexchonet_formal.py"
+      },
+      "chexchonet_hpl_corrected.py": {
+        "stored_path": "shared/chexchonet_hpl_corrected.py",
+        "sha256": "6ce273151e059aa872940e574b5c0a34774c869522a76e4b8d5827298396d6d3",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/chexchonet_hpl_corrected.py"
+      },
+      "rsna_bone_age_benchmark.py": {
+        "stored_path": "shared/rsna_bone_age_benchmark.py",
+        "sha256": "e87b79b3c8fc8a78f2b2ef0109940a287b6754594fc346fd5a5c364d7d39efdc",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/rsna_bone_age_benchmark.py"
+      },
+      "rsna_bone_age_hpl_corrected.py": {
+        "stored_path": "shared/rsna_bone_age_hpl_corrected.py",
+        "sha256": "e61407ed2f9deb12a64870d98982a9c795b6b9c442d48db7cf4f70da467a26e4",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/rsna_bone_age_hpl_corrected.py"
+      },
+      "run_hpl_corrected_rsna_chex.py": {
+        "stored_path": "shared/run_hpl_corrected_rsna_chex.py",
+        "sha256": "6e3b1e2727c1ab3d8827aaacae9509250fd36cfc9afd2f5b80e6e8c69e66f4f2",
+        "host": "gpu04",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/run_hpl_corrected_rsna_chex.py"
+      }
+    }
+  },
+  "hpl_reorient_imdb_gpu02": {
+    "host": "gpu02",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling",
+    "source_prefix": "",
+    "notes": "Original gpu02 source version retained independently of the gpu03 frozen campaign copy.",
+    "files": {
+      "LICENSE": {
+        "stored_path": "shared/LICENSE",
+        "sha256": "43d9ff6c4f2769cec90cada2cf8ca8a27ec20408bbc9b2949a12a6ddd12784ce",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/LICENSE"
+      },
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "variants/hpl_original_imdb/baselines/utkface_data.py",
+        "sha256": "b823afae1da4d84a452cf28a236b41762b39f3a8073119251934a8e2896d89ea",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/imdb_wiki_protocol.py",
+        "sha256": "2e801ec08a24ac082dfdbf879ee1035ca7d9b7b83733f3db8a4b71b0cab799fd",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "shared/data_processing/stsb.py",
+        "sha256": "5e2369ab65f2a41d1e867a0039f2a4127071c6b69cbab5fddc10b4e8966665c5",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/stsb.py"
+      },
+      "data_processing/stsb_ssl.py": {
+        "stored_path": "shared/data_processing/stsb_ssl.py",
+        "sha256": "083e80bb0c12ac7a9ecd862d0da55ec42dac3c1c5951b0264e73b2f8c475809b",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/stsb_ssl.py"
+      },
+      "data_processing/text_augmentation.py": {
+        "stored_path": "shared/data_processing/text_augmentation.py",
+        "sha256": "df1709b54f63566a52252d6a25412a5c394cce1ce357c38a94885f01d4bf5ae1",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/text_augmentation.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/utkface_protocol.py",
+        "sha256": "7aaffabb7faaebc9065378ec8a99be16fd4a4f4b5d704dc904b9ed98ef364d3a",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/dinov2_backbone.py",
+        "sha256": "eabab62e2e1c33b40bf93433de247dfe48141a25688ec901cca264c6d0a445df",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/dinov3_convnext_backbone.py"
+      },
+      "models/hpl_uncertainty.py": {
+        "stored_path": "shared/models/hpl_uncertainty.py",
+        "sha256": "c8fe33bd83f271ea46e62d831df506a2db010e3da95ef8e533a0324ffe6c48b0",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/hpl_uncertainty.py"
+      },
+      "models/roberta_backbone.py": {
+        "stored_path": "shared/models/roberta_backbone.py",
+        "sha256": "1997b58e1d14887e8f91a5fbfb0616452dd3e33028f3a7aabcc14d1c8a1947d5",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/roberta_backbone.py"
+      },
+      "models/stsb_bilstm.py": {
+        "stored_path": "shared/models/stsb_bilstm.py",
+        "sha256": "f18fe6825a088ccadeb3c8f04ac40ba61447fd6123ba50a658a990d0fcc2da4a",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/models/stsb_bilstm.py"
+      },
+      "preprocess_imdb_wiki.py": {
+        "stored_path": "shared/preprocess_imdb_wiki.py",
+        "sha256": "9b33848a52723c2b236e6acc938a91cb8a38b7525067f568fe9a72330416b900",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/preprocess_imdb_wiki.py"
+      },
+      "requirements.txt": {
+        "stored_path": "shared/requirements.txt",
+        "sha256": "8c143a79fa8dc3d7a8e78c723e98873fd5e13a67e10ffda6388ba5c13aff336a",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/requirements.txt"
+      },
+      "scripts/hpl_gpu02_entry.py": {
+        "stored_path": "shared/scripts/hpl_gpu02_entry.py",
+        "sha256": "1c3c96ba2a03df022663387dd66d3bbc65fda59ff56e9f500e629b3a694d4aef",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/scripts/hpl_gpu02_entry.py"
+      },
+      "train.py": {
+        "stored_path": "shared/train.py",
+        "sha256": "5fdca72d3daad32c9ee4a3b9d261358073509c8fc90b36b6bc4811dd07f3e4fd",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/train.py"
+      },
+      "training/__init__.py": {
+        "stored_path": "shared/training/__init__.py",
+        "sha256": "7dd798807ab00349f9e5d27d9f11f0336afcc2d2ad95993b73aac5b3edc9a983",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/__init__.py"
+      },
+      "training/chexchonet_common.py": {
+        "stored_path": "shared/training/chexchonet_common.py",
+        "sha256": "d5c5e9ff96dee2a7370315d14393679a7b44f5283f1e05379c45018d1de9dd00",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/chexchonet_common.py"
+      },
+      "training/chexchonet_formal.py": {
+        "stored_path": "shared/training/chexchonet_formal.py",
+        "sha256": "e1d11eeee1babadfbc9a403ce56f45f4e57289e39b3f11dd306ad20bc3cf43e5",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/chexchonet_formal.py"
+      },
+      "training/hpl_chexchonet.py": {
+        "stored_path": "shared/training/hpl_chexchonet.py",
+        "sha256": "ee17c289add3217a34e955348905f75a3a732d7a069c586e69ca4adf2cb8cd30",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/hpl_chexchonet.py"
+      },
+      "training/hpl_gpu02.py": {
+        "stored_path": "shared/training/hpl_gpu02.py",
+        "sha256": "32473a3c5a279d4101e1760f83230c27b23a747ae8842ce7d51c76623f38e6b9",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/hpl_gpu02.py"
+      },
+      "training/mean_teacher_regression.py": {
+        "stored_path": "variants/hpl_reorient_imdb_gpu02/training/mean_teacher_regression.py",
+        "sha256": "7f15876ec2d16570ae833eb9001b8458897570ba49dd793b397c2d95f8534da7",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/mean_teacher_regression.py"
+      },
+      "training/mean_teacher_utkface.py": {
+        "stored_path": "variants/hpl_reorient_imdb_gpu02/training/mean_teacher_utkface.py",
+        "sha256": "37f246f37063cbf17d28366cfce5fc5252aedbac7a8d96697a43e4fb5ee3a57a",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/mean_teacher_utkface.py"
+      },
+      "training/probe_filter.py": {
+        "stored_path": "variants/hpl_reorient_imdb_gpu02/training/probe_filter.py",
+        "sha256": "90098295d9f617bc442d3aa0f64f01854c769b17e10f03f2425b13cf9be487c8",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/probe_filter.py"
+      },
+      "training/rapl_chexchonet.py": {
+        "stored_path": "shared/training/rapl_chexchonet.py",
+        "sha256": "f90fbf71fb33eb5f23cfdc7bfbc8fe0545f9ff1b4977f1d55d2ba918e264684f",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/rapl_chexchonet.py"
+      },
+      "training/stsb_ssl.py": {
+        "stored_path": "shared/training/stsb_ssl.py",
+        "sha256": "9c96ae9535caef4363ce5df7fad61f8b6d870ed9c01d2c8b8a871dbf176f1f86",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/stsb_ssl.py"
+      },
+      "training/supervised_chexchonet.py": {
+        "stored_path": "shared/training/supervised_chexchonet.py",
+        "sha256": "cd0d527db61c6203365ced08302b7c02173079e0e208105c829e82b3a34880e6",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/supervised_chexchonet.py"
+      },
+      "training/supervised_stsb.py": {
+        "stored_path": "shared/training/supervised_stsb.py",
+        "sha256": "97a5a1cae3950c88c10bf38ad9cc4f851ed82665129650748fe7fa333ae0bfe7",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/supervised_stsb.py"
+      },
+      "training/train.py": {
+        "stored_path": "variants/hpl_reorient_imdb_gpu02/training/train.py",
+        "sha256": "affaa31cb477d452b972342bfaabd31ae595e35261fa295e0adec672c6bcb74e",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/train.py"
+      },
+      "training/uniform.py": {
+        "stored_path": "shared/training/uniform.py",
+        "sha256": "9daeabade9debb9f6a5545474d7173f10597afe05ac625335db26e77a0fd6529",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/uniform.py"
+      },
+      "training/uniform_no_reorient.py": {
+        "stored_path": "shared/training/uniform_no_reorient.py",
+        "sha256": "4afa37e551cc49c8bc7d707ce8637941f028708956589830e8380d5612b01052",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/training/uniform_no_reorient.py"
+      },
+      "uniform.py": {
+        "stored_path": "shared/uniform.py",
+        "sha256": "8e98c800bcc6ea8629329f1da4d17254dfe5640c8f4ee24a34b09ad866b75163",
+        "host": "gpu02",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling/uniform.py"
+      }
+    }
+  },
+  "hpl_reorient_utk_formal10": {
+    "host": "gpu03",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40",
+    "source_prefix": "artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/",
+    "notes": "",
+    "files": {
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "shared/baselines/utkface_data.py",
+        "sha256": "7ec76277c14fdcbd7598c01d0c2b1385645361f9451eca838885f7f88276b948",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/data_processing/__init__.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "shared/data_processing/utkface_protocol.py",
+        "sha256": "4d63010d86352262f7e5a86091de9a7f874ca73e7144c6179a833c634b95ea90",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/data_processing/utkface_protocol.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py": {
+        "stored_path": "variants/hpl_reorient_utk_formal10/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py",
+        "sha256": "2c7635ecd39daffa5d249be93e3df9900309f8500349044d5f79acf796be1e4c",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py",
+        "sha256": "de18a2e5cbd65fc5d00609d4b1471822c60c8ffb9da05753181b6bdcb1d14bc3",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py",
+        "sha256": "fc4cebfe49eadb5b858ee24b70af5f289f423baeb21f9711d0460f9080111648",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py": {
+        "stored_path": "variants/hpl_reorient_utk_formal10/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py",
+        "sha256": "06fa3c8ec97ec32ce525bc89705344445761aacad53f09bea2e853bf7d5b45b3",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py",
+        "sha256": "fb89156c5314839b25f3f89a7a6a71851ab3ecf1c2bb76b6edccb9da91f1c8c1",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py",
+        "sha256": "9bb5ddc1d0fd7313386032066d80bd2ee81504e3d3d387160c2a7d36ac2819cb",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py",
+        "sha256": "9b8cb5f126387eb5b16bd20bcca8b5a68b6a75424f7cdf58dd13d08891ffbc81",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py",
+        "sha256": "0013bd1c2e6b76a4ea844b35968643048cce117cffe63d2de011a2b1431d47ad",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/utk_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py"
+      }
+    }
+  },
+  "hpl_reorient_imdb_formal10": {
+    "host": "gpu03",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40",
+    "source_prefix": "artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/",
+    "notes": "",
+    "files": {
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "variants/hpl_original_imdb/baselines/utkface_data.py",
+        "sha256": "b823afae1da4d84a452cf28a236b41762b39f3a8073119251934a8e2896d89ea",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/imdb_wiki_protocol.py",
+        "sha256": "2e801ec08a24ac082dfdbf879ee1035ca7d9b7b83733f3db8a4b71b0cab799fd",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "shared/data_processing/stsb.py",
+        "sha256": "5e2369ab65f2a41d1e867a0039f2a4127071c6b69cbab5fddc10b4e8966665c5",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/stsb.py"
+      },
+      "data_processing/stsb_ssl.py": {
+        "stored_path": "shared/data_processing/stsb_ssl.py",
+        "sha256": "083e80bb0c12ac7a9ecd862d0da55ec42dac3c1c5951b0264e73b2f8c475809b",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/stsb_ssl.py"
+      },
+      "data_processing/text_augmentation.py": {
+        "stored_path": "shared/data_processing/text_augmentation.py",
+        "sha256": "df1709b54f63566a52252d6a25412a5c394cce1ce357c38a94885f01d4bf5ae1",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/text_augmentation.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/utkface_protocol.py",
+        "sha256": "7aaffabb7faaebc9065378ec8a99be16fd4a4f4b5d704dc904b9ed98ef364d3a",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/dinov2_backbone.py",
+        "sha256": "eabab62e2e1c33b40bf93433de247dfe48141a25688ec901cca264c6d0a445df",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/models/dinov3_convnext_backbone.py"
+      },
+      "models/hpl_uncertainty.py": {
+        "stored_path": "shared/models/hpl_uncertainty.py",
+        "sha256": "c8fe33bd83f271ea46e62d831df506a2db010e3da95ef8e533a0324ffe6c48b0",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/models/hpl_uncertainty.py"
+      },
+      "models/roberta_backbone.py": {
+        "stored_path": "shared/models/roberta_backbone.py",
+        "sha256": "1997b58e1d14887e8f91a5fbfb0616452dd3e33028f3a7aabcc14d1c8a1947d5",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/models/roberta_backbone.py"
+      },
+      "models/stsb_bilstm.py": {
+        "stored_path": "shared/models/stsb_bilstm.py",
+        "sha256": "f18fe6825a088ccadeb3c8f04ac40ba61447fd6123ba50a658a990d0fcc2da4a",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/models/stsb_bilstm.py"
+      },
+      "scripts/hpl_gpu02_entry.py": {
+        "stored_path": "shared/scripts/hpl_gpu02_entry.py",
+        "sha256": "1c3c96ba2a03df022663387dd66d3bbc65fda59ff56e9f500e629b3a694d4aef",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/scripts/hpl_gpu02_entry.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py",
+        "sha256": "58c57956005e838a54bf769212afe71b30ede9cb0724e17c7b67a1f76fbf6230",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py",
+        "sha256": "de18a2e5cbd65fc5d00609d4b1471822c60c8ffb9da05753181b6bdcb1d14bc3",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py",
+        "sha256": "fc4cebfe49eadb5b858ee24b70af5f289f423baeb21f9711d0460f9080111648",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py": {
+        "stored_path": "variants/hpl_original_imdb/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py",
+        "sha256": "23f7881cfd75939a5fc3022c40b543383e786b3e3fa0baea00a83188f3adc87a",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py",
+        "sha256": "fb89156c5314839b25f3f89a7a6a71851ab3ecf1c2bb76b6edccb9da91f1c8c1",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py",
+        "sha256": "9bb5ddc1d0fd7313386032066d80bd2ee81504e3d3d387160c2a7d36ac2819cb",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py",
+        "sha256": "9b8cb5f126387eb5b16bd20bcca8b5a68b6a75424f7cdf58dd13d08891ffbc81",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py",
+        "sha256": "0013bd1c2e6b76a4ea844b35968643048cce117cffe63d2de011a2b1431d47ad",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py"
+      },
+      "training/hpl_gpu02.py": {
+        "stored_path": "shared/training/hpl_gpu02.py",
+        "sha256": "32473a3c5a279d4101e1760f83230c27b23a747ae8842ce7d51c76623f38e6b9",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/imdb_repo/training/hpl_gpu02.py"
+      }
+    }
+  },
+  "hpl_reorient_medical_formal10": {
+    "host": "gpu03",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40",
+    "source_prefix": "artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/",
+    "notes": "",
+    "files": {
+      "artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/chexchonet_formal.py": {
+        "stored_path": "shared/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/chexchonet_formal.py",
+        "sha256": "e1d11eeee1babadfbc9a403ce56f45f4e57289e39b3f11dd306ad20bc3cf43e5",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/chexchonet_formal.py"
+      },
+      "artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/chexchonet_hpl_corrected.py": {
+        "stored_path": "shared/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/chexchonet_hpl_corrected.py",
+        "sha256": "6ce273151e059aa872940e574b5c0a34774c869522a76e4b8d5827298396d6d3",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/chexchonet_hpl_corrected.py"
+      },
+      "artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/rsna_bone_age_benchmark.py": {
+        "stored_path": "shared/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/rsna_bone_age_benchmark.py",
+        "sha256": "e87b79b3c8fc8a78f2b2ef0109940a287b6754594fc346fd5a5c364d7d39efdc",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/rsna_bone_age_benchmark.py"
+      },
+      "artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/rsna_bone_age_hpl_corrected.py": {
+        "stored_path": "shared/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/rsna_bone_age_hpl_corrected.py",
+        "sha256": "e61407ed2f9deb12a64870d98982a9c795b6b9c442d48db7cf4f70da467a26e4",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/artifacts/hpl_corrected_rsna_chex_20260908/source_snapshot/rsna_bone_age_hpl_corrected.py"
+      },
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "shared/baselines/utkface_data.py",
+        "sha256": "7ec76277c14fdcbd7598c01d0c2b1385645361f9451eca838885f7f88276b948",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "shared/data_processing/imdb_wiki_protocol.py",
+        "sha256": "6095a7f0b232096e664ded30ad9201213a3a35573974b38c7e8498e8460f093b",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/koniq10k.py": {
+        "stored_path": "shared/data_processing/koniq10k.py",
+        "sha256": "37c8aa04c79f7bceb9a7bdd5ac940ff7e84152de8c1225ec74bec5c431015e1d",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/koniq10k.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "shared/data_processing/stsb.py",
+        "sha256": "5e2369ab65f2a41d1e867a0039f2a4127071c6b69cbab5fddc10b4e8966665c5",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/stsb.py"
+      },
+      "data_processing/stsb_ssl.py": {
+        "stored_path": "shared/data_processing/stsb_ssl.py",
+        "sha256": "083e80bb0c12ac7a9ecd862d0da55ec42dac3c1c5951b0264e73b2f8c475809b",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/stsb_ssl.py"
+      },
+      "data_processing/text_augmentation.py": {
+        "stored_path": "shared/data_processing/text_augmentation.py",
+        "sha256": "df1709b54f63566a52252d6a25412a5c394cce1ce357c38a94885f01d4bf5ae1",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/text_augmentation.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "shared/data_processing/utkface_protocol.py",
+        "sha256": "4d63010d86352262f7e5a86091de9a7f874ca73e7144c6179a833c634b95ea90",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "shared/models/dinov2_backbone.py",
+        "sha256": "40d416364665fb898fbeea62d5d111fc67d867345f24a8401af8f278cb8cc557",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/models/dinov3_convnext_backbone.py"
+      },
+      "models/hpl_uncertainty.py": {
+        "stored_path": "shared/models/hpl_uncertainty.py",
+        "sha256": "c8fe33bd83f271ea46e62d831df506a2db010e3da95ef8e533a0324ffe6c48b0",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/models/hpl_uncertainty.py"
+      },
+      "models/roberta_backbone.py": {
+        "stored_path": "shared/models/roberta_backbone.py",
+        "sha256": "1997b58e1d14887e8f91a5fbfb0616452dd3e33028f3a7aabcc14d1c8a1947d5",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/models/roberta_backbone.py"
+      },
+      "models/rsna_dinov2_backbone.py": {
+        "stored_path": "shared/models/rsna_dinov2_backbone.py",
+        "sha256": "d8eb0019b47dabb71095443d36a6c0550d9cef7770562a2f6219b0e3f6633dc1",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/models/rsna_dinov2_backbone.py"
+      },
+      "models/stsb_bilstm.py": {
+        "stored_path": "shared/models/stsb_bilstm.py",
+        "sha256": "f18fe6825a088ccadeb3c8f04ac40ba61447fd6123ba50a658a990d0fcc2da4a",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/hpl_reorient_10pct_formal_20260911/source_snapshot/medical_repo/models/stsb_bilstm.py"
+      }
+    }
+  },
+  "hpl_reorient_utk_repair": {
+    "host": "gpu03",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40",
+    "source_prefix": "artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/",
+    "notes": "",
+    "files": {
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "shared/baselines/benchmark_io.py",
+        "sha256": "71360b3d53a0bb7338ad44a16e9f4ad4a4ba2a1b127c671deb373a7559aaafaf",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "shared/baselines/utkface_data.py",
+        "sha256": "7ec76277c14fdcbd7598c01d0c2b1385645361f9451eca838885f7f88276b948",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/data_processing/__init__.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "shared/data_processing/utkface_protocol.py",
+        "sha256": "4d63010d86352262f7e5a86091de9a7f874ca73e7144c6179a833c634b95ea90",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/data_processing/utkface_protocol.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py": {
+        "stored_path": "variants/hpl_reorient_utk_formal10/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py",
+        "sha256": "2c7635ecd39daffa5d249be93e3df9900309f8500349044d5f79acf796be1e4c",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/__init__.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py",
+        "sha256": "de18a2e5cbd65fc5d00609d4b1471822c60c8ffb9da05753181b6bdcb1d14bc3",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/randaugment.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py",
+        "sha256": "fc4cebfe49eadb5b858ee24b70af5f289f423baeb21f9711d0460f9080111648",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/datasets/utkface.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py": {
+        "stored_path": "variants/hpl_reorient_utk_formal10/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py",
+        "sha256": "06fa3c8ec97ec32ce525bc89705344445761aacad53f09bea2e853bf7d5b45b3",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/main_ours.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py",
+        "sha256": "fb89156c5314839b25f3f89a7a6a71851ab3ecf1c2bb76b6edccb9da91f1c8c1",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/__init__.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py",
+        "sha256": "9bb5ddc1d0fd7313386032066d80bd2ee81504e3d3d387160c2a7d36ac2819cb",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/resnet50.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py",
+        "sha256": "9b8cb5f126387eb5b16bd20bcca8b5a68b6a75424f7cdf58dd13d08891ffbc81",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/models/uncertainty_learner.py"
+      },
+      "third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py": {
+        "stored_path": "shared/third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py",
+        "sha256": "0013bd1c2e6b76a4ea844b35968643048cce117cffe63d2de011a2b1431d47ad",
+        "host": "gpu03",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/artifacts/utkface_hpl_reorient_matched_20260909_repair_20260910/source_snapshot/repo/third_party/Heteroscedastic-Pseudo-Labels/utkface/utils/__init__.py"
+      }
+    }
+  },
+  "ucvme_gpu05": {
+    "host": "gpu05",
+    "source_root": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40",
+    "source_prefix": "",
+    "notes": "",
+    "files": {
+      "LICENSE": {
+        "stored_path": "shared/LICENSE",
+        "sha256": "43d9ff6c4f2769cec90cada2cf8ca8a27ec20408bbc9b2949a12a6ddd12784ce",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/LICENSE"
+      },
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "variants/ucvme_gpu05/baselines/benchmark_io.py",
+        "sha256": "6e841a656af8caf4fc07a2dc5fda02b502bb8efa224d1aadf5b881b1e8399b43",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "variants/ucvme_gpu05/baselines/utkface_data.py",
+        "sha256": "4657337fb5ee1a64d07a3d3e1ea7ef32730e6a4dd7045ec96e27cf74330f182d",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/imdb_wiki_protocol.py",
+        "sha256": "2e801ec08a24ac082dfdbf879ee1035ca7d9b7b83733f3db8a4b71b0cab799fd",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/stsb.py",
+        "sha256": "aa5d8ee4a8ba90cedeeebf85dde57229565506bef62f52d8fc3f086eeca0c2a8",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/data_processing/stsb.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/utkface_protocol.py",
+        "sha256": "7aaffabb7faaebc9065378ec8a99be16fd4a4f4b5d704dc904b9ed98ef364d3a",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/dinov2_backbone.py",
+        "sha256": "eabab62e2e1c33b40bf93433de247dfe48141a25688ec901cca264c6d0a445df",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/models/dinov3_convnext_backbone.py"
+      },
+      "preprocess_imdb_wiki.py": {
+        "stored_path": "shared/preprocess_imdb_wiki.py",
+        "sha256": "9b33848a52723c2b236e6acc938a91cb8a38b7525067f568fe9a72330416b900",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/preprocess_imdb_wiki.py"
+      },
+      "requirements.txt": {
+        "stored_path": "variants/ucvme_gpu05/requirements.txt",
+        "sha256": "346e61214ca7765f327cb3cf7bed4a38e811bcf9f5fe0c0c11614d7bcc42c6db",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/requirements.txt"
+      },
+      "scripts/run_a40_baselines_ratios.py": {
+        "stored_path": "shared/scripts/run_a40_baselines_ratios.py",
+        "sha256": "f0d1de37c29a147011f16540905d059926bd4d9727ecdb9173e34a6a3a8bff03",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/scripts/run_a40_baselines_ratios.py"
+      },
+      "scripts/run_ucvme_reorient_matrix.py": {
+        "stored_path": "shared/scripts/run_ucvme_reorient_matrix.py",
+        "sha256": "09db43a32c6923e59856fc6ae40603be178a49bf2dd8d47c24286a45e759aaff",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/scripts/run_ucvme_reorient_matrix.py"
+      },
+      "third_party/UCVME/datasets/__init__.py": {
+        "stored_path": "shared/third_party/UCVME/datasets/__init__.py",
+        "sha256": "52da11fd369b15f91a2e6c02888be2ed04925af54d22657df1a534e19c55879b",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/third_party/UCVME/datasets/__init__.py"
+      },
+      "third_party/UCVME/datasets/utk_dta.py": {
+        "stored_path": "shared/third_party/UCVME/datasets/utk_dta.py",
+        "sha256": "d8c0d3fd0852f8ad8b72643ace425a0044875f0d1ce48883aa2798810c3a1d7b",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/third_party/UCVME/datasets/utk_dta.py"
+      },
+      "third_party/UCVME/models/__init__.py": {
+        "stored_path": "shared/third_party/UCVME/models/__init__.py",
+        "sha256": "247a7b5ede8147ec0286b5ebb8fa55205fa73b619bb9041c5c135875ea6d641d",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/third_party/UCVME/models/__init__.py"
+      },
+      "third_party/UCVME/models/dinov2.py": {
+        "stored_path": "shared/third_party/UCVME/models/dinov2.py",
+        "sha256": "8bb55475bbecace322fdb758800ca40aab26da4c1784537a6a7fd1b42931ff66",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/third_party/UCVME/models/dinov2.py"
+      },
+      "third_party/UCVME/models/resnet50.py": {
+        "stored_path": "shared/third_party/UCVME/models/resnet50.py",
+        "sha256": "333bbbb2e1b5d7b198f3d6ed43f809a77a610bdeb70ace3dd10ee7af37fd9556",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/third_party/UCVME/models/resnet50.py"
+      },
+      "third_party/UCVME/ucvme_age.py": {
+        "stored_path": "shared/third_party/UCVME/ucvme_age.py",
+        "sha256": "e9ffd7b5fd6a3c1590b18fa12f669432976e0e5a9df855db54da0e40ca30461f",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/third_party/UCVME/ucvme_age.py"
+      },
+      "third_party/UCVME/utils/__init__.py": {
+        "stored_path": "shared/third_party/UCVME/utils/__init__.py",
+        "sha256": "c634d81c4355cefcb4ec17c1898de96d0651dcd9f8670301c5c754aaac448002",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/third_party/UCVME/utils/__init__.py"
+      },
+      "train.py": {
+        "stored_path": "shared/train.py",
+        "sha256": "5fdca72d3daad32c9ee4a3b9d261358073509c8fc90b36b6bc4811dd07f3e4fd",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/train.py"
+      },
+      "training/__init__.py": {
+        "stored_path": "shared/training/__init__.py",
+        "sha256": "7dd798807ab00349f9e5d27d9f11f0336afcc2d2ad95993b73aac5b3edc9a983",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/training/__init__.py"
+      },
+      "training/probe_filter.py": {
+        "stored_path": "variants/hpl_reorient_imdb_gpu02/training/probe_filter.py",
+        "sha256": "90098295d9f617bc442d3aa0f64f01854c769b17e10f03f2425b13cf9be487c8",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/training/probe_filter.py"
+      },
+      "training/train.py": {
+        "stored_path": "variants/hpl_reorient_imdb_gpu02/training/train.py",
+        "sha256": "affaa31cb477d452b972342bfaabd31ae595e35261fa295e0adec672c6bcb74e",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/training/train.py"
+      },
+      "training/uniform.py": {
+        "stored_path": "shared/training/uniform.py",
+        "sha256": "9daeabade9debb9f6a5545474d7173f10597afe05ac625335db26e77a0fd6529",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/training/uniform.py"
+      },
+      "uniform.py": {
+        "stored_path": "shared/uniform.py",
+        "sha256": "8e98c800bcc6ea8629329f1da4d17254dfe5640c8f4ee24a34b09ad866b75163",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/Representation-Anchored-Pseudo-Labeling-a40/uniform.py"
+      }
+    }
+  },
+  "simregmatch_migrated": {
+    "host": "gpu05",
+    "source_root": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915",
+    "source_prefix": "source/",
+    "notes": "Migrated olvi source preserved on gpu05; native percentile semantics and logging remain byte-for-byte unchanged.",
+    "files": {
+      "LICENSE": {
+        "stored_path": "shared/LICENSE",
+        "sha256": "43d9ff6c4f2769cec90cada2cf8ca8a27ec20408bbc9b2949a12a6ddd12784ce",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/LICENSE"
+      },
+      "baselines/__init__.py": {
+        "stored_path": "shared/baselines/__init__.py",
+        "sha256": "afe7c11ff45c1ad07094529153235b085245af6bc93a0d351dd6be2281c02f87",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/__init__.py"
+      },
+      "baselines/benchmark_io.py": {
+        "stored_path": "variants/ucvme_gpu05/baselines/benchmark_io.py",
+        "sha256": "6e841a656af8caf4fc07a2dc5fda02b502bb8efa224d1aadf5b881b1e8399b43",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/benchmark_io.py"
+      },
+      "baselines/dinov2_hpl.py": {
+        "stored_path": "shared/baselines/dinov2_hpl.py",
+        "sha256": "5a48ef9c83aa6338d1180e1f21357f405bea13398e6070f04c97847b7376d82d",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/dinov2_hpl.py"
+      },
+      "baselines/dinov3_convnext_hpl.py": {
+        "stored_path": "shared/baselines/dinov3_convnext_hpl.py",
+        "sha256": "4a6697f6f196b8b3618db71da43d6c58f15c6f315dda9a836960957d12a2d8b0",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/dinov3_convnext_hpl.py"
+      },
+      "baselines/patches/hpl.patch": {
+        "stored_path": "shared/baselines/patches/hpl.patch",
+        "sha256": "d6bedcec3dcdaa71fb0c7b264eed2f923d7ebc8c39ce05eeb25508a1b12f7a1b",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/patches/hpl.patch"
+      },
+      "baselines/patches/rankup.patch": {
+        "stored_path": "shared/baselines/patches/rankup.patch",
+        "sha256": "1c62fbe263b863f8f04743525a91d882523daca029070b8c5dc5cad8eac8c8d6",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/patches/rankup.patch"
+      },
+      "baselines/patches/simregmatch.patch": {
+        "stored_path": "shared/baselines/patches/simregmatch.patch",
+        "sha256": "3062b13510c46bfca403dbd35f14bc83b8c75ca282e7f566f34746a96e81a5d1",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/patches/simregmatch.patch"
+      },
+      "baselines/patches/ucvme.patch": {
+        "stored_path": "shared/baselines/patches/ucvme.patch",
+        "sha256": "ef1522c514a6c26a007e82f991a2ae06eb6ffe9b6159d77c998a23ad4121a55f",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/patches/ucvme.patch"
+      },
+      "baselines/upstreams.yaml": {
+        "stored_path": "shared/baselines/upstreams.yaml",
+        "sha256": "4bcdbaacba87245c03dc389e1eb6d621a6c02051aca99289ff0ba9f1c8451b72",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/upstreams.yaml"
+      },
+      "baselines/utkface_data.py": {
+        "stored_path": "variants/ucvme_gpu05/baselines/utkface_data.py",
+        "sha256": "4657337fb5ee1a64d07a3d3e1ea7ef32730e6a4dd7045ec96e27cf74330f182d",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/baselines/utkface_data.py"
+      },
+      "data_processing/__init__.py": {
+        "stored_path": "shared/data_processing/__init__.py",
+        "sha256": "16acefeb5fd07008472ef65740feb4027871262cfc7b7b9f97472a581f8b1a9c",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/data_processing/__init__.py"
+      },
+      "data_processing/chexchonet.py": {
+        "stored_path": "shared/data_processing/chexchonet.py",
+        "sha256": "0cd01a0b18607e5c7a532b91791a6a43be4f5e45cb4ebfc8c1b78aa98ed3e1a5",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/data_processing/chexchonet.py"
+      },
+      "data_processing/chexchonet_protocol.py": {
+        "stored_path": "shared/data_processing/chexchonet_protocol.py",
+        "sha256": "a4fa89560997cec1597c0d69ac9687036e6801f0ee54e780790900b54283e787",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/data_processing/chexchonet_protocol.py"
+      },
+      "data_processing/hpl_data.py": {
+        "stored_path": "shared/data_processing/hpl_data.py",
+        "sha256": "b18e4366921ef86a936a548540d8b7d18950a038b751ef281d7516e90170612d",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/data_processing/hpl_data.py"
+      },
+      "data_processing/imdb_wiki_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/imdb_wiki_protocol.py",
+        "sha256": "2e801ec08a24ac082dfdbf879ee1035ca7d9b7b83733f3db8a4b71b0cab799fd",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/data_processing/imdb_wiki_protocol.py"
+      },
+      "data_processing/preprocess_imdb_wiki.py": {
+        "stored_path": "shared/data_processing/preprocess_imdb_wiki.py",
+        "sha256": "ccf6d46e0f394b6f8a4dc6ca2cf58a798c466816deee8d15861e153d618abbfc",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/data_processing/preprocess_imdb_wiki.py"
+      },
+      "data_processing/rsna_bone_age.py": {
+        "stored_path": "shared/data_processing/rsna_bone_age.py",
+        "sha256": "c91fd49d5e6c30a09bff0e1e39fb6c548c0628abaca633688e6771dbfbc0c78d",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/data_processing/rsna_bone_age.py"
+      },
+      "data_processing/stsb.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/stsb.py",
+        "sha256": "aa5d8ee4a8ba90cedeeebf85dde57229565506bef62f52d8fc3f086eeca0c2a8",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/data_processing/stsb.py"
+      },
+      "data_processing/utkface_protocol.py": {
+        "stored_path": "variants/plain_original_formal/data_processing/utkface_protocol.py",
+        "sha256": "7aaffabb7faaebc9065378ec8a99be16fd4a4f4b5d704dc904b9ed98ef364d3a",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/data_processing/utkface_protocol.py"
+      },
+      "models/__init__.py": {
+        "stored_path": "shared/models/__init__.py",
+        "sha256": "a2de9cd863fc8331fb440dd0d6c9e7371b98d43be5b47c9978a0980d7f9ef3ec",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/models/__init__.py"
+      },
+      "models/backbone.py": {
+        "stored_path": "shared/models/backbone.py",
+        "sha256": "c412f3a3bd9fff78cdd5690c7240f1b84bead1657160df906ae1e9fd14447035",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/models/backbone.py"
+      },
+      "models/dinov2_backbone.py": {
+        "stored_path": "variants/plain_original_formal/models/dinov2_backbone.py",
+        "sha256": "eabab62e2e1c33b40bf93433de247dfe48141a25688ec901cca264c6d0a445df",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/models/dinov2_backbone.py"
+      },
+      "models/dinov3_convnext_backbone.py": {
+        "stored_path": "shared/models/dinov3_convnext_backbone.py",
+        "sha256": "c3995cac551ff9fc9b9e5795fc9cbebf5612e39da7db98f316fc526bb4a25fb3",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/models/dinov3_convnext_backbone.py"
+      },
+      "preprocess_imdb_wiki.py": {
+        "stored_path": "shared/preprocess_imdb_wiki.py",
+        "sha256": "9b33848a52723c2b236e6acc938a91cb8a38b7525067f568fe9a72330416b900",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/preprocess_imdb_wiki.py"
+      },
+      "requirements.txt": {
+        "stored_path": "variants/ucvme_gpu05/requirements.txt",
+        "sha256": "346e61214ca7765f327cb3cf7bed4a38e811bcf9f5fe0c0c11614d7bcc42c6db",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/requirements.txt"
+      },
+      "scripts/run_simregmatch_formal30_matrix.py": {
+        "stored_path": "shared/scripts/run_simregmatch_formal30_matrix.py",
+        "sha256": "15a7b55a2fa32115f07c30edc929ddccdde82097698928e6937d102fd8d60316",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/scripts/run_simregmatch_formal30_matrix.py"
+      },
+      "third_party/SimRegMatch/dataloaders/__init__.py": {
+        "stored_path": "shared/third_party/SimRegMatch/dataloaders/__init__.py",
+        "sha256": "96ad761d34de4162d108d93e444794e8e17a70073471e9f9d59f9bfd3c92ad36",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/dataloaders/__init__.py"
+      },
+      "third_party/SimRegMatch/dataloaders/datasets/AgeDB.py": {
+        "stored_path": "shared/third_party/SimRegMatch/dataloaders/datasets/AgeDB.py",
+        "sha256": "8e03643da5d5da8b840a38f14c971f8c2bd32528f8db6bc203c07572076e550c",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/dataloaders/datasets/AgeDB.py"
+      },
+      "third_party/SimRegMatch/dataloaders/datasets/AgeDB_Unlabeled.py": {
+        "stored_path": "shared/third_party/SimRegMatch/dataloaders/datasets/AgeDB_Unlabeled.py",
+        "sha256": "8296e1ebe1d5e0563a57b36cca13c7be10f9705fc148382fa1f38f0a17ae80ee",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/dataloaders/datasets/AgeDB_Unlabeled.py"
+      },
+      "third_party/SimRegMatch/dataloaders/datasets/RandAug.py": {
+        "stored_path": "shared/third_party/SimRegMatch/dataloaders/datasets/RandAug.py",
+        "sha256": "1b7d4344ec2e0b8f8187277b4ad9bd2c7ff171925098c6f35ac5983577228168",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/dataloaders/datasets/RandAug.py"
+      },
+      "third_party/SimRegMatch/main.py": {
+        "stored_path": "shared/third_party/SimRegMatch/main.py",
+        "sha256": "7e0e54e58de929738f3c572f800e961775b4d5b9731be43dfe266de7e8a11b76",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/main.py"
+      },
+      "third_party/SimRegMatch/models/__init__.py": {
+        "stored_path": "shared/third_party/SimRegMatch/models/__init__.py",
+        "sha256": "a4617337c108f333e03b6781d40211f848b846fc82741468435d325317d69ebe",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/models/__init__.py"
+      },
+      "third_party/SimRegMatch/models/dinov2_proposed.py": {
+        "stored_path": "shared/third_party/SimRegMatch/models/dinov2_proposed.py",
+        "sha256": "682acc547efa37daaceac6ec609834a0e4ac5a0d8bb7812783b13982e7eefc87",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/models/dinov2_proposed.py"
+      },
+      "third_party/SimRegMatch/models/resnet_proposed.py": {
+        "stored_path": "shared/third_party/SimRegMatch/models/resnet_proposed.py",
+        "sha256": "396f1dd61f5dc2e601f9b0827220819a59668207b4a38063e4b0402fb3000bdb",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/models/resnet_proposed.py"
+      },
+      "third_party/SimRegMatch/tasks/SimRegMatchTrainer.py": {
+        "stored_path": "shared/third_party/SimRegMatch/tasks/SimRegMatchTrainer.py",
+        "sha256": "c3a0096388a13f131fdbafd09f306ec51a8816d4e9ec0a65a9bbedfa647d05b0",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/tasks/SimRegMatchTrainer.py"
+      },
+      "third_party/SimRegMatch/utils/args.py": {
+        "stored_path": "shared/third_party/SimRegMatch/utils/args.py",
+        "sha256": "f53b75841719d8d88ad9f75b169f0b9b00cf14184aba22f3e6affbf16d3b59d4",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/utils/args.py"
+      },
+      "third_party/SimRegMatch/utils/mypath.py": {
+        "stored_path": "shared/third_party/SimRegMatch/utils/mypath.py",
+        "sha256": "f3b6000225b9b1fc9079925bbdd9482747af8034f19a154770fd01e45cf61188",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/utils/mypath.py"
+      },
+      "third_party/SimRegMatch/utils/saver.py": {
+        "stored_path": "shared/third_party/SimRegMatch/utils/saver.py",
+        "sha256": "0c703ae488904fadf486e0e77bd8b9ab1bed91f423c867e04bbe81935d5d5084",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/utils/saver.py"
+      },
+      "third_party/SimRegMatch/utils/tqdm_config.py": {
+        "stored_path": "shared/third_party/SimRegMatch/utils/tqdm_config.py",
+        "sha256": "8fc788f9f5b68abe2c97314ec737e1a9732b4c7da04e3fa7863b1571ed38c9ef",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/third_party/SimRegMatch/utils/tqdm_config.py"
+      },
+      "train.py": {
+        "stored_path": "shared/train.py",
+        "sha256": "5fdca72d3daad32c9ee4a3b9d261358073509c8fc90b36b6bc4811dd07f3e4fd",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/train.py"
+      },
+      "training/__init__.py": {
+        "stored_path": "shared/training/__init__.py",
+        "sha256": "7dd798807ab00349f9e5d27d9f11f0336afcc2d2ad95993b73aac5b3edc9a983",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/training/__init__.py"
+      },
+      "training/probe_filter.py": {
+        "stored_path": "variants/hpl_reorient_imdb_gpu02/training/probe_filter.py",
+        "sha256": "90098295d9f617bc442d3aa0f64f01854c769b17e10f03f2425b13cf9be487c8",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/training/probe_filter.py"
+      },
+      "training/train.py": {
+        "stored_path": "variants/hpl_reorient_imdb_gpu02/training/train.py",
+        "sha256": "affaa31cb477d452b972342bfaabd31ae595e35261fa295e0adec672c6bcb74e",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/training/train.py"
+      },
+      "training/uniform.py": {
+        "stored_path": "shared/training/uniform.py",
+        "sha256": "9daeabade9debb9f6a5545474d7173f10597afe05ac625335db26e77a0fd6529",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/training/uniform.py"
+      },
+      "uniform.py": {
+        "stored_path": "shared/uniform.py",
+        "sha256": "8e98c800bcc6ea8629329f1da4d17254dfe5640c8f4ee24a34b09ad866b75163",
+        "host": "gpu05",
+        "source_path": "/nobackup/enzez/simregmatch_reorient_migrated_from_olvi_20260915/source/uniform.py"
+      }
+    }
+  }
+}

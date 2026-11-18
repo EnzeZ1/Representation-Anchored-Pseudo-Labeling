@@ -1,0 +1,335 @@
+diff --git a/semilearn/core/algorithmbase.py b/semilearn/core/algorithmbase.py
+index 04ba765..93720ea 100644
+--- a/semilearn/core/algorithmbase.py
++++ b/semilearn/core/algorithmbase.py
+@@ -88,6 +88,7 @@ class AlgorithmBase:
+         self.it = 0
+         self.start_epoch = 0
+         self.best_eval_mae, self.best_it = float("inf"), 0
++        self.benchmark_history = []
+         self.bn_controller = Bn_Controller()
+         self.net_builder = net_builder
+         self.ema = None
+@@ -261,8 +262,14 @@ class AlgorithmBase:
+             self.register_hook(AimHook(), None, "LOWEST")
+ 
+     def set_scaler(self, input_range=(0, 1), output_range=(0, 1)):
+-        scaler = TorchMinMaxScaler(output_range=output_range)
+-        scaler.fit(torch.tensor(input_range))
++        if getattr(self.args, 'benchmark_manifest', None):
++            from baselines.utkface_data import BenchmarkContext
++            import os
++            context = BenchmarkContext(os.environ['UTKFACE_BENCHMARK_ROOT'], self.args.data_dir, self.args.benchmark_manifest)
++            scaler = TorchStandardScaler(context.mean, context.std)
++        else:
++            scaler = TorchMinMaxScaler(output_range=output_range)
++            scaler.fit(torch.tensor(input_range))
+         for dataset in self.dataset_dict.values():
+             if dataset is None:
+                 continue
+@@ -445,6 +452,11 @@ class AlgorithmBase:
+             "input_range": self.input_range,
+             "output_range": self.output_range,
+         }
++        if getattr(self.args, 'benchmark_manifest', None):
++            save_dict.update({
++                "label_scaler": {"mean": self.scaler.mean, "std": self.scaler.std},
++                "benchmark_config": vars(self.args),
++            })
+ 
+         if self.scheduler is not None:
+             # Using a scheduler, so save its state dict
+diff --git a/semilearn/core/hooks/evaluation.py b/semilearn/core/hooks/evaluation.py
+index 66e2f71..81df487 100644
+--- a/semilearn/core/hooks/evaluation.py
++++ b/semilearn/core/hooks/evaluation.py
+@@ -23,6 +23,13 @@ class EvaluationHook(Hook):
+             if algorithm.log_dict["eval/mae"] < algorithm.best_eval_mae:
+                 algorithm.best_eval_mae = algorithm.log_dict["eval/mae"]
+                 algorithm.best_it = algorithm.it
++            if getattr(algorithm.args, 'benchmark_manifest', None):
++                algorithm.benchmark_history.append({
++                    'epoch': algorithm.it + 1, 'training_loss': algorithm.log_dict.get('train/total_loss', ''),
++                    'validation_mae': algorithm.log_dict['eval/mae'],
++                    'validation_r2': algorithm.log_dict.get('eval/r2', ''),
++                    'learning_rate': algorithm.optimizer.param_groups[0]['lr'],
++                    'best_so_far': int(algorithm.it == algorithm.best_it), 'elapsed_seconds': ''})
+ 
+     def after_run(self, algorithm):
+         if not algorithm.args.multiprocessing_distributed or (
+@@ -36,6 +43,8 @@ class EvaluationHook(Hook):
+             # load the best model and evaluate on test dataset
+             best_model_path = os.path.join(algorithm.args.save_dir, algorithm.args.save_name, "model_best.pth")
+             algorithm.load_model(best_model_path)
+-            test_dict = algorithm.evaluate("test")
++            test_dict = algorithm.evaluate("test", return_logits=True)
+             results_dict["test/best_mae"] = test_dict["test/mae"]
++            results_dict["test/r2"] = test_dict["test/r2"]
++            algorithm.test_predictions = test_dict.pop("test/logits")
+         algorithm.results_dict = results_dict
+diff --git a/semilearn/core/utils/build.py b/semilearn/core/utils/build.py
+index df75a52..d722e60 100644
+--- a/semilearn/core/utils/build.py
++++ b/semilearn/core/utils/build.py
+@@ -14,6 +14,7 @@ from torch.utils.data import DataLoader
+ 
+ from semilearn.datasets import get_collactor, name2sampler
+ from semilearn.nets.utils import param_groups_layer_decay, param_groups_weight_decay
++from data_processing.utkface_protocol import dataloader_generator, dataloader_seed, seed_dataloader_worker
+ 
+ 
+ def get_net_builder(net_name, from_name: bool):
+@@ -145,6 +146,7 @@ def get_data_loader(
+     collact_fn = get_collactor(args, args.net)
+ 
+     if data_sampler is None:
++        eval_role = 'test' if getattr(dset, 'split', None) == 'test' else 'validation'
+         return DataLoader(
+             dset,
+             batch_size=batch_size,
+@@ -153,6 +155,8 @@ def get_data_loader(
+             num_workers=num_workers,
+             drop_last=drop_last,
+             pin_memory=pin_memory,
++            worker_init_fn=seed_dataloader_worker if getattr(args, 'benchmark_manifest', None) else None,
++            generator=dataloader_generator(args.seed, eval_role if not shuffle else 'labeled') if getattr(args, 'benchmark_manifest', None) else None,
+         )
+ 
+     if isinstance(data_sampler, str):
+@@ -170,6 +174,7 @@ def get_data_loader(
+ 
+         num_samples = per_epoch_steps * batch_size * num_replicas
+ 
++        role = 'unlabeled' if getattr(dset, 'unlabeled', False) else 'labeled'
+         return DataLoader(
+             dset,
+             batch_size=batch_size,
+@@ -177,8 +182,10 @@ def get_data_loader(
+             num_workers=num_workers,
+             collate_fn=collact_fn,
+             pin_memory=pin_memory,
+-            sampler=data_sampler(dset, num_replicas=num_replicas, rank=rank, num_samples=num_samples),
+-            generator=generator,
++            sampler=data_sampler(dset, num_replicas=num_replicas, rank=rank, num_samples=num_samples,
++                                 seed=dataloader_seed(args.seed, role) if getattr(args, 'benchmark_manifest', None) else 0),
++            generator=dataloader_generator(args.seed, role) if getattr(args, 'benchmark_manifest', None) else generator,
++            worker_init_fn=seed_dataloader_worker if getattr(args, 'benchmark_manifest', None) else None,
+             drop_last=drop_last,
+         )
+ 
+diff --git a/semilearn/core/utils/misc.py b/semilearn/core/utils/misc.py
+index 39beaed..38000b4 100644
+--- a/semilearn/core/utils/misc.py
++++ b/semilearn/core/utils/misc.py
+@@ -206,3 +206,15 @@ class TorchMinMaxScaler:
+         tensor.sub_(self._output_min).div_(self._output_scale)
+         tensor.mul_(self._input_scale).add_(self._input_min)
+         return tensor
++
++
++class TorchStandardScaler:
++    def __init__(self, mean, std):
++        self.mean = float(mean)
++        self.std = float(std)
++
++    def transform(self, tensor):
++        return tensor.sub_(self.mean).div_(self.std)
++
++    def inverse_transform(self, tensor):
++        return tensor.mul_(self.std).add_(self.mean)
+diff --git a/semilearn/datasets/cv_datasets/get_dataset.py b/semilearn/datasets/cv_datasets/get_dataset.py
+index 58871b5..f2256d4 100644
+--- a/semilearn/datasets/cv_datasets/get_dataset.py
++++ b/semilearn/datasets/cv_datasets/get_dataset.py
+@@ -29,6 +29,13 @@ def get_cv_dataset(args, alg, dataset_name, num_labels, data_dir="./data", inclu
+                 - test dataset
+     """
+ 
++    if getattr(args, 'benchmark_manifest', None):
++        import os
++        from baselines.utkface_data import BenchmarkContext, RankUpDataset
++        context = BenchmarkContext(os.environ['UTKFACE_BENCHMARK_ROOT'], data_dir, args.benchmark_manifest)
++        return (RankUpDataset(context, 'labeled'), RankUpDataset(context, 'unlabeled', unlabeled=True),
++                RankUpDataset(context, 'validation'), RankUpDataset(context, 'test'))
++
+     dataset = getattr(cv_datasets, dataset_name.upper())
+ 
+     train_dataset = dataset(data_dir, split="train", download=True)
+diff --git a/semilearn/datasets/samplers/sampler.py b/semilearn/datasets/samplers/sampler.py
+index 662bddb..77aa68a 100644
+--- a/semilearn/datasets/samplers/sampler.py
++++ b/semilearn/datasets/samplers/sampler.py
+@@ -25,7 +25,7 @@ class DistributedSampler(Sampler):
+         rank (optional): Rank of the current process within num_replicas.
+     """
+ 
+-    def __init__(self, dataset, num_replicas=None, rank=None, num_samples=None, **kwargs):
++    def __init__(self, dataset, num_replicas=None, rank=None, num_samples=None, seed=0, **kwargs):
+         if not isinstance(num_samples, int) or num_samples <= 0:
+             raise ValueError("num_samples should be a positive integer " "value, but got num_samples={}".format(num_samples))
+ 
+@@ -43,6 +43,7 @@ class DistributedSampler(Sampler):
+         self.num_replicas = num_replicas
+         self.rank = rank
+         self.epoch = 0
++        self.seed = seed
+ 
+         self.total_size = num_samples
+         assert num_samples % self.num_replicas == 0, f"{num_samples} samples cant" f"be evenly distributed among {num_replicas} devices."
+@@ -51,7 +52,7 @@ class DistributedSampler(Sampler):
+     def __iter__(self):
+         # deterministically shuffle based on epoch
+         g = torch.Generator()
+-        g.manual_seed(self.epoch)
++        g.manual_seed(self.seed + self.epoch)
+ 
+         n = len(self.dataset)
+         n_repeats = self.total_size // n
+diff --git a/semilearn/nets/utils.py b/semilearn/nets/utils.py
+index 352a02e..fad038f 100644
+--- a/semilearn/nets/utils.py
++++ b/semilearn/nets/utils.py
+@@ -22,7 +22,7 @@ def load_checkpoint(model, checkpoint_path):
+     else:
+         checkpoint = load_state_dict_from_url(checkpoint_path, map_location="cpu")
+ 
+-    orig_state_dict = checkpoint["model"]
++    orig_state_dict = checkpoint.get("model", checkpoint)
+     new_state_dict = {}
+     for key, item in orig_state_dict.items():
+         if key.startswith("module"):
+diff --git a/train.py b/train.py
+index 21ac336..cdef297 100644
+--- a/train.py
++++ b/train.py
+@@ -7,6 +7,7 @@ import random
+ import logging
+ import warnings
+ import argparse
++import sys
+ import numpy as np
+ 
+ import torch
+@@ -135,9 +136,27 @@ def get_config():
+ 
+     # config file
+     parser.add_argument("--c", type=str, default="")
++    parser.add_argument('--benchmark_manifest', type=str, default=None)
++    parser.add_argument('--benchmark_output_dir', type=str, default=None)
++    parser.add_argument('--benchmark_epochs', type=int, default=None)
+ 
+     args = parser.parse_args()
+     over_write_args_from_file(args, args.c)
++    if args.benchmark_manifest:
++        args.seed = int(sys.argv[sys.argv.index('--seed') + 1])
++        output = os.path.abspath(args.benchmark_output_dir)
++        args.save_dir, args.save_name = os.path.dirname(output), os.path.basename(output)
++        args.resume, args.overwrite = False, True
++        args.net, args.net_from_name = 'resnet50', False
++        args.use_pretrain = True
++        args.pretrain_path = 'https://download.pytorch.org/models/resnet50-0676ba61.pth'
++        args.img_size = 224
++        args.num_labels = 948
++        args.include_lb_to_ulb = False
++        if args.benchmark_epochs is not None:
++            args.epoch = args.benchmark_epochs
++            args.num_train_iter = 1024 * args.benchmark_epochs
++            args.num_eval_iter = 1024
+ 
+     # add regression algorithm specific parameters
+     for argument in name2alg[args.algorithm].get_argument():
+@@ -150,6 +169,21 @@ def get_config():
+ 
+     args = parser.parse_args()
+     over_write_args_from_file(args, args.c)
++    if args.benchmark_manifest:
++        args.seed = int(sys.argv[sys.argv.index('--seed') + 1])
++        output = os.path.abspath(args.benchmark_output_dir)
++        args.save_dir, args.save_name = os.path.dirname(output), os.path.basename(output)
++        args.resume, args.overwrite = False, True
++        args.net, args.net_from_name = 'resnet50', False
++        args.use_pretrain = True
++        args.pretrain_path = 'https://download.pytorch.org/models/resnet50-0676ba61.pth'
++        args.img_size = 224
++        args.num_labels = 948
++        args.include_lb_to_ulb = False
++        if args.benchmark_epochs is not None:
++            args.epoch = args.benchmark_epochs
++            args.num_train_iter = 1024 * args.benchmark_epochs
++            args.num_eval_iter = 1024
+     return args
+ 
+ 
+@@ -167,7 +201,11 @@ def main(args):
+ 
+     # handle model saving and overwriting logic
+     if os.path.exists(save_path):
+-        if args.overwrite and not args.resume:
++        if args.benchmark_manifest:
++            # The queue creates the directory first so its persistent run.log
++            # survives official RankUp logger initialization and failed retries.
++            pass
++        elif args.overwrite and not args.resume:
+             import shutil
+ 
+             shutil.rmtree(save_path)
+@@ -290,6 +328,59 @@ def main_worker(gpu, ngpus_per_node, args):
+     logger.info("Starting model training")
+     model.train()
+ 
++    if args.benchmark_manifest:
++        from baselines.benchmark_io import checkpoint_size, write_history, write_json, write_npz
++        from baselines.utkface_data import BenchmarkContext
++        from data_processing.utkface_protocol import loader_metadata, runtime_metadata
++        import shutil, time as _time
++        context = BenchmarkContext(os.environ['UTKFACE_BENCHMARK_ROOT'], args.data_dir, args.benchmark_manifest)
++        output = os.path.join(args.save_dir, args.save_name)
++        source = os.path.join(output, 'model_best.pth')
++        stable = os.path.join(output, 'best.pt')
++        if os.path.abspath(source) != os.path.abspath(stable): shutil.copy2(source, stable)
++        checkpoint = torch.load(stable, map_location='cpu', weights_only=False)
++        assert checkpoint['best_it'] == model.best_it
++        assert checkpoint['best_eval_mae'] == model.best_eval_mae
++        test = model.results_dict
++        predictions = np.asarray(model.test_predictions)
++        indices = np.asarray(context.indices('test'), dtype=np.int64)
++        targets = np.asarray([context.record(i)['age'] for i in indices], dtype=np.float32)
++        loaders = {
++            'labeled': loader_metadata(seed=args.seed, role='labeled', batch_size=args.batch_size,
++                num_workers=args.num_workers, shuffle=False, drop_last=True,
++                sampler=args.train_sampler, pin_memory=False),
++            'unlabeled': loader_metadata(seed=args.seed, role='unlabeled', batch_size=int(args.batch_size * args.uratio),
++                num_workers=2 * args.num_workers, shuffle=False, drop_last=True,
++                sampler=args.train_sampler, pin_memory=False),
++            'validation': loader_metadata(seed=args.seed, role='validation', batch_size=args.eval_batch_size,
++                num_workers=args.num_workers, shuffle=False, drop_last=False,
++                sampler='SequentialSampler', pin_memory=False),
++            'test': loader_metadata(seed=args.seed, role='test', batch_size=args.eval_batch_size,
++                num_workers=args.num_workers, shuffle=False, drop_last=False,
++                sampler='SequentialSampler', pin_memory=False),
++        }
++        write_npz(os.path.join(output, 'test_predictions.npz'), cohort_indices=indices,
++                  relative_paths=np.asarray([context.record(i)['path'] for i in indices]),
++                  predictions_years=predictions, targets_years=targets)
++        write_npz(os.path.join(output, 'analysis_snapshot.npz'), cohort_indices=np.asarray([], dtype=np.int64),
++                  note=np.asarray(['post-hoc diagnostics deferred']))
++        history = model.benchmark_history
++        write_history(os.path.join(output, 'history.csv'), history)
++        write_json(os.path.join(output, 'config.json'), vars(args))
++        write_json(os.path.join(output, 'metrics.json'), {'best_epoch': model.best_it,
++                   'validation_mae': model.best_eval_mae, 'test_mae': test['test/best_mae'],
++                   'test_r2': test['test/r2']})
++        write_json(os.path.join(output, 'metadata.json'), {
++            'method': 'rankup', 'status': 'complete', 'cohort_sha256': context.cohort['cohort_sha256'],
++            'manifest_path': str(context.manifest_path), 'checkpoint_reloaded': True,
++            'test_evaluations': 1, 'test_used_for_selection': False, 'best_epoch': model.best_it,
++            'validation_mae': model.best_eval_mae, 'checkpoint_size_bytes': checkpoint_size(stable),
++            'runtime': runtime_metadata(), 'peak_allocated_cuda_bytes': torch.cuda.max_memory_allocated(),
++            'peak_reserved_cuda_bytes': torch.cuda.max_memory_reserved(),
++            'model': 'ImageNet-pretrained ResNet-50', 'native_views': 'weak+strong',
++            'loaders': loaders, **context.protocol_metadata(),
++        })
++
+     # print validation (and test results)
+     for key, item in model.results_dict.items():
+         logger.info(f"Model result - {key} : {item}")
