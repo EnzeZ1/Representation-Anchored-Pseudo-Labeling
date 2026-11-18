@@ -1,7 +1,9 @@
-# Codex — active task on this branch
+# Codex — current request: inspect running experiment results
 
-**Read [CODEX_2080TI_CAMPAIGNS.md](./CODEX_2080TI_CAMPAIGNS.md) completely before editing or launching.** It contains the active, user-approved task: launch 144 UTKFace ratio/frequency/placement runs plus 48 supervised-only controls via SSH to enzez@instgpu-00.wisc.edu through enzez@instgpu-04.wisc.edu, using up to 24 + 12 idle RTX 2080 Ti GPUs and reserving 4 devices if available.
+The active user request is **check existing experiment results now**. Read [CODEX_CHECK_RUNNING_RESULTS.md](./CODEX_CHECK_RUNNING_RESULTS.md) completely. Connect to the existing Campaign A and B machines via the verified `.cs.wisc.edu` SSH hosts and inspect queue state, completed artifacts, per-seed MAE/R2, and paired comparisons. Return actual numerical results when supported.
 
-The file `CODEX_PAPER_ONLY_CLEANUP.md` in this repository documents an earlier, separate release task. **Do not perform paper-release cleanup as part of the active 2080Ti task.** The RSNA 48-run experiment on gpu04 is another separate running campaign: do not stop it, overwrite its files or compete with its GPUs.
+**READ-ONLY RESULT CHECK ONLY**: the two previously launched training queues must keep running; do NOT rerun, stop, modify, retry, or change any training configurations, tests or checkpoints. Do not perform new held-out-test inference. Do not publish private results to GitHub. The historical RSNA experiment on gpu04 is independent and must not be interrupted.
 
-Create a fresh separate worktree/source path. Perform complete five-host preflight, check actual GPU occupancy and VRAM, then start only scientifically valid workloads. Preserve all existing research code, results, manifests and source profiles. Never claim a job is running without verifying a live PID bound to an idle physical GPU. Never publish private dataset or unpublished result data. Follow the full task spec for exact configuration, validation, logs, and status reports.
+Prior implementation/launch specification: [CODEX_2080TI_CAMPAIGNS.md](./CODEX_2080TI_CAMPAIGNS.md). The earlier paper-only cleanup instructions in the repository are not part of this task.
+
+Codex's previous job report is only historical evidence; verify all current PIDs, run completion counts and metrics directly on the hosts before asserting a status. A GitHub task file does not itself start a Codex session.
