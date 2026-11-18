@@ -1,0 +1,567 @@
+import argparse
+import json
+import sys
+import math
+import os
+import time
+import random
+import datetime
+import tqdm
+
+import pandas as pd
+import numpy as np
+import sklearn.metrics
+import torch
+import torch.nn.functional as F
+import matplotlib.pyplot as plt
+import torch.backends.cudnn as cudnn
+import higher
+from torch.utils.data import DataLoader, RandomSampler
+
+import utils
+from models import resnet50_unc, UncertaintyLearner
+from datasets.utkface import get_utkface
+from baselines.utkface_data import BenchmarkContext, TupleDataset
+from baselines.dinov2_hpl import DINOv2HPLRegressor, MODEL_NAME as DINOV2_MODEL_NAME, WEIGHT_IDENTIFIER as DINOV2_WEIGHT_IDENTIFIER, WEIGHT_URL as DINOV2_WEIGHT_URL
+from baselines.dinov3_convnext_hpl import DINOv3ConvNextTinyHPLRegressor, MODEL_IDENTIFIER as DINOV3_MODEL_IDENTIFIER, MODEL_REVISION as DINOV3_MODEL_REVISION, WEIGHT_SHA256 as DINOV3_WEIGHT_SHA256, FEATURE_DIMENSION as DINOV3_FEATURE_DIMENSION
+from baselines.benchmark_io import checkpoint_size, write_history, write_json, write_npz
+from data_processing.utkface_protocol import dataloader_generator, seed_dataloader_worker, loader_metadata, runtime_metadata
+
+
+def arg_parse():
+    parser = argparse.ArgumentParser(description='PyTorch for Heteroscedastic-Pseudo-Labels')
+
+    parser.add_argument("--data_dir", type=str, default="./data",
+                        help='data directory')
+    parser.add_argument("--output_dir", type=str, default="./result",
+                        help='Directory to output the result')
+
+    parser.add_argument("--pretrained", default=True,
+                        help='use pretrained model')
+    parser.add_argument("--weights", default=None,
+                        help='path to load specific weights')
+    parser.add_argument("--run_test", default=True,
+                        help='whether to run test after training')
+    parser.add_argument("--test_only", default=False,
+                        help='only run test without training')
+    
+    parser.add_argument("--lr", type=float, default=1e-4,
+                        help="learning rate for feature extractor")
+    parser.add_argument('--fc_lr', type=float, default=1e-3,
+                        help='learning rate for regression head')
+    parser.add_argument('--unc_lr', type=float, default=1e-4,
+                        help='learning rate for uncertainty-learner')
+    parser.add_argument("--weight_decay", type=float, default=1e-3)
+    parser.add_argument("--lr_step_period", type=int, default=10,
+                        help='epochs between each lr decay')
+    parser.add_argument("--num_epochs", type=int, default=30,
+                        help='number of total epochs to run')   
+    parser.add_argument("--batch_size", type=int, default=32,
+                        help='mini-batch size')
+    
+    parser.add_argument("--seed", type=int, default=0, help='manual seed')
+    
+    parser.add_argument('--gpu', default='7', type=str,
+                        help='id(s) for CUDA_VISIBLE_DEVICES')
+    parser.add_argument("--num_workers", type=int, default=4,
+                        help='dataloader threads')
+    
+    parser.add_argument("--labeled_ratio", type=float, default=0.1,
+                        help='ratio of labeled data used in training')
+    parser.add_argument("--y_mean", type=float, default=35,
+                        help='mean of training labels (for normalization)')
+    parser.add_argument("--y_std", type=float, default=11,
+                        help='std of training labels (for normalization)')
+    parser.add_argument("--ssl_mult", type=int, default=2,
+                        help='repeat labeled data by ssl_mult times')
+    parser.add_argument("--w_ulb", type=float, default=10,
+                        help='weight for unlabeled loss')
+    parser.add_argument("--drp_p", type=float, default=0.05,
+                        help='dropout rate to use in training')
+    parser.add_argument("--print_freq", type=int, default=100,
+                        help='print training loss every N iterations')
+    parser.add_argument("--lambda2", type=float, default=0.1,
+                        help='Weight for the regularization term')
+    parser.add_argument('--benchmark_manifest', type=str, default=None)
+    parser.add_argument('--benchmark_output_dir', type=str, default=None)
+    parser.add_argument('--benchmark_epochs', type=int, default=None)
+    parser.add_argument('--benchmark_backbone', choices=['resnet50', 'dinov2', 'dinov3_convnext_tiny'], default='resnet50')
+    parser.add_argument('--training_schedule', choices=['original_hpl', 'label_recycling'], default='original_hpl')
+    parser.add_argument('--benchmark_method', choices=['hpl', 'uniform'], default='hpl')
+    parser.add_argument('--anchor_interval', type=int, default=1)
+    parser.add_argument('--diagnostic_epochs', type=str, default='1,5,10,20,30')
+    parser.add_argument('--benchmark_preflight', action='store_true')
+    parser.add_argument('--timing_steps', type=int, default=None,
+                        help='cap optimizer steps for a short, non-formal timing preflight')
+    
+    args = parser.parse_args()
+    return args
+
+args = arg_parse()
+if args.benchmark_output_dir:
+    args.output_dir = args.benchmark_output_dir
+if args.benchmark_epochs is not None:
+    args.num_epochs = args.benchmark_epochs
+
+if args.seed is None:
+    args.seed = random.randint(1, 10000)
+else:
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    torch.cuda.manual_seed(args.seed)
+    cudnn.benchmark = False
+    cudnn.deterministic = True
+
+# The benchmark launcher exclusively controls the physical GPU mapping.  The
+# restricted process sees that assigned device as local cuda:0.
+if not args.benchmark_manifest:
+    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+use_cuda = torch.cuda.is_available()
+
+
+def print_args(args):
+    print("==========       CONFIG      =============")
+    for arg, content in args.__dict__.items():
+        print("{}:{}".format(arg, content))
+
+
+def main():
+    if not os.path.isdir(args.output_dir):
+        os.makedirs(args.output_dir)
+    
+    sys.stdout = utils.Logger(
+        os.path.join(args.output_dir, 'log_train-%s.txt' % time.strftime("%Y-%m-%d-%H-%M-%S")))
+    print_args(args)    
+    bkup_tmstmp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    # Data
+    print('=====> Preparing data...')
+    benchmark = bool(args.benchmark_manifest)
+    if benchmark:
+        context = BenchmarkContext(os.environ['UTKFACE_BENCHMARK_ROOT'], args.data_dir, args.benchmark_manifest)
+        args.y_mean, args.y_std = context.mean, context.std
+        # The intervention recycles the true labeled loader.  Original HPL's
+        # dataset-level ssl_mult duplication remains available only on the
+        # unmodified original_hpl schedule.
+        labeled_repeat = 1 if args.training_schedule == 'label_recycling' else args.ssl_mult
+        dataset_train_lab = TupleDataset(context, 'labeled', 'labeled', repeat=labeled_repeat)
+        dataset_train_unlab = TupleDataset(context, 'unlabeled', 'weak_strong')
+        dataset_val = TupleDataset(context, 'validation', 'evaluation')
+        dataset_test = TupleDataset(context, 'test', 'evaluation')
+    else:
+        csv_path = os.path.join(args.data_dir, f"utkface.csv")
+        dataset_train_lab, dataset_train_unlab, dataset_val, dataset_test = get_utkface(
+            csv_path, args.data_dir, labeled_ratio=args.labeled_ratio, ssl_mult=args.ssl_mult)
+
+    loader_performance = dict(
+        num_workers=args.num_workers,
+        pin_memory=True,
+        persistent_workers=args.num_workers > 0,
+    )
+    dataloader_lb = DataLoader(
+        dataset_train_lab, batch_size=args.batch_size, shuffle=True, drop_last=True, **loader_performance,
+        worker_init_fn=seed_dataloader_worker if benchmark else None,
+        generator=dataloader_generator(args.seed, 'labeled') if benchmark else None)
+    dataloader_unlb = DataLoader(
+        dataset_train_unlab, batch_size=args.batch_size, shuffle=True, drop_last=True, **loader_performance,
+        worker_init_fn=seed_dataloader_worker if benchmark else None,
+        generator=dataloader_generator(args.seed, 'unlabeled') if benchmark else None)
+    dataloader_val = DataLoader(
+        dataset_val, batch_size=args.batch_size, shuffle=False, drop_last=False, **loader_performance,
+        worker_init_fn=seed_dataloader_worker if benchmark else None,
+        generator=dataloader_generator(args.seed, 'validation') if benchmark else None)
+    dataloader_test = DataLoader(
+        dataset_test, batch_size=args.batch_size, shuffle=False, drop_last=False, **loader_performance,
+        worker_init_fn=seed_dataloader_worker if benchmark else None,
+        generator=dataloader_generator(args.seed, 'test') if benchmark else None)
+    generator = torch.Generator()
+    generator.manual_seed(args.seed + 55000 if benchmark else 2025)
+    dataloader_unc = DataLoader(dataset_train_lab, batch_size=args.batch_size, **loader_performance,
+        sampler=RandomSampler(dataset_train_lab, generator=generator), shuffle=False, drop_last=True,
+        worker_init_fn=seed_dataloader_worker if benchmark else None)
+    dataloader_meta = DataLoader(dataset_train_lab, batch_size=args.batch_size, **loader_performance,
+        shuffle=True, drop_last=True, worker_init_fn=seed_dataloader_worker if benchmark else None,
+        generator=torch.Generator().manual_seed(args.seed + 57000) if benchmark else None)
+    benchmark_loaders = ({
+        'labeled': loader_metadata(seed=args.seed, role='labeled', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=True, drop_last=True, sampler='RandomSampler', pin_memory=True),
+        'unlabeled': loader_metadata(seed=args.seed, role='unlabeled', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=True, drop_last=True, sampler='RandomSampler', pin_memory=True),
+        'validation': loader_metadata(seed=args.seed, role='validation', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=False, drop_last=False, sampler='SequentialSampler', pin_memory=True),
+        'test': loader_metadata(seed=args.seed, role='test', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=False, drop_last=False, sampler='SequentialSampler', pin_memory=True),
+        'uncertainty': loader_metadata(seed=args.seed, role='uncertainty', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=False, drop_last=True, sampler='RandomSampler', pin_memory=True),
+    } if benchmark else None)
+
+    # Model
+    model = (DINOv2HPLRegressor(dropout=args.drp_p) if benchmark and args.benchmark_backbone == 'dinov2'
+             else DINOv3ConvNextTinyHPLRegressor(dropout=args.drp_p) if benchmark and args.benchmark_backbone == 'dinov3_convnext_tiny'
+             else resnet50_unc(pretrained=args.pretrained, drp_p=args.drp_p)).cuda()
+    unc_learner = UncertaintyLearner(input_dim=2, output_dim=1).cuda()
+
+    labeled_loader_length = len(dataloader_lb)
+    unlabeled_loader_length = len(dataloader_unlb)
+    optimizer_steps_per_epoch = (max(labeled_loader_length, unlabeled_loader_length)
+                                 if args.training_schedule == 'label_recycling'
+                                 else labeled_loader_length)
+    labeled_traversals_per_epoch = optimizer_steps_per_epoch / labeled_loader_length
+    if benchmark and args.benchmark_preflight:
+        anchor_steps = (optimizer_steps_per_epoch + args.anchor_interval - 1) // args.anchor_interval
+        preflight_payload = {
+            'status': 'pass', 'method': args.benchmark_method,
+            'schedule_intervention': args.training_schedule,
+            'label_recycling': args.training_schedule == 'label_recycling',
+            'hpl_uncertainty_learner_active': isinstance(unc_learner, UncertaintyLearner),
+            'hpl_weight_formula': 'exp(-uncertainty)/2',
+            'uniform_weighting': args.benchmark_method == 'uniform', 'rapl_probe_weighting': False,
+            'supervised_branch': 'clean_labeled_mse', 'strong_labeled_anchor': False,
+            'labeled_loader_length': labeled_loader_length,
+            'unlabeled_loader_length': unlabeled_loader_length,
+            'optimizer_steps_per_epoch': optimizer_steps_per_epoch,
+            'labeled_traversals_per_epoch': anchor_steps / labeled_loader_length,
+            'labeled_loader_cycled': optimizer_steps_per_epoch > labeled_loader_length,
+            'unlabeled_weighting': ('uniform_r_equals_1' if args.benchmark_method == 'uniform' else 'hpl_heteroscedastic_exp_neg_uncertainty_over_2'),
+            'anchor_interval': args.anchor_interval, 'supervised_anchor_steps_per_epoch': anchor_steps,
+            'labeled_iterator_advances_only_on_anchor': True, 'labeled_augmentation': 'clean_only',
+            'reference_subset': 'fixed_first_validation_batch_analysis_only',
+            'w_ulb': args.w_ulb, 'lambda2': args.lambda2,
+            'backbone': args.benchmark_backbone,
+            'dataset': context.manifest['protocol_version'],
+        }
+        write_json(os.path.join(args.output_dir, 'preflight.json'), preflight_payload)
+        print(json.dumps(preflight_payload, sort_keys=True))
+        return
+
+    # Load the pre_trained weights
+    if args.weights is not None:
+        checkpoint = torch.load(args.weights)
+        if checkpoint.get('state_dict'):
+            model.load_state_dict(checkpoint['state_dict'])
+        else:
+            assert 1==2, "state dict not found"
+
+    classifier_params = list(map(id, model.fc_m.parameters()))
+    feat_params = filter(lambda p: id(p) not in classifier_params, model.parameters())
+
+    optim_feat = torch.optim.Adam(feat_params, lr=args.lr, weight_decay=args.weight_decay)
+    optim_fc = torch.optim.Adam(model.fc_m.parameters(), lr=args.fc_lr, weight_decay=args.weight_decay)
+    optim_unc = torch.optim.Adam(unc_learner.parameters(), lr=args.unc_lr)
+    
+    if args.lr_step_period is None:
+        args.lr_step_period = math.inf
+    scheduler_feat = torch.optim.lr_scheduler.StepLR(optim_feat, args.lr_step_period)
+    scheduler_fc = torch.optim.lr_scheduler.StepLR(optim_fc, args.lr_step_period)
+    scheduler_unc = torch.optim.lr_scheduler.StepLR(optim_unc, args.lr_step_period)
+
+    print("Run timestamp: {}\n".format(bkup_tmstmp))
+    bestLoss = float("inf")
+    bestEpoch = None
+    history = []
+    benchmark_started = time.time()
+    if benchmark and use_cuda: torch.cuda.reset_peak_memory_stats()
+
+    if args.test_only:
+        args.num_epochs = 0
+
+    for epoch in range(0, args.num_epochs):
+        print("Epoch #{}".format(epoch), flush=True) 
+
+        start_time = time.time()
+        if use_cuda:
+            for i in range(torch.cuda.device_count()):
+                torch.cuda.reset_peak_memory_stats(i)  
+        
+        # training phase          
+        loss_tr, y_lb_pred, y_lb_true, y_ulb_true = run_epoch(model, unc_learner, dataloader_lb, dataloader_unlb, dataloader_unc, dataloader_meta, optim_feat, optim_fc, optim_unc)
+        r2_value_0 = sklearn.metrics.r2_score(y_lb_true, y_lb_pred)
+        print("Train: epoch_{}, loss_{:.4f}, r2_{:.3f}, time_{:.3f}\n".format(epoch, loss_tr, r2_value_0, time.time() - start_time))         
+        
+        scheduler_feat.step()
+        scheduler_fc.step()
+        scheduler_unc.step()
+
+        # validation phase              
+        loss_val, y_pred, y_true = run_epoch_val(model = model, dataloader = dataloader_val)
+        val_mae = sklearn.metrics.mean_absolute_error(y_true, y_pred)
+        r2_value = sklearn.metrics.r2_score(y_true, y_pred)
+        print("Validate: epoch_{}, loss_{:.4f}, r2_{:.3f}, time_{:.4f}, size_{}\n".format(epoch, loss_val, r2_value, time.time() - start_time, y_true.size))
+
+        save = {
+            'epoch': epoch,
+            'state_dict': model.state_dict(),
+            "best_model_loss": loss_val,
+            "validation_mae_years": val_mae,
+            "uncertainty_learner": unc_learner.state_dict(),
+            "optim_feat": optim_feat.state_dict(), "optim_fc": optim_fc.state_dict(), "optim_unc": optim_unc.state_dict(),
+            "scheduler_feat": scheduler_feat.state_dict(), "scheduler_fc": scheduler_fc.state_dict(), "scheduler_unc": scheduler_unc.state_dict(),
+            "mean": args.y_mean, "std": args.y_std, "config": vars(args), "loader_metadata": benchmark_loaders,
+            "backbone_metadata": ({'model_name': DINOV2_MODEL_NAME, 'weight_identifier': DINOV2_WEIGHT_IDENTIFIER,
+                                    'weight_url': DINOV2_WEIGHT_URL, 'feature_dimension': 384}
+                                   if benchmark and args.benchmark_backbone == 'dinov2' else
+                                   {'model_name': 'dinov3_convnext_tiny', 'weight_identifier': DINOV3_MODEL_IDENTIFIER, 'revision': DINOV3_MODEL_REVISION, 'checksum_sha256': DINOV3_WEIGHT_SHA256, 'feature_dimension': DINOV3_FEATURE_DIMENSION}
+                                   if benchmark and args.benchmark_backbone == 'dinov3_convnext_tiny' else {'model_name': 'resnet50'}),
+            'r2': r2_value
+        }
+        # torch.save(save, os.path.join(args.output_dir, "checkpoint.pt"))
+        
+        selection_value = val_mae if benchmark else loss_val
+        history.append({'epoch': epoch + 1, 'training_loss': loss_tr, 'validation_loss': loss_val,
+                        'validation_mae': val_mae, 'validation_r2': r2_value,
+                        'learning_rate': optim_feat.param_groups[0]['lr'],
+                        'best_so_far': int(selection_value < bestLoss),
+                        'elapsed_seconds': time.time() - start_time})
+        if selection_value < bestLoss:
+            print(f"R^2:{r2_value_0:.4f}, R^2_val:{r2_value:.4f}")
+            print("saved best because {} < {}".format(loss_val, bestLoss))
+            torch.save(save, os.path.join(args.output_dir, "best.pt"))
+            bestLoss = selection_value
+            bestEpoch = epoch
+        diagnostic_epochs = {int(value) for value in args.diagnostic_epochs.split(',') if value}
+        if benchmark and epoch + 1 in diagnostic_epochs:
+            torch.save({'epoch': epoch + 1, 'state_dict': model.state_dict(),
+                        'uncertainty_learner': unc_learner.state_dict()},
+                       os.path.join(args.output_dir, f'diagnostic_epoch_{epoch + 1}.pt'))
+    
+    checkpoint = torch.load(os.path.join(args.output_dir, "best.pt"))
+    model.load_state_dict(checkpoint['state_dict'], strict = False)
+    if benchmark:
+        unc_learner.load_state_dict(checkpoint['uncertainty_learner'])
+        assert checkpoint['epoch'] == bestEpoch
+        assert checkpoint['validation_mae_years'] == bestLoss
+    print("Best validation loss {} from epoch {}, R2 {}\n".format(checkpoint["best_model_loss"], checkpoint["epoch"], checkpoint["r2"]))
+    if args.run_test:
+        total_loss, y_pred, y_true = run_epoch_val(model, dataloader_test)
+        print("Test: {} (one clip) R2:   {:.4f}".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.r2_score(y_true, y_pred)))
+        print("Test: {} (one clip) MAE:  {:.4f}".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.mean_absolute_error(y_true, y_pred)))
+        print("Test: {} (one clip) RMSE: {:.4f}\n".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.mean_squared_error(y_true, y_pred)**0.5))
+        if benchmark:
+            test_mae = sklearn.metrics.mean_absolute_error(y_true, y_pred)
+            test_r2 = sklearn.metrics.r2_score(y_true, y_pred)
+            indices = np.asarray(context.indices('test'), dtype=np.int64)
+            write_npz(os.path.join(args.output_dir, 'test_predictions.npz'), cohort_indices=indices,
+                      relative_paths=np.asarray([context.record(i)['path'] for i in indices]),
+                      predictions_years=y_pred, targets_years=y_true)
+            write_npz(os.path.join(args.output_dir, 'analysis_snapshot.npz'),
+                      cohort_indices=np.asarray([], dtype=np.int64), note=np.asarray(['post-hoc diagnostics deferred']))
+            write_history(os.path.join(args.output_dir, 'history.csv'), history)
+            write_json(os.path.join(args.output_dir, 'config.json'), vars(args))
+            write_json(os.path.join(args.output_dir, 'metrics.json'), {'best_epoch': bestEpoch,
+                       'validation_mae': bestLoss, 'test_mae': test_mae, 'test_r2': test_r2})
+            write_json(os.path.join(args.output_dir, 'metadata.json'), {
+                'method': args.benchmark_method, 'status': 'complete', 'cohort_sha256': context.cohort['cohort_sha256'],
+                'schedule_intervention': args.training_schedule,
+                'label_recycling': args.training_schedule == 'label_recycling',
+                'labeled_loader_length': labeled_loader_length,
+                'unlabeled_loader_length': unlabeled_loader_length,
+                'optimizer_steps_per_epoch': optimizer_steps_per_epoch,
+                'labeled_traversals_per_epoch': ((optimizer_steps_per_epoch + args.anchor_interval - 1) // args.anchor_interval) / labeled_loader_length,
+                'anchor_interval': args.anchor_interval,
+                'supervised_anchor_steps_per_epoch': (optimizer_steps_per_epoch + args.anchor_interval - 1) // args.anchor_interval,
+                'labeled_iterator_advances_only_on_anchor': True,
+                'labeled_loader_cycled': optimizer_steps_per_epoch > labeled_loader_length,
+                'unlabeled_weighting': ('uniform_r_equals_1' if args.benchmark_method == 'uniform' else 'hpl_heteroscedastic_exp_neg_uncertainty_over_2'),
+                'clean_labeled_supervision': True, 'strong_labeled_anchor': False,
+                'uniform_weighting': args.benchmark_method == 'uniform', 'rapl_probe_weighting': False,
+                'labeled_augmentation': 'clean_only',
+                'reference_subset': 'fixed_first_validation_batch_analysis_only',
+                'manifest_path': str(context.manifest_path), 'checkpoint_reloaded': True,
+                'test_evaluations': 1, 'final_test_count': 1,
+                'test_used_for_selection': False, 'best_epoch': bestEpoch,
+                'validation_mae': bestLoss, 'checkpoint_size_bytes': checkpoint_size(os.path.join(args.output_dir, 'best.pt')),
+                'runtime': runtime_metadata(), 'wall_clock_seconds': time.time() - benchmark_started,
+                'peak_allocated_cuda_bytes': torch.cuda.max_memory_allocated() if use_cuda else 0,
+                'peak_reserved_cuda_bytes': torch.cuda.max_memory_reserved() if use_cuda else 0,
+                'model': (DINOV2_WEIGHT_IDENTIFIER if args.benchmark_backbone == 'dinov2' else DINOV3_MODEL_IDENTIFIER if args.benchmark_backbone == 'dinov3_convnext_tiny' else 'ImageNet-pretrained ResNet-50'),
+                'target_backbone': args.benchmark_backbone, 'probe_backbone': None,
+                'pretrained_weight_identifier': (DINOV2_WEIGHT_IDENTIFIER if args.benchmark_backbone == 'dinov2' else DINOV3_MODEL_IDENTIFIER if args.benchmark_backbone == 'dinov3_convnext_tiny' else 'torchvision.ResNet50_Weights.IMAGENET1K_V1'),
+                'pretrained_weight_url': (DINOV2_WEIGHT_URL if args.benchmark_backbone == 'dinov2' else DINOV3_MODEL_IDENTIFIER if args.benchmark_backbone == 'dinov3_convnext_tiny' else 'https://download.pytorch.org/models/resnet50-0676ba61.pth'),
+                'pretrained_weight_checksum_sha256': (DINOV3_WEIGHT_SHA256 if args.benchmark_backbone == 'dinov3_convnext_tiny' else None),
+                'native_views': 'weak+strong',
+                'loaders': benchmark_loaders, **context.protocol_metadata(),
+            })
+    
+
+def run_epoch(model, unc_learner, dataloader_lb, dataloader_unlb, dataloader_unc, dataloader_meta, optim_feat, optim_fc, optim_unc):
+    total = 0  
+    n = 0 
+
+    y_lb_true, y_lb_pred = [], []
+    y_ulb_true = []
+
+    y_std = torch.tensor(args.y_std)
+    y_mean = torch.tensor(args.y_mean)
+
+    total_itr_num = (max(len(dataloader_lb), len(dataloader_unlb))
+                     if args.training_schedule == 'label_recycling'
+                     else len(dataloader_lb))
+    if args.timing_steps is not None:
+        total_itr_num = min(total_itr_num, args.timing_steps)
+    print(f'Loop protocol: schedule={args.training_schedule} total_itr_num={total_itr_num} len(dataloader_lb)={len(dataloader_lb)} len(dataloader_unlb)={len(dataloader_unlb)} labeled_recycling={args.training_schedule != "original_hpl"}', flush=True)
+    dataloader_lb_itr = iter(dataloader_lb)
+    dataloader_unlb_itr = iter(dataloader_unlb)
+    dataloader_unc_itr = iter(dataloader_unc)
+    dataloader_meta_itr = iter(dataloader_meta)
+
+    model.train()
+    unc_learner.train()
+    torch.set_grad_enabled(True)
+    for train_iter in range(total_itr_num):
+        anchor_step = train_iter % args.anchor_interval == 0
+        if anchor_step:
+            if args.training_schedule == 'original_hpl':
+                x_lb, y_lb = next(dataloader_lb_itr)
+            else:
+                try:
+                    x_lb, y_lb = next(dataloader_lb_itr)
+                except StopIteration:
+                    dataloader_lb_itr = iter(dataloader_lb)
+                    x_lb, y_lb = next(dataloader_lb_itr)
+            y_lb_true.append(y_lb.detach())
+            x_lb, y_lb = x_lb.cuda(non_blocking=True), y_lb.cuda(non_blocking=True).float()
+            y_lb_norm = ((y_lb - y_mean) / y_std).view(-1)
+
+        try:
+            (x_ulb_weak, x_ulb_strong), y_ulb = next(dataloader_unlb_itr)
+        except StopIteration:
+            dataloader_unlb_itr = iter(dataloader_unlb)
+            (x_ulb_weak, x_ulb_strong), y_ulb = next(dataloader_unlb_itr)
+
+        x_ulb_weak = x_ulb_weak.cuda(non_blocking=True)
+        x_ulb_strong = x_ulb_strong.cuda(non_blocking=True)
+
+        optim_fc.zero_grad()
+        # Keep canonical HPL's internal labeled/meta computation on its
+        # original cadence. anchor_interval controls only the clean supervised
+        # MSE entering the primary predictor update below.
+        if args.benchmark_method == 'hpl' and train_iter % 5 == 0:
+            if anchor_step:
+                x_meta, y_meta_norm = x_lb, y_lb_norm
+            else:
+                try:
+                    x_meta, y_meta = next(dataloader_meta_itr)
+                except StopIteration:
+                    dataloader_meta_itr = iter(dataloader_meta)
+                    x_meta, y_meta = next(dataloader_meta_itr)
+                x_meta, y_meta = x_meta.cuda(), y_meta.cuda().float()
+                y_meta_norm = ((y_meta - y_mean) / y_std).view(-1)
+            try:
+                x_unc, y_unc = next(dataloader_unc_itr)
+            except StopIteration:
+                dataloader_unc_itr = iter(dataloader_unc)
+                x_unc, y_unc = next(dataloader_unc_itr)
+            x_unc, y_unc = x_unc.cuda(), y_unc.cuda()
+            y_unc_norm = ((y_unc - y_mean) / y_std).view(-1)
+            with higher.innerloop_ctx(model.fc_m, optim_fc) as (fmodel, diffort):
+                _, feat_lb = model(x_meta) 
+                preds_lb = fmodel(feat_lb.detach())
+                del feat_lb
+                loss_lb = F.mse_loss(preds_lb, y_meta_norm.unsqueeze(1))
+
+                with torch.no_grad():
+                    _, feats_ulb_weak = model(x_ulb_weak)
+                    preds_ulb_weak = fmodel(feats_ulb_weak)  # pseudo label
+                    del feats_ulb_weak
+                _, feats_ulb_strong = model(x_ulb_strong)
+                preds_ulb_strong = fmodel(feats_ulb_strong.detach())
+                del feats_ulb_strong
+
+                unc_input = preds_ulb_strong.detach() - preds_ulb_weak
+                unc_input = torch.cat([unc_input, preds_ulb_strong.detach()], dim=-1)
+
+                weight = unc_learner(unc_input.detach()) 
+                unlabel_mse = (preds_ulb_strong - preds_ulb_weak) ** 2
+                weight_new = (torch.exp(-weight)) / 2
+
+                loss_ulb = torch.mean(weight_new * unlabel_mse)             
+                loss = loss_lb + args.w_ulb * loss_ulb
+
+                diffort.step(loss)
+
+                _, feats_unc = model(x_unc)
+                preds_unc = fmodel(feats_unc.detach())
+                del feats_unc
+                unc_input = (preds_unc - y_unc_norm.unsqueeze(1)).detach()
+                unc_input = torch.cat([unc_input, preds_unc.detach()], dim=-1)
+                weight = unc_learner(unc_input.detach()) 
+                loss_unc = F.mse_loss(preds_unc, y_unc_norm.unsqueeze(1)) - args.lambda2*torch.mean(weight)
+
+                optim_unc.zero_grad()
+                loss_unc.backward()
+                optim_unc.step()
+        
+        if anchor_step:
+            preds_lb, _ = model(x_lb)
+            y_lb_pred.append(preds_lb.view(-1).detach())
+            loss_lb = F.mse_loss(preds_lb, y_lb_norm.unsqueeze(1))
+
+        with torch.no_grad():
+            preds_ulb_weak, _ = model(x_ulb_weak)  # pseudo label
+        preds_ulb_strong, _ = model(x_ulb_strong)
+        
+        if args.benchmark_method == 'uniform':
+            weight_new = torch.ones_like(preds_ulb_strong)
+        else:
+            with torch.no_grad():
+                unc_input = (preds_ulb_strong - preds_ulb_weak).detach()
+                unc_input = torch.cat([unc_input, preds_ulb_strong.detach()], dim=-1)
+                weight = unc_learner(unc_input.detach())
+            weight_new = torch.exp(-weight) / 2
+        unlabel_mse = (preds_ulb_strong - preds_ulb_weak) ** 2
+
+        loss_ulb = torch.mean(weight_new * unlabel_mse)
+        loss = (loss_lb if anchor_step else 0.0) + args.w_ulb * loss_ulb
+
+        optim_fc.zero_grad()
+        optim_feat.zero_grad()
+        loss.backward()
+        optim_fc.step()
+        optim_feat.step()
+
+        total = total + loss.detach() * y_ulb.size(0)
+        n += y_ulb.size(0)
+
+        if train_iter % args.print_freq == 0:
+            print("phase train itr {}/{}: ls {:.2f}({:.2f}) label_loss {:.4f} unlabeled_loss {:.4f}"
+                  .format(train_iter, total_itr_num, float(total / n), loss.item(), loss_lb, loss_ulb, flush = True))
+    
+    y_lb_pred = (torch.cat(y_lb_pred).cpu() * args.y_std + args.y_mean).numpy()
+    y_lb_true = torch.cat(y_lb_true).numpy()
+    return float(total / n), y_lb_pred, y_lb_true, None
+    
+
+def run_epoch_val(model, dataloader):
+    total = 0 
+    n = 0   
+
+    y_true, y_pred = [], []
+    y_std = torch.tensor(args.y_std)
+    y_mean = torch.tensor(args.y_mean)
+
+    model.eval()
+    with torch.no_grad():
+        with tqdm.tqdm(total=len(dataloader)) as pbar:
+            for (inputs, targets) in dataloader:
+
+                y_true.append(targets.numpy())
+                inputs = inputs.cuda()
+                targets = targets.cuda()
+
+                preds, _ = model(inputs)
+                
+                targets = ((targets - y_mean) / y_std).unsqueeze(1)
+                y_pred.append(preds.view(-1).to("cpu").detach() * y_std + y_mean)
+ 
+                loss = F.mse_loss(preds, targets) 
+
+                total += loss.item() * inputs.size(0)
+                n += inputs.size(0)
+
+                pbar.set_postfix_str("{:.2f} ({:.2f})".format(total / n, loss.item()))
+                pbar.update()
+
+    y_pred = np.concatenate(y_pred)
+    y_true = np.concatenate(y_true)
+
+    return total / n, y_pred, y_true
+
+
+if __name__ == '__main__':
+    main()

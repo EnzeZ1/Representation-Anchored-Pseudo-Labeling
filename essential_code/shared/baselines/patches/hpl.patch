@@ -1,0 +1,239 @@
+diff --git a/utkface/main_ours.py b/utkface/main_ours.py
+index 796d511..8126d3c 100644
+--- a/utkface/main_ours.py
++++ b/utkface/main_ours.py
+@@ -19,7 +19,12 @@ from torch.utils.data import DataLoader, RandomSampler
+ 
+ import utils
+ from models import resnet50_unc, UncertaintyLearner
+-from datasets.utkface import get_utkface
++from datasets.utkface import get_utkface
++from baselines.utkface_data import BenchmarkContext, TupleDataset
++from baselines.dinov2_hpl import DINOv2HPLRegressor, MODEL_NAME as DINOV2_MODEL_NAME, WEIGHT_IDENTIFIER as DINOV2_WEIGHT_IDENTIFIER, WEIGHT_URL as DINOV2_WEIGHT_URL
++from baselines.dinov3_convnext_hpl import DINOv3ConvNextTinyHPLRegressor, MODEL_IDENTIFIER as DINOV3_MODEL_IDENTIFIER, MODEL_REVISION as DINOV3_MODEL_REVISION, WEIGHT_SHA256 as DINOV3_WEIGHT_SHA256, FEATURE_DIMENSION as DINOV3_FEATURE_DIMENSION
++from baselines.benchmark_io import checkpoint_size, write_history, write_json, write_npz
++from data_processing.utkface_protocol import dataloader_generator, seed_dataloader_worker, loader_metadata, runtime_metadata
+ 
+ 
+ def arg_parse():
+@@ -74,13 +79,21 @@ def arg_parse():
+                         help='dropout rate to use in training')
+     parser.add_argument("--print_freq", type=int, default=100,
+                         help='print training loss every N iterations')
+-    parser.add_argument("--lambda2", type=float, default=0.1,
+-                        help='Weight for the regularization term')
++    parser.add_argument("--lambda2", type=float, default=0.1,
++                        help='Weight for the regularization term')
++    parser.add_argument('--benchmark_manifest', type=str, default=None)
++    parser.add_argument('--benchmark_output_dir', type=str, default=None)
++    parser.add_argument('--benchmark_epochs', type=int, default=None)
++    parser.add_argument('--benchmark_backbone', choices=['resnet50', 'dinov2', 'dinov3_convnext_tiny'], default='resnet50')
+     
+     args = parser.parse_args()
+     return args
+ 
+-args = arg_parse()
++args = arg_parse()
++if args.benchmark_output_dir:
++    args.output_dir = args.benchmark_output_dir
++if args.benchmark_epochs is not None:
++    args.num_epochs = args.benchmark_epochs
+ 
+ if args.seed is None:
+     args.seed = random.randint(1, 10000)
+@@ -92,7 +105,10 @@ else:
+     cudnn.benchmark = False
+     cudnn.deterministic = True
+ 
+-os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
++# The benchmark launcher exclusively controls the physical GPU mapping.  The
++# restricted process sees that assigned device as local cuda:0.
++if not args.benchmark_manifest:
++    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+ use_cuda = torch.cuda.is_available()
+ 
+ 
+@@ -113,25 +129,52 @@ def main():
+ 
+     # Data
+     print('=====> Preparing data...')
+-    csv_path = os.path.join(args.data_dir, f"utkface.csv")
+-    dataset_train_lab, dataset_train_unlab, dataset_val, dataset_test = get_utkface(
+-        csv_path, args.data_dir, labeled_ratio=args.labeled_ratio, ssl_mult=args.ssl_mult)
++    benchmark = bool(args.benchmark_manifest)
++    if benchmark:
++        context = BenchmarkContext(os.environ['UTKFACE_BENCHMARK_ROOT'], args.data_dir, args.benchmark_manifest)
++        args.y_mean, args.y_std = context.mean, context.std
++        dataset_train_lab = TupleDataset(context, 'labeled', 'labeled', repeat=args.ssl_mult)
++        dataset_train_unlab = TupleDataset(context, 'unlabeled', 'weak_strong')
++        dataset_val = TupleDataset(context, 'validation', 'evaluation')
++        dataset_test = TupleDataset(context, 'test', 'evaluation')
++    else:
++        csv_path = os.path.join(args.data_dir, f"utkface.csv")
++        dataset_train_lab, dataset_train_unlab, dataset_val, dataset_test = get_utkface(
++            csv_path, args.data_dir, labeled_ratio=args.labeled_ratio, ssl_mult=args.ssl_mult)
+ 
+     dataloader_lb = DataLoader(
+-        dataset_train_lab, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=True, drop_last=True)
++        dataset_train_lab, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=True, drop_last=True,
++        worker_init_fn=seed_dataloader_worker if benchmark else None,
++        generator=dataloader_generator(args.seed, 'labeled') if benchmark else None)
+     dataloader_unlb = DataLoader(
+-        dataset_train_unlab, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=True, drop_last=True)
++        dataset_train_unlab, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=True, drop_last=True,
++        worker_init_fn=seed_dataloader_worker if benchmark else None,
++        generator=dataloader_generator(args.seed, 'unlabeled') if benchmark else None)
+     dataloader_val = DataLoader(
+-        dataset_val, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, drop_last=False)
++        dataset_val, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, drop_last=False,
++        worker_init_fn=seed_dataloader_worker if benchmark else None,
++        generator=dataloader_generator(args.seed, 'validation') if benchmark else None)
+     dataloader_test = DataLoader(
+-        dataset_test, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, drop_last=False)
++        dataset_test, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False, drop_last=False,
++        worker_init_fn=seed_dataloader_worker if benchmark else None,
++        generator=dataloader_generator(args.seed, 'test') if benchmark else None)
+     generator = torch.Generator()
+-    generator.manual_seed(2025)
+-    dataloader_unc = DataLoader(dataset_train_lab, batch_size=args.batch_size, num_workers=args.num_workers, 
+-        sampler=RandomSampler(dataset_train_lab, generator=generator), shuffle=False, drop_last=True)    
++    generator.manual_seed(args.seed + 55000 if benchmark else 2025)
++    dataloader_unc = DataLoader(dataset_train_lab, batch_size=args.batch_size, num_workers=args.num_workers,
++        sampler=RandomSampler(dataset_train_lab, generator=generator), shuffle=False, drop_last=True,
++        worker_init_fn=seed_dataloader_worker if benchmark else None)
++    benchmark_loaders = ({
++        'labeled': loader_metadata(seed=args.seed, role='labeled', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=True, drop_last=True, sampler='RandomSampler', pin_memory=False),
++        'unlabeled': loader_metadata(seed=args.seed, role='unlabeled', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=True, drop_last=True, sampler='RandomSampler', pin_memory=False),
++        'validation': loader_metadata(seed=args.seed, role='validation', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=False, drop_last=False, sampler='SequentialSampler', pin_memory=False),
++        'test': loader_metadata(seed=args.seed, role='test', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=False, drop_last=False, sampler='SequentialSampler', pin_memory=False),
++        'uncertainty': loader_metadata(seed=args.seed, role='uncertainty', num_workers=args.num_workers, batch_size=args.batch_size, shuffle=False, drop_last=True, sampler='RandomSampler', pin_memory=False),
++    } if benchmark else None)
+ 
+     # Model
+-    model = resnet50_unc(pretrained=args.pretrained, drp_p = args.drp_p).cuda()
++    model = (DINOv2HPLRegressor(dropout=args.drp_p) if benchmark and args.benchmark_backbone == 'dinov2'
++             else DINOv3ConvNextTinyHPLRegressor(dropout=args.drp_p) if benchmark and args.benchmark_backbone == 'dinov3_convnext_tiny'
++             else resnet50_unc(pretrained=args.pretrained, drp_p=args.drp_p)).cuda()
+     unc_learner = UncertaintyLearner(input_dim=2, output_dim=1).cuda()
+ 
+     # Load the pre_trained weights
+@@ -156,7 +199,11 @@ def main():
+     scheduler_unc = torch.optim.lr_scheduler.StepLR(optim_unc, args.lr_step_period)
+ 
+     print("Run timestamp: {}\n".format(bkup_tmstmp))
+-    bestLoss = float("inf")
++    bestLoss = float("inf")
++    bestEpoch = None
++    history = []
++    benchmark_started = time.time()
++    if benchmark and use_cuda: torch.cuda.reset_peak_memory_stats()
+ 
+     if args.test_only:
+         args.num_epochs = 0
+@@ -179,37 +226,83 @@ def main():
+         scheduler_unc.step()
+ 
+         # validation phase              
+-        loss_val, y_pred, y_true = run_epoch_val(model = model, dataloader = dataloader_val)
++        loss_val, y_pred, y_true = run_epoch_val(model = model, dataloader = dataloader_val)
++        val_mae = sklearn.metrics.mean_absolute_error(y_true, y_pred)
+         r2_value = sklearn.metrics.r2_score(y_true, y_pred)
+         print("Validate: epoch_{}, loss_{:.4f}, r2_{:.3f}, time_{:.4f}, size_{}\n".format(epoch, loss_val, r2_value, time.time() - start_time, y_true.size))
+ 
+         save = {
+             'epoch': epoch,
+             'state_dict': model.state_dict(),
+-            "best_model_loss": loss_val,
+-            'r2': r2_value
+-        }
++            "best_model_loss": loss_val,
++            "validation_mae_years": val_mae,
++            "uncertainty_learner": unc_learner.state_dict(),
++            "optim_feat": optim_feat.state_dict(), "optim_fc": optim_fc.state_dict(), "optim_unc": optim_unc.state_dict(),
++            "scheduler_feat": scheduler_feat.state_dict(), "scheduler_fc": scheduler_fc.state_dict(), "scheduler_unc": scheduler_unc.state_dict(),
++            "mean": args.y_mean, "std": args.y_std, "config": vars(args), "loader_metadata": benchmark_loaders,
++            "backbone_metadata": ({'model_name': DINOV2_MODEL_NAME, 'weight_identifier': DINOV2_WEIGHT_IDENTIFIER,
++                                    'weight_url': DINOV2_WEIGHT_URL, 'feature_dimension': 384}
++                                   if benchmark and args.benchmark_backbone == 'dinov2' else
++                                   {'model_name': 'dinov3_convnext_tiny', 'weight_identifier': DINOV3_MODEL_IDENTIFIER, 'revision': DINOV3_MODEL_REVISION, 'checksum_sha256': DINOV3_WEIGHT_SHA256, 'feature_dimension': DINOV3_FEATURE_DIMENSION}
++                                   if benchmark and args.benchmark_backbone == 'dinov3_convnext_tiny' else {'model_name': 'resnet50'}),
++            'r2': r2_value
++        }
+         # torch.save(save, os.path.join(args.output_dir, "checkpoint.pt"))
+         
+-        if loss_val < bestLoss:
++        selection_value = val_mae if benchmark else loss_val
++        history.append({'epoch': epoch + 1, 'training_loss': loss_tr, 'validation_loss': loss_val,
++                        'validation_mae': val_mae, 'validation_r2': r2_value,
++                        'learning_rate': optim_feat.param_groups[0]['lr'],
++                        'best_so_far': int(selection_value < bestLoss),
++                        'elapsed_seconds': time.time() - start_time})
++        if selection_value < bestLoss:
+             print(f"R^2:{r2_value_0:.4f}, R^2_val:{r2_value:.4f}")
+             print("saved best because {} < {}".format(loss_val, bestLoss))
+-            torch.save(save, os.path.join(args.output_dir, "best.pt"))
+-            bestLoss = loss_val
+-        
+-        total_loss, y_pred, y_true = run_epoch_val(model, dataloader_test)
+-        print("Test: {} (one clip) R2:   {:.4f}".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.r2_score(y_true, y_pred)))
+-        print("Test: {} (one clip) MAE:  {:.4f}".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.mean_absolute_error(y_true, y_pred)))
+-        print("Test: {} (one clip) RMSE: {:.4f}\n".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.mean_squared_error(y_true, y_pred)**0.5))
++            torch.save(save, os.path.join(args.output_dir, "best.pt"))
++            bestLoss = selection_value
++            bestEpoch = epoch
+     
+     checkpoint = torch.load(os.path.join(args.output_dir, "best.pt"))
+-    model.load_state_dict(checkpoint['state_dict'], strict = False)
++    model.load_state_dict(checkpoint['state_dict'], strict = False)
++    if benchmark:
++        unc_learner.load_state_dict(checkpoint['uncertainty_learner'])
++        assert checkpoint['epoch'] == bestEpoch
++        assert checkpoint['validation_mae_years'] == bestLoss
+     print("Best validation loss {} from epoch {}, R2 {}\n".format(checkpoint["best_model_loss"], checkpoint["epoch"], checkpoint["r2"]))
+-    if args.run_test:
+-        total_loss, y_pred, y_true = run_epoch_val(model, dataloader_test)
++    if args.run_test:
++        total_loss, y_pred, y_true = run_epoch_val(model, dataloader_test)
+         print("Test: {} (one clip) R2:   {:.4f}".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.r2_score(y_true, y_pred)))
+         print("Test: {} (one clip) MAE:  {:.4f}".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.mean_absolute_error(y_true, y_pred)))
+-        print("Test: {} (one clip) RMSE: {:.4f}\n".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.mean_squared_error(y_true, y_pred)**0.5))
++        print("Test: {} (one clip) RMSE: {:.4f}\n".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"), sklearn.metrics.mean_squared_error(y_true, y_pred)**0.5))
++        if benchmark:
++            test_mae = sklearn.metrics.mean_absolute_error(y_true, y_pred)
++            test_r2 = sklearn.metrics.r2_score(y_true, y_pred)
++            indices = np.asarray(context.indices('test'), dtype=np.int64)
++            write_npz(os.path.join(args.output_dir, 'test_predictions.npz'), cohort_indices=indices,
++                      relative_paths=np.asarray([context.record(i)['path'] for i in indices]),
++                      predictions_years=y_pred, targets_years=y_true)
++            write_npz(os.path.join(args.output_dir, 'analysis_snapshot.npz'),
++                      cohort_indices=np.asarray([], dtype=np.int64), note=np.asarray(['post-hoc diagnostics deferred']))
++            write_history(os.path.join(args.output_dir, 'history.csv'), history)
++            write_json(os.path.join(args.output_dir, 'config.json'), vars(args))
++            write_json(os.path.join(args.output_dir, 'metrics.json'), {'best_epoch': bestEpoch,
++                       'validation_mae': bestLoss, 'test_mae': test_mae, 'test_r2': test_r2})
++            write_json(os.path.join(args.output_dir, 'metadata.json'), {
++                'method': 'hpl', 'status': 'complete', 'cohort_sha256': context.cohort['cohort_sha256'],
++                'manifest_path': str(context.manifest_path), 'checkpoint_reloaded': True,
++                'test_evaluations': 1, 'test_used_for_selection': False, 'best_epoch': bestEpoch,
++                'validation_mae': bestLoss, 'checkpoint_size_bytes': checkpoint_size(os.path.join(args.output_dir, 'best.pt')),
++                'runtime': runtime_metadata(), 'wall_clock_seconds': time.time() - benchmark_started,
++                'peak_allocated_cuda_bytes': torch.cuda.max_memory_allocated() if use_cuda else 0,
++                'peak_reserved_cuda_bytes': torch.cuda.max_memory_reserved() if use_cuda else 0,
++                'model': (DINOV2_WEIGHT_IDENTIFIER if args.benchmark_backbone == 'dinov2' else DINOV3_MODEL_IDENTIFIER if args.benchmark_backbone == 'dinov3_convnext_tiny' else 'ImageNet-pretrained ResNet-50'),
++                'target_backbone': args.benchmark_backbone, 'probe_backbone': None,
++                'pretrained_weight_identifier': (DINOV2_WEIGHT_IDENTIFIER if args.benchmark_backbone == 'dinov2' else DINOV3_MODEL_IDENTIFIER if args.benchmark_backbone == 'dinov3_convnext_tiny' else 'torchvision.ResNet50_Weights.IMAGENET1K_V1'),
++                'pretrained_weight_url': (DINOV2_WEIGHT_URL if args.benchmark_backbone == 'dinov2' else DINOV3_MODEL_IDENTIFIER if args.benchmark_backbone == 'dinov3_convnext_tiny' else 'https://download.pytorch.org/models/resnet50-0676ba61.pth'),
++                'pretrained_weight_checksum_sha256': (DINOV3_WEIGHT_SHA256 if args.benchmark_backbone == 'dinov3_convnext_tiny' else None),
++                'native_views': 'weak+strong',
++                'loaders': benchmark_loaders, **context.protocol_metadata(),
++            })
+     
+ 
+ def run_epoch(model, unc_learner, dataloader_lb, dataloader_unlb, dataloader_unc, optim_feat, optim_fc, optim_unc):
+@@ -374,4 +467,4 @@ def run_epoch_val(model, dataloader):
+ 
+ 
+ if __name__ == '__main__':
+-    main()
+\ No newline at end of file
++    main()

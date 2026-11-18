@@ -1,0 +1,39 @@
+{
+  "created_utc": "2026-11-18T02:17:11.386903+00:00",
+  "hosts": [
+    "gpu01",
+    "gpu02",
+    "gpu03",
+    "gpu04",
+    "gpu05"
+  ],
+  "profiles": 17,
+  "source_mappings": 476,
+  "copied_unique_source_files": 152,
+  "copied_source_bytes": 1389081,
+  "original_bytes_preserved": true,
+  "sha256_mismatches": 0,
+  "python_ast_parse_issues": [],
+  "excluded": [
+    "per-run records",
+    "metrics",
+    "predictions",
+    "checkpoints",
+    "datasets",
+    "manifests containing data",
+    "logs",
+    "figures",
+    "environments",
+    "queue state",
+    "retry/watch/memory-holder processes",
+    "duplicate source copies"
+  ],
+  "limitations": [
+    "Static source preservation only; no training or inference was run.",
+    "Profile mappings preserve source versions, not a newly unified or portability-tested pipeline.",
+    "Existing external data, manifest, environment and campaign-path dependencies are not bundled."
+  ],
+  "credential_pattern_scan_findings": 0,
+  "original_gpu04_git_status_unchanged": true,
+  "original_gpu04_code_diff_unchanged": true
+}
