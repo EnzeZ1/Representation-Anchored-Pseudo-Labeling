@@ -16,15 +16,11 @@ Last user-reported campaign status is a *historical* snapshot; ALWAYS inspect li
 
 | Existing campaign | Host: GPU IDs | Controller / tmux | Artifact root |
 | --- | --- | --- | --- |
-| 36-run matched supervised-only recycled vs dense Uniform consistency (W2) | gpu01: 0–7 | PID 160745; w2-matched36-20261118 | /noback/enzez/w2_matched_36_worktree_20261118/artifacts/w2_matched_36_20261118/ |
+| 36-run matched supervised-only recycled vs dense Uniform consistency (W2) | gpu01: 0–7 | PID 160745; w2-matched36-20261118 | /nobackup/enzez/w2_matched_36_worktree_20261118/artifacts/w2_matched_36_20261118/ |
 | 24-run clean-dense Temporal Ensembling (Q4) | gpu02: 0–3 | PID 1736040; q4-clean-te24-20261118 | /nobackup/enzez/q4_clean_dense_te_20261118/artifacts/q4_clean_dense_te_20261118/ |
 | 36-run Mean Teacher / TE native vs boosted-mass vs recycled extra (ablation) | gpu02: 6–7 | PID 1736216; mt-te-supervision36-20261118 | /nobackup/enzez/mt_te_weight_ablation_20261118/artifacts/mt_te_weight_ablation_20261118/ |
 | 48-run RSNA 10%/20% schedule extension | gpu02: 4–5 | prior controller in 84-run campaign, inspect | /nobackup/enzez/rebuttal_84_worktree_20261118/artifacts/rebuttal_extensions_20261118/ |
 | earlier RSNA 5% schedule campaign | gpu04: 0–7 | separate active campaign; READ ONLY if needed | separate original RSNA worktree |
-
-**Important:** the gpu01 W2 path above contains a spelling hazard; the verified report path was:
-`/nobackup/enzez/w2_matched_36_worktree_20261118/artifacts/w2_matched_36_20261118/`
-Use the **/nobackup** path and verify directory exists. Paths, PIDs and GPU occupancy may change after this document is written.
 
 SSH:
 - `ssh enzez@instgpu-01.cs.wisc.edu`
