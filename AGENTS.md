@@ -1,11 +1,9 @@
-# Repository Agent Instructions — Paper-only Cleanup Task
+# ACTIVE Codex task — READ-ONLY HPL historical code/result audit (2026-11-20)
 
-You are on a *staging* branch for a coding-agent cleanup request.
+Read [CODEX_HPL_HISTORICAL_SOURCE_AUDIT.md](./CODEX_HPL_HISTORICAL_SOURCE_AUDIT.md) completely. This is the **only active instruction** on this task branch. Do not execute any older paper-cleanup or new-experiment instructions.
 
-**Read [CODEX_PAPER_ONLY_CLEANUP.md](./CODEX_PAPER_ONLY_CLEANUP.md) completely before modifying files.** Its figure/table inventory and acceptance criteria define the task. The source of truth for historical as-run code is `essential_code/` with `essential_code/profiles.json` and `essential_code/SOURCE_INDEX.csv`.
+The user recalls that earlier Codex work modified **official HPL** and may have run a **"without our intervention"** condition already. Investigate actual **upstream HPL vs paper regression adapter vs historical Original vs +Interaction vs any U-step sparse-extended control**, based on pinned source hashes and as-run logs/artifacts. Give special attention to UTKFace and IMDB-WIKI (5%, R50/DINO, seeds 0–2), `ssl_mult` labeled duplication, cycling vs labeled-controlled epoch length, native supervised loss per predictor iteration and HPL meta/uncertainty updates.
 
-Do not treat `essential_code/shared/` as one combined runnable snapshot. Do not modify the staging branch, historical source branch, `main`, or scientific behavior. Create a separate working branch, preserve source hashes, and produce the mapping/audit reports in the task specification.
+**Do not launch, queue, preflight, retrain, rerun test, reclassify status, change any checkpoint, or edit old code/results.** Search the historical repo/profile mapping plus remote archival artifacts READ-ONLY. If prior results are found, classify their exact algorithmic condition and whether comparable. Create private local inventory/audit reports and give user a clear Chinese summary plus short English eQjg W1 rebuttal. Do not speculate about historical Codex changes without tracked evidence.
 
-**Privacy:** The manuscript is under anonymous peer review. The PDF is intentionally *not* stored on this public GitHub repository. Do not publish the manuscript, identify authors/submission, post public issues/PR descriptions about its identity, or infer missing manuscript details. If access to private PDF is necessary, obtain it privately from the user rather than fabricating paper coverage.
-
-A task/instruction file does **not** mean an agent has already been started. Begin implementation only when the user invokes you in this repository/branch.
+This repository is PUBLIC. Do not push unpublished results, reviewers, manuscript, protected data, logs or credentials. GitHub task instructions do not themselves invoke the Codex agent.
