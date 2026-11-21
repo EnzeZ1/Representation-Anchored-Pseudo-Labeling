@@ -1,11 +1,11 @@
-# Repository Agent Instructions — Paper-only Cleanup Task
+# Active Codex task — HPL official-baseline FAIRNESS AUDIT (READ-ONLY)
 
-You are on a *staging* branch for a coding-agent cleanup request.
+**LANGUAGE REQUIREMENT: Reply in ENGLISH in the CLI, including progress messages, explanations, reports, and the final summary. Do not switch to Chinese.**
 
-**Read [CODEX_PAPER_ONLY_CLEANUP.md](./CODEX_PAPER_ONLY_CLEANUP.md) completely before modifying files.** Its figure/table inventory and acceptance criteria define the task. The source of truth for historical as-run code is `essential_code/` with `essential_code/profiles.json` and `essential_code/SOURCE_INDEX.csv`.
+Read [CODEX_HPL_OFFICIAL_BASELINE_FAIRNESS_AUDIT.md](./CODEX_HPL_OFFICIAL_BASELINE_FAIRNESS_AUDIT.md) in full and follow it as the sole active task instruction on this branch. This task is specifically about official upstream HPL training-loop fidelity, old Codex modifications, and whether prior valid experiment artifacts can serve as faithful, matched official-baseline results.
 
-Do not treat `essential_code/shared/` as one combined runnable snapshot. Do not modify the staging branch, historical source branch, `main`, or scientific behavior. Create a separate working branch, preserve source hashes, and produce the mapping/audit reports in the task specification.
+Prior history audit reports are on gpu04 at `artifacts/hpl_historical_source_audit_20261120_130602/`; inspect those as background, then verify all consequential claims from pinned upstream source, as-run configurations and logs.
 
-**Privacy:** The manuscript is under anonymous peer review. The PDF is intentionally *not* stored on this public GitHub repository. Do not publish the manuscript, identify authors/submission, post public issues/PR descriptions about its identity, or infer missing manuscript details. If access to private PDF is necessary, obtain it privately from the user rather than fabricating paper coverage.
+**No training or inference is authorized.** Do not start, schedule, stop, resume, or requeue experiments. Do not change source/configs/checkpoints/results. Any proposed new experiments are a plan for user approval only. Do not interfere with ongoing rebuttal campaigns. Do not publish private results or reviewer information to this public GitHub repository. GitHub instructions do not automatically invoke a Codex agent.
 
-A task/instruction file does **not** mean an agent has already been started. Begin implementation only when the user invokes you in this repository/branch.
+Final deliverables must say whether suitable faithful upstream-loop results already exist for UTKFace and IMDB-WIKI, whether old HPL k=1 runs can stand in, the precise fairness issue, and the minimal next step, with source-backed evidence.
