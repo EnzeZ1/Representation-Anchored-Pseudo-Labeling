@@ -1,11 +1,11 @@
-# Repository Agent Instructions — Paper-only Cleanup Task
+# Active Codex Task: Q4 Clean-Dense TE CheX Recovery + Read-Only HPL Watch
 
-You are on a *staging* branch for a coding-agent cleanup request.
+**LANGUAGE: All CLI communication, status updates, analysis, private reports, and final summaries MUST be in English. Do not respond in Chinese.**
 
-**Read [CODEX_PAPER_ONLY_CLEANUP.md](./CODEX_PAPER_ONLY_CLEANUP.md) completely before modifying files.** Its figure/table inventory and acceptance criteria define the task. The source of truth for historical as-run code is `essential_code/` with `essential_code/profiles.json` and `essential_code/SOURCE_INDEX.csv`.
+Read [CODEX_Q4_CHEX_RECOVERY_HPL_WATCH.md](./CODEX_Q4_CHEX_RECOVERY_HPL_WATCH.md) **in full**. It is the active task instruction for this branch, overriding any other default/release instructions.
 
-Do not treat `essential_code/shared/` as one combined runnable snapshot. Do not modify the staging branch, historical source branch, `main`, or scientific behavior. Create a separate working branch, preserve source hashes, and produce the mapping/audit reports in the task specification.
+Scope: **recover exactly three previously interrupted Q4 clean-dense Temporal Ensembling CheXchoNet experiment cells** (ResNet-50 seed 2, DINOv2-S seeds 1 and 2) after validating current job state. The user authorizes safe resumption if and only if full training state is recoverable (including TE ensemble targets); otherwise rerun from epoch 0 in new isolated attempts, preserving original incomplete artifacts. Do not rerun valid completed Q4 cells.
 
-**Privacy:** The manuscript is under anonymous peer review. The PDF is intentionally *not* stored on this public GitHub repository. Do not publish the manuscript, identify authors/submission, post public issues/PR descriptions about its identity, or infer missing manuscript details. If access to private PDF is necessary, obtain it privately from the user rather than fabricating paper coverage.
+**HPL factorial IMDB-WIKI monitoring is READ ONLY.** These 24 already-authorized jobs were reported live after previous reboot recovery. Do not stop, restart, relaunch or modify them. Do not schedule new HPL conditions, including no-BLO P1.
 
-A task/instruction file does **not** mean an agent has already been started. Begin implementation only when the user invokes you in this repository/branch.
+Verify actual GPUs/PIDs/controller states before action and protect other users' and other campaigns' jobs. Keep all raw results and reports private on lab hosts; this public GitHub branch holds instructions only. A GitHub commit does not itself execute Codex.
