@@ -1,11 +1,11 @@
-# Repository Agent Instructions — Paper-only Cleanup Task
+# ACTIVE CODEX TASK — x7tN Q2 and Q4 result verification (READ ONLY)
 
-You are on a *staging* branch for a coding-agent cleanup request.
+**Respond in ENGLISH ONLY in Codex CLI, including progress, status and final summaries. Do not switch to Chinese.**
 
-**Read [CODEX_PAPER_ONLY_CLEANUP.md](./CODEX_PAPER_ONLY_CLEANUP.md) completely before modifying files.** Its figure/table inventory and acceptance criteria define the task. The source of truth for historical as-run code is `essential_code/` with `essential_code/profiles.json` and `essential_code/SOURCE_INDEX.csv`.
+Read [CODEX_X7TN_Q2_Q4_FINAL_AUDIT.md](./CODEX_X7TN_Q2_Q4_FINAL_AUDIT.md) **fully**. This is the active task instruction for this branch; do not execute older task/release instructions.
 
-Do not treat `essential_code/shared/` as one combined runnable snapshot. Do not modify the staging branch, historical source branch, `main`, or scientific behavior. Create a separate working branch, preserve source hashes, and produce the mapping/audit reports in the task specification.
+Goal: independently verify whether the previously launched UTKFace **144-run label-ratio/frequency/placement** campaign has valid complete outcomes for x7tN Q2, and whether **six SSR methods x four datasets x two backbones x three seeds** are fully accounted for under FixMatch-style dense mixing for x7tN Q4. Reconcile old archives, method definitions, SimRegMatch CheX DINO seed 2, and completed Q4 clean-dense TE 24/24. Produce evidence-backed private reports and definitive answerability verdicts.
 
-**Privacy:** The manuscript is under anonymous peer review. The PDF is intentionally *not* stored on this public GitHub repository. Do not publish the manuscript, identify authors/submission, post public issues/PR descriptions about its identity, or infer missing manuscript details. If access to private PDF is necessary, obtain it privately from the user rather than fabricating paper coverage.
+**NO new training, GPU inference, launches, resumes, controller edits, or changes to existing results.** Do not disturb HPL IMDB factorial or other campaigns. Any archived inaccessible cell must remain UNVERIFIED, not fabricated or rerun. Write only NEW private local audit files, keep unpublished numerical findings, reviewer materials, manuscripts and patient data out of this PUBLIC GitHub repository.
 
-A task/instruction file does **not** mean an agent has already been started. Begin implementation only when the user invokes you in this repository/branch.
+A GitHub branch update does NOT automatically start a Codex session; the user must hand off this branch to the running Codex CLI.
