@@ -1,3 +1,9 @@
+# CANCELLED / INACTIVE — DO NOT EXECUTE
+
+**User decision on 2026-11-24:** Retain the completed RSNA 5% UCVME experiment at seeds 0–2 (n=3). The proposed seed 3–5 extension below is **not authorized**. Do NOT SSH, launch, resume, schedule or preflight any jobs from this document. Keep original experiment artifacts unchanged. The following material remains solely as archived context.
+
+---
+
 # Codex task: complete RSNA 5% UCVME fixed-budget experiment to six seeds on gpu05
 
 ## Active user authorization and scope
