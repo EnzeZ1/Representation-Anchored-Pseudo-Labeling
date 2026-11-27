@@ -1,11 +1,11 @@
-# Repository Agent Instructions — Paper-only Cleanup Task
+# ACTIVE Codex task — six-seed 5% SSR placement across all methods and datasets
 
-You are on a *staging* branch for a coding-agent cleanup request.
+**Read [CODEX_SSR_ALL_METHODS_6SEED_PLACEMENT.md](./CODEX_SSR_ALL_METHODS_6SEED_PLACEMENT.md) COMPLETELY before any implementation.** This is the only active instruction on this branch. The user explicitly authorizes an idempotent FRONT/EVEN/BACK placement extension: six SSR methods, four datasets, two backbones, seeds 0–5, 5% labels, with scientifically verified existing run keys skipped.
 
-**Read [CODEX_PAPER_ONLY_CLEANUP.md](./CODEX_PAPER_ONLY_CLEANUP.md) completely before modifying files.** Its figure/table inventory and acceptance criteria define the task. The source of truth for historical as-run code is `essential_code/` with `essential_code/profiles.json` and `essential_code/SOURCE_INDEX.csv`.
+When invoked in the user's authorized Codex CLI, FIRST audit cluster GPU occupancy, method provenance and existing artifacts, THEN implement and launch only eligible missing runs. Hardware: **idle physical GPUs on gpu01, gpu02, gpu03, gpu04**, plus **ONLY physical GPUs 6 and 7 on gpu05**. Leave all services, occupied/reserved GPUs and unrelated processes untouched; never preempt, restart or overwrite existing workloads. Do not touch gpu05 GPUs 0–5 or other servers.
 
-Do not treat `essential_code/shared/` as one combined runnable snapshot. Do not modify the staging branch, historical source branch, `main`, or scientific behavior. Create a separate working branch, preserve source hashes, and produce the mapping/audit reports in the task specification.
+Scientific fidelity: preserve each method's objective, native training/data protocol and paired split/initialization; this is NOT one universal Plain trainer. HPL bilevel/meta learning and UCVME two-network optimizers require explicit method-specific audits. Run matrix is 864 keys; reuse valid old cells, no duplicates, atomic cross-host queue, no additional ratios or DENSE schedules.
 
-**Privacy:** The manuscript is under anonymous peer review. The PDF is intentionally *not* stored on this public GitHub repository. Do not publish the manuscript, identify authors/submission, post public issues/PR descriptions about its identity, or infer missing manuscript details. If access to private PDF is necessary, obtain it privately from the user rather than fabricating paper coverage.
+Make new private local worktrees and artifact paths. All CLI communication/progress reports in **English**. Keep private datasets, trained models, experimental numeric results, manuscript/reviewer information, credentials and cluster logs off the **public** GitHub repository. Report verified live worker PIDs/physical GPU UUIDs rather than treating this instruction file as evidence of running jobs.
 
-A task/instruction file does **not** mean an agent has already been started. Begin implementation only when the user invokes you in this repository/branch.
+**This GitHub branch by itself DOES NOT trigger Codex or start GPU jobs. The user must open it in an authorized Codex CLI session.**
